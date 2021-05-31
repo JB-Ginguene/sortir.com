@@ -22,7 +22,7 @@ class Site
     /**
      * @ORM\Column(type="string", length=30)
      */
-    private $nom_site;
+    private $nom;
 
     /**
      * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="site")
@@ -45,14 +45,14 @@ class Site
         return $this->id;
     }
 
-    public function getNomSite(): ?string
+    public function getNom(): ?string
     {
-        return $this->nom_site;
+        return $this->nom;
     }
 
-    public function setNomSite(string $nom_site): self
+    public function setNom(string $nom): self
     {
-        $this->nom_site = $nom_site;
+        $this->nom = $nom;
 
         return $this;
     }
