@@ -54,11 +54,6 @@ class Participant implements UserInterface
     private $telephone;
 
     /**
-     * @ORM\Column(type="string", length=20)
-     */
-    private $mail;
-
-    /**
      * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="organisateur")
      */
     private $sortiesOrganisee;
@@ -198,17 +193,6 @@ class Participant implements UserInterface
         return $this;
     }
 
-    public function getMail(): ?string
-    {
-        return $this->mail;
-    }
-
-    public function setMail(string $mail): self
-    {
-        $this->mail = $mail;
-
-        return $this;
-    }
 
     /**
      * @return Collection|Sortie[]
