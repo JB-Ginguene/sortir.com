@@ -17,4 +17,13 @@ class MainController extends AbstractController
             'controller_name' => 'MainController',
         ]);
     }
+
+    /**
+     * @Route("/team", name="main_team")
+     */
+    public function team(): Response
+    {
+        return $this->render('main/team.html.twig', [
+        ]);
+    }
 }
