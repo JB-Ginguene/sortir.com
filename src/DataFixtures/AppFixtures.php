@@ -104,7 +104,7 @@ class AppFixtures extends Fixture
         $participants = $manager->getRepository(Participant::class)->findAll();
         for ($i = 0; $i < 5; $i++) {
             $sortie = new Sortie();
-            $sortie->setNom($generator->sentence(4))
+            $sortie->setNom($generator->sentence(3))
                 ->setEtat($generator->randomElement($etats))
                 ->setLieu($generator->randomElement($lieux))
                 ->setSite($generator->randomElement($sites))

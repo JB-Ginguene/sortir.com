@@ -49,7 +49,7 @@ class Participant implements UserInterface
     private $prenom;
 
     /**
-     * @ORM\Column(type="string", length=15, nullable=true)
+     * @ORM\Column(type="string", length=20, nullable=true)
      */
     private $telephone;
 
