@@ -26,7 +26,15 @@
                     <td>{{ sortie.dateLimiteInscription|date("m/d/Y") }}</td>
                     <td>{{ sortie.participants|length }}/{{ sortie.nbInscriptionsMax }}</td>
                     <td>{{ sortie.etat.libelle }}</td>
-                    <td>Inscrit...</td>
+                    {% if sortie.participants.contains(app.user) %}
+                        {# Oui, l'utilisateur connecté est bien inscrit : #}
+                        <td>X</td>
+                    {% else %}
+                        {# Non, l'ulisateur connecté n'est pas inscrit à cette sortie : #}
+                        <td></td>
+                    {% endif %}
+
+
                     <td>
                         {# TODO Ajouter lien vers détail du participant #}
                         {# <a href="{{ path('participant_detail', {'id' : sortie.organisateur.id}) }}" title="Détails de l'organisateur'"> #}
@@ -35,10 +43,12 @@
                     </td>
                     <td><a href="{{ path('sortie_detail', {'id' : sortie.id}) }}"
                            title="Détails de la sortie">Détails </a>
-                        {% if app.user.id == sortie.organisateur.id %}
-                            {# <a href="{{ path('sortie_edit', {'id' : sortie.id}) }}" title="Modifier la sortie"> #}
-                            Modifier
-                            {# </a> #}
+                        {% if app.user %}
+                            {% if app.user.id == sortie.organisateur.id %}
+                                {# <a href="{{ path('sortie_create', {'id' : sortie.id}) }}" title="Modifier la sortie"> #}
+                                Modifier
+                                {# </a> #}
+                            {% endif %}
                         {% endif %}
                     </td>
                 </tr>
@@ -47,5 +57,8 @@
             {% endfor %}
             </tbody>
         </table>
+    </div>
+    <div class="container">
+        <a href="{{ path('sortie_create') }}" class="btn btn-secondary btn-lg" role="button">Créer une sortie</a>
     </div>
 {% endblock %}
