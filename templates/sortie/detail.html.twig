@@ -40,14 +40,14 @@
             <thead>
             <tr>
                 {# TODO Ajouter pseudo et non prenom #}
-                <th scope="col">Prenom</th>
+                <th scope="col">Pseudo</th>
                 <th scope="col">Nom</th>
             </tr>
             </thead>
             <tbody>
             {% for participant in sortie.participants %}
                 <tr>
-                    <th scope="row">{{ participant.prenom }}</th>
+                    <th scope="row">{{ participant.pseudo }}</th>
                     <td>{{ participant.nom }}</td>
 
                 </tr>

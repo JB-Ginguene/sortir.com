@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Sortie;
+use App\ResearchFilter\ResearchFilter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -47,4 +48,8 @@ class SortieRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findByPersonnalResearch(ResearchFilter $research)
+    {
+        dd('prout');
+    }
 }

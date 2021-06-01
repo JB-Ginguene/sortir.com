@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Sortie;
+use App\Form\ResearchFilterType;
 use App\Form\SortieType;
 use App\Repository\SortieRepository;
+use App\ResearchFilter\ResearchFilter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,13 +18,28 @@ class SortieController extends AbstractController
     /**
      * @Route("/", name="sortie_home")
      */
-    public function home(SortieRepository $sortieRepository): Response
+    public function home(Request $request, SortieRepository $sortieRepository): Response
     {
-        $sorties = $sortieRepository->findAll();
-        $userInSession = $this->getUser();
-        return $this->render('sortie/home.html.twig', [
-            'sorties' => $sorties
-        ]);
+        $research = new ResearchFilter();
+        $researchForm = $this->createForm(ResearchFilterType::class, $research);
+
+        $researchForm->handleRequest($request);
+
+
+        if ($researchForm->isSubmitted() && $researchForm->isValid()) {
+            $properties = $sortieRepository->findByPersonnalResearch($research);
+            return $this->render('sortie/home.html.twig', [
+                'researchForm' => $researchForm->createView(),
+                'properties' => $properties
+            ]);
+        } else {
+            $sorties = $sortieRepository->findAll();
+            $userInSession = $this->getUser();
+            return $this->render('sortie/home.html.twig', [
+                'researchForm' => $researchForm->createView(),
+                'sorties' => $sorties
+            ]);
+        }
     }
 
     /**
@@ -49,11 +66,11 @@ class SortieController extends AbstractController
     function create(Request $request, EntityManagerInterface $entityManager): Response
     {
         $sortie = new Sortie();
-        $sortieForm = $this->createForm(SortieType::class,$sortie);
+        $sortieForm = $this->createForm(SortieType::class, $sortie);
 
         $sortieForm->handleRequest($request);
 
-        if ($sortieForm->isSubmitted() && $sortieForm->isValid()){
+        if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
             $entityManager->persist($sortie);
             $entityManager->flush();
             $this->addFlash('succes', 'Sortie crée');
