@@ -1,9 +1,52 @@
 {% extends 'base.html.twig' %}
+{% form_theme researchForm 'bootstrap_4_layout.html.twig' %}
+
 
 {% block title %}{{ parent() }}{% endblock %}
 
 {% block body %}
+    {# FORMULAIRE DE RECHERCHE #}
+    <div class="container col-lg-10 col-md-10 col-sm-12 col-xs-12 justify-content-between bg-light mt-2 mb-2">
+        {{ form_start(researchForm) }}
+        <div class="row mb-1">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="d-flex justify-content-between mb-1">
+                    <span class="col-4">{{ form_label(researchForm.site) }}</span>
+                    <div class="alert-danger">{{ form_errors(researchForm.site) }}</div>
+                    <span class="col-8">{{ form_widget(researchForm.site) }}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-1">
+                    <span class="col-4">{{ form_label(researchForm.nomSortie) }}</span>
+                    <div class="alert-danger">{{ form_errors(researchForm.nomSortie) }}</div>
+                    <span class="col-8">{{ form_widget(researchForm.nomSortie) }}</span>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        {{ form_label(researchForm.dateMin) }}
+                        <div class="alert-danger">{{ form_errors(researchForm.dateMin) }}</div>
+                        {{ form_widget(researchForm.dateMin) }}
+                    </div>
+                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        {{ form_label(researchForm.dateMax) }}
+                        <div class="alert-danger">{{ form_errors(researchForm.dateMax) }}</div>
+                        {{ form_widget(researchForm.dateMax) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                {{ form_row(researchForm.specificitees) }}
+                <div class="text-center">
+                    <button type="submit" class="btn btn-dark font-weight-bold">Rechercher
+                    </button>
+                </div>
+            </div>
+        </div>
 
+        {{ form_end(researchForm) }}
+    </div>
+
+
+    {# LISTE DES SORTIES #}
     <div class="d-flex justify-content-center container">
         <table class="table">
             <thead>
@@ -38,7 +81,7 @@
                     <td>
                         {# TODO Ajouter lien vers détail du participant #}
                         {# <a href="{{ path('participant_detail', {'id' : sortie.organisateur.id}) }}" title="Détails de l'organisateur'"> #}
-                        {{ sortie.organisateur.nom }}
+                        {{ sortie.organisateur.pseudo }}
                         {# </a> #}
                     </td>
                     <td><a href="{{ path('sortie_detail', {'id' : sortie.id}) }}"
@@ -62,3 +105,4 @@
         <a href="{{ path('sortie_create') }}" class="btn btn-secondary btn-lg" role="button">Créer une sortie</a>
     </div>
 {% endblock %}
+

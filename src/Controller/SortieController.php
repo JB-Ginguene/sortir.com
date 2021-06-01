@@ -7,8 +7,10 @@ use App\Entity\Lieu;
 use App\Entity\Participant;
 use App\Entity\Site;
 use App\Entity\Sortie;
+use App\Form\ResearchFilterType;
 use App\Form\SortieType;
 use App\Repository\SortieRepository;
+use App\ResearchFilter\ResearchFilter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,13 +23,28 @@ class SortieController extends AbstractController
     /**
      * @Route("/", name="sortie_home")
      */
-    public function home(SortieRepository $sortieRepository): Response
+    public function home(Request $request, SortieRepository $sortieRepository): Response
     {
-        $sorties = $sortieRepository->findAll();
-        $userInSession = $this->getUser();
-        return $this->render('sortie/home.html.twig', [
-            'sorties' => $sorties
-        ]);
+        $research = new ResearchFilter();
+        $researchForm = $this->createForm(ResearchFilterType::class, $research);
+
+        $researchForm->handleRequest($request);
+
+
+        if ($researchForm->isSubmitted() && $researchForm->isValid()) {
+            $sorties = $sortieRepository->findByPersonnalResearch($research);
+            return $this->render('sortie/home.html.twig', [
+                'researchForm' => $researchForm->createView(),
+                'sorties' => $sorties
+            ]);
+        } else {
+            $sorties = $sortieRepository->findAll();
+            $userInSession = $this->getUser();
+            return $this->render('sortie/home.html.twig', [
+                'researchForm' => $researchForm->createView(),
+                'sorties' => $sorties
+            ]);
+        }
     }
 
     /**
@@ -54,7 +71,7 @@ class SortieController extends AbstractController
     function create(Request $request, EntityManagerInterface $entityManager): Response
     {
         $sortie = new Sortie();
-        $sortieForm = $this->createForm(SortieType::class,$sortie);
+        $sortieForm = $this->createForm(SortieType::class, $sortie);
 
         $sortieForm->handleRequest($request);
 
@@ -62,11 +79,13 @@ class SortieController extends AbstractController
             //On set l'état de la sortie à "Ouvert"
             $etatSortie = $entityManager->getRepository(Etat::class)->findOneBy(['libelle'=>'Ouverte']);
             //On récupère l'utilisateur en session
+            /**
+             * @var Participant $organisateur
+            */
             $organisateur = $this->getUser();
 
             //on set sur la sortie
             $sortie->setOrganisateur($organisateur)->setEtat($etatSortie);
-
 
             $entityManager->persist($sortie);
             $entityManager->flush();
