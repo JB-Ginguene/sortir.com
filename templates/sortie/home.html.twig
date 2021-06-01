@@ -20,25 +20,27 @@
             </thead>
             <tbody>
             {% for sortie in sorties %}
-            <tr>
-                <th scope="row">{{ sortie.nom }}</th>
-                <td>{{ sortie.dateHeureDebut|date("m/d/Y H:i") }}</td>
-                <td>{{ sortie.dateLimiteInscription|date("m/d/Y") }}</td>
-                <td>{{ sortie.participants|length }}/{{ sortie.nbInscriptionsMax }}</td>
-                <td>Etat</td>
-                <td>Inscrit...</td>
-                <td>Organisateur</td>
-                <td><a href="{{ path('sortie_detail', {'id' : sortie.id}) }}" title="Détail de la sortie">Détail</a></td>
-            </tr>
+                <tr>
+                    <th scope="row">{{ sortie.nom }}</th>
+                    <td>{{ sortie.dateHeureDebut|date("m/d/Y H:i") }}</td>
+                    <td>{{ sortie.dateLimiteInscription|date("m/d/Y") }}</td>
+                    <td>{{ sortie.participants|length }}/{{ sortie.nbInscriptionsMax }}</td>
+                    <td>{{ sortie.etat.libelle }}</td>
+                    <td>Inscrit...</td>
+                    <td>
+                        {# TODO Ajouter lien vers détail du participant #}
+                        {# <a href="{{ path('participant_detail', {'id' : sortie.organisateur.id}) }}" title="Détails de l'organisateur'"> #}
+                        {{ sortie.organisateur.nom }}
+                        {# </a> #}
+                    </td>
+                    <td><a href="{{ path('sortie_detail', {'id' : sortie.id}) }}"
+                           title="Détails de la sortie">Détail</a>
+                    </td>
+                </tr>
             {% else %}
-                <div>pas de sorties pour le moment</div>
+                <div>Pas de sorties pour le moment</div>
             {% endfor %}
             </tbody>
         </table>
-                </div>
-                </a>
-
-        </div>
     </div>
-
 {% endblock %}
