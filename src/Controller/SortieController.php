@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Etat;
+use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Form\SortieType;
 use App\Repository\SortieRepository;
@@ -54,6 +56,16 @@ class SortieController extends AbstractController
         $sortieForm->handleRequest($request);
 
         if ($sortieForm->isSubmitted() && $sortieForm->isValid()){
+            //On set l'état de la sortie à "Créée"
+            $etatSortie = $entityManager->getRepository(Etat::class)->findOneBy(['libelle'=>'Créee']);
+            //On récupère l'utilisateur en session
+            $organisateur = $this->getUser();
+            //$organisateurSortie = $entityManager->getRepository(Participant::class)->findOneBy(['email'=>$emailOrganisateur]);
+
+            //on set sur la sortie
+            $sortie->setOrganisateur($organisateur)->setEtat($etatSortie);
+
+
             $entityManager->persist($sortie);
             $entityManager->flush();
             $this->addFlash('succes', 'Sortie crée');
@@ -61,7 +73,7 @@ class SortieController extends AbstractController
         }
 
         return $this->render('sortie/create.html.twig', [
-
+            'sortieForm'=>$sortieForm->createView()
         ]);
     }
 

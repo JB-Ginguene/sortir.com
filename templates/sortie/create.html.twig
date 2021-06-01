@@ -1,11 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-
-{% endblock %}
+{% form_theme sortieForm 'bootstrap_4_layout.html.twig' %}
 
 {% block title %}
 
 {% endblock %}
 
-{{ form() }}
+{% block body %}
+    <div class="col-12 col-lg-4">
+        {{ form_start(sortieForm) }}
+
+        {{ form_widget(sortieForm) }}
+            <button class="btn btn-secondary">Créer</button>
+        {{ form_end(sortieForm) }}
+    </div>
+{% endblock %}
+
+
+
