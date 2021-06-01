@@ -56,11 +56,10 @@ class SortieController extends AbstractController
         $sortieForm->handleRequest($request);
 
         if ($sortieForm->isSubmitted() && $sortieForm->isValid()){
-            //On set l'état de la sortie à "Créée"
-            $etatSortie = $entityManager->getRepository(Etat::class)->findOneBy(['libelle'=>'Créee']);
+            //On set l'état de la sortie à "Ouvert"
+            $etatSortie = $entityManager->getRepository(Etat::class)->findOneBy(['libelle'=>'Ouverte']);
             //On récupère l'utilisateur en session
             $organisateur = $this->getUser();
-            //$organisateurSortie = $entityManager->getRepository(Participant::class)->findOneBy(['email'=>$emailOrganisateur]);
 
             //on set sur la sortie
             $sortie->setOrganisateur($organisateur)->setEtat($etatSortie);
@@ -68,7 +67,7 @@ class SortieController extends AbstractController
 
             $entityManager->persist($sortie);
             $entityManager->flush();
-            $this->addFlash('succes', 'Sortie crée');
+            $this->addFlash('success', 'Sortie créée');
             return $this->redirectToRoute('sortie_detail', ['id' => $sortie->getId()]);
         }
 
