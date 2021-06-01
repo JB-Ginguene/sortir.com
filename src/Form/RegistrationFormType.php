@@ -41,6 +41,7 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('nom')
             ->add('prenom')
+            ->add('pseudo')
             ->add('telephone')
             ->add('site',EntityType::class,[
                 'class'=>Site::class,

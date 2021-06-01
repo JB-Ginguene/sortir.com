@@ -85,6 +85,7 @@ class AppFixtures extends Fixture
             $sites = $manager->getRepository(Site::class)->findAll();
             $participant = new Participant();
             $participant->setNom($generator->word())
+                ->setPseudo($generator->word())
                 ->setPrenom($generator->word())
                 ->setTelephone($generator->phoneNumber)
                 ->setEmail($generator->email)

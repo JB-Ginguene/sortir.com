@@ -69,6 +69,11 @@ class Participant implements UserInterface
      */
     private $site;
 
+    /**
+     * @ORM\Column(type="string", length=20, unique=true)
+     */
+    private $pseudo;
+
     public function __construct()
     {
         $this->sortiesOrganisee = new ArrayCollection();
@@ -259,6 +264,18 @@ class Participant implements UserInterface
     public function setSite(?Site $site): self
     {
         $this->site = $site;
+
+        return $this;
+    }
+
+    public function getPseudo(): ?string
+    {
+        return $this->pseudo;
+    }
+
+    public function setPseudo(string $pseudo): self
+    {
+        $this->pseudo = $pseudo;
 
         return $this;
     }
