@@ -3,12 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Etat;
+use App\Entity\Lieu;
 use App\Entity\Participant;
+use App\Entity\Site;
 use App\Entity\Sortie;
 use App\Form\SortieType;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -74,6 +77,25 @@ class SortieController extends AbstractController
         return $this->render('sortie/create.html.twig', [
             'sortieForm'=>$sortieForm->createView()
         ]);
+    }
+
+    /**
+     * @Route("/sortie/ajax-site", name="sortie_ajax_site")
+     */
+    public function infosSite(Request $request, EntityManagerInterface $entityManager): Response
+    {
+       $data = json_decode($request->getContent());
+
+       $lieu = $data->lieu;
+
+       $lieu = $entityManager->getRepository(Lieu::class)->findOneBy(['nom'=>$lieu]);
+
+       return new JsonResponse(['rue'=>$lieu->getRue(),
+                                'latitude'=>$lieu->getLatitude(),
+                                'longitude'=>$lieu->getLongitude(),
+                                'code_postal'=>$lieu->getVille()->getCodePostal()]);
+
+
     }
 
 }
