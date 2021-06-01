@@ -20,7 +20,7 @@ class ResearchFilterType extends AbstractType
             ->add('site', EntityType::class, [
                 'required' => false,
                 'class' => Site::class,
-                'choice_label' => 'nom'
+                'choice_label' => 'nom',
             ])
             ->add('nomSortie', TextType::class, [
                 'required' => false,

@@ -29,10 +29,10 @@ class SortieController extends AbstractController
 
 
         if ($researchForm->isSubmitted() && $researchForm->isValid()) {
-            $properties = $sortieRepository->findByPersonnalResearch($research);
+            $sorties = $sortieRepository->findByPersonnalResearch($research);
             return $this->render('sortie/home.html.twig', [
                 'researchForm' => $researchForm->createView(),
-                'properties' => $properties
+                'sorties' => $sorties
             ]);
         } else {
             $sorties = $sortieRepository->findAll();
