@@ -14,12 +14,10 @@ class SortieController extends AbstractController
      */
     public function home(SortieRepository $sortieRepository): Response
     {
-$sorties = $sortieRepository->findAll();
-
-
-
+        $sorties = $sortieRepository->findAll();
+        $userInSession = $this->getUser();
         return $this->render('sortie/home.html.twig', [
-            'sorties' => $sorties,
+            'sorties' => $sorties
         ]);
     }
 
