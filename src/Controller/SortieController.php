@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Etat;
+use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Form\ResearchFilterType;
 use App\Form\SortieType;
@@ -70,15 +72,26 @@ class SortieController extends AbstractController
 
         $sortieForm->handleRequest($request);
 
-        if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
+        if ($sortieForm->isSubmitted() && $sortieForm->isValid()){
+            //On set l'état de la sortie à "Ouvert"
+            $etatSortie = $entityManager->getRepository(Etat::class)->findOneBy(['libelle'=>'Ouverte']);
+            //On récupère l'utilisateur en session
+            /**
+             * @var Participant $organisateur
+            */
+            $organisateur = $this->getUser();
+
+            //on set sur la sortie
+            $sortie->setOrganisateur($organisateur)->setEtat($etatSortie);
+
             $entityManager->persist($sortie);
             $entityManager->flush();
-            $this->addFlash('succes', 'Sortie crée');
+            $this->addFlash('success', 'Sortie créée');
             return $this->redirectToRoute('sortie_detail', ['id' => $sortie->getId()]);
         }
 
         return $this->render('sortie/create.html.twig', [
-
+            'sortieForm'=>$sortieForm->createView()
         ]);
     }
 

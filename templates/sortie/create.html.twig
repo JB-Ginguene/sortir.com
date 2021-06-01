@@ -1,11 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-
-{% endblock %}
+{% form_theme sortieForm 'bootstrap_4_layout.html.twig' %}
 
 {% block title %}
 
 {% endblock %}
 
-{{ form() }}
+{% block body %}
+<div class="container">
+    {{ form_start(sortieForm) }}
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            {{ form_row(sortieForm.nom) }}
+            {{ form_row(sortieForm.dateHeureDebut) }}
+            {{ form_row(sortieForm.dateLimiteInscription) }}
+            {{ form_row(sortieForm.nbInscriptionsMax) }}
+            {{ form_row(sortieForm.duree) }}
+            {{ form_row(sortieForm.infosSortie) }}
+        </div>
+        <div class="col-12 col-lg-6">
+            {{ form_row(sortieForm.site) }}
+            {{ form_row(sortieForm.lieu) }}
+            <a href="#"> Ajouter un lieu </a>
+        </div>
+    </div>
+    <button class="btn btn-secondary">Créer</button>
+    {{ form_end(sortieForm) }}
+</div>
+{% endblock %}
+
+
+
