@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Participant;
+use App\Entity\Site;
 use App\Form\RegistrationFormType;
+use App\Repository\SiteRepository;
 use App\Security\AppAuthenticator;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,11 +20,20 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/register", name="app_register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, AppAuthenticator $authenticator): Response
+    public function register(Request $request,
+                             UserPasswordEncoderInterface $passwordEncoder,
+                             GuardAuthenticatorHandler $guardHandler,
+                             AppAuthenticator $authenticator,
+                             EntityManagerInterface $entityManager,
+                             SiteRepository $siteRepository): Response
     {
         $user = new Participant();
         $form = $this->createForm(RegistrationFormType::class, $user);
+
         $form->handleRequest($request);
+
+        //TODO DEFINIR ROLE
+        $user->setRoles(["ROLE_USER"]);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
