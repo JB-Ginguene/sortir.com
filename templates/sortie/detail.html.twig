@@ -2,11 +2,50 @@
 
 {% block body %}
     <h1>Détail de la sortie</h1>
-    <div class="container col-lg-8 col-md-8 col-sm-10 col-xs-12 bg-light mt-4 mb-2 pt-2 pb-2 align-self-center">
+    <div class="container col-lg-10 col-md-20 col-sm-10 col-xs-12 bg-light mt-4 mb-2 pt-2 pb-2 align-self-center">
         <div class="d-flex justify-content-between">
-
-            {{ sortie.nom }}
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <p>Nom de la sortie : {{ sortie.nom }}</p>
+                <p>Date et heure de la sortie : {{ sortie.dateHeureDebut|date("m/d/Y H:i") }}</p>
+                <p>Date limite d'inscription : {{ sortie.dateLimiteInscription|date("m/d/Y") }}</p>
+                <p>Nombre de particpants : {{ sortie.participants|length }}/{{ sortie.nbInscriptionsMax }}</p>
+                <p>Durée : {{ sortie.duree }}</p>
+                <p>Description et infos : {{ sortie.infosSortie }}</p>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <p>Ville organisatrice : {{ sortie.site.nom }}</p>
+                <p>Lieu : {{ sortie.lieu.nom }}</p>
+                <p>Rue : {{ sortie.lieu.rue }}</p>
+                <p>Code postal : {{ sortie.lieu.ville.codePostal }}</p>
+                <p>Latitude : {{ sortie.lieu.latitude }}</p>
+                <p>Longitude : {{ sortie.lieu.longitude }}</p>
+            </div>
         </div>
+    </div>
+
+    <h1>Détail de la sortie</h1>
+
+    <div class="container col-lg-10 col-md-20 col-sm-10 col-xs-12 d-flex justify-content-center container">
+        <table class="table">
+            <thead>
+            <tr>
+                {# TODO Ajouter pseudo et non prenom #}
+                <th scope="col">Prenom</th>
+                <th scope="col">Nom</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for participant in sortie.participants %}
+                <tr>
+                    <th scope="row">{{ participant.prenom }}</th>
+                    <td>{{ participant.nom }}</td>
+
+                </tr>
+            {% else %}
+                <div>Pas de partipants pour le moment</div>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
 {% endblock %}
 
