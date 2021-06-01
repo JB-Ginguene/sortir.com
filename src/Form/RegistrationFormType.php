@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Participant;
+use App\Entity\Site;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -40,13 +42,9 @@ class RegistrationFormType extends AbstractType
             ->add('nom')
             ->add('prenom')
             ->add('telephone')
-            ->add('site',ChoiceType::class,[
-                'choices'=> [
-                    'CHARTRES DE BRETAGNE'=>'CHARTES DE BRETAGNE',
-                    'SAINT-HERBLAIN'      => 'SAINT-HERBLAIN',
-                    'QUIMPER'             => 'QUIMPER'
-                ],
-                'multiple' =>false
+            ->add('site',EntityType::class,[
+                'class'=>Site::class,
+                'choice_label'=>'nom'
             ])
         ;
     }

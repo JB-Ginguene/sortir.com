@@ -36,11 +36,6 @@ class RegistrationController extends AbstractController
         $user->setRoles(["ROLE_USER"]);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //Récupération du site et injection dans le user
-            $siteForm = $form->get('site')->getData();
-            $site = $siteRepository->findOneBy(['nom'=> $siteForm]);
-            $user->setSite($site);
-
             // encode the plain password
             $user->setPassword(
                 $passwordEncoder->encodePassword(
