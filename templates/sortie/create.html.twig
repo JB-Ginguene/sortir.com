@@ -17,10 +17,12 @@
             {{ form_row(sortieForm.nbInscriptionsMax) }}
             {{ form_row(sortieForm.duree) }}
             {{ form_row(sortieForm.infosSortie) }}
-            <div class="row col-4 align-self">
-            {{ form_row(sortieForm.enregistrer) }}
-            {{ form_row(sortieForm.publier) }}
-            <a href="{{ path('sortie_home') }}" class="white-link btn btn-secondary"> Retour </a>
+            <div class="row col-8">
+                {{ form_row(sortieForm.enregistrer) }}
+                {{ form_row(sortieForm.publier) }}
+                <div class="form-group">
+                    <a href="{{ path('sortie_home') }}" class="white-link btn btn-secondary"> Retour </a>
+                </div>
             </div>
         </div>
         <div class="col-12 col-lg-6">

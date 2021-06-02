@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class ProfileController extends AbstractController
 {
@@ -19,7 +20,8 @@ class ProfileController extends AbstractController
     public function edit($id,
                          ParticipantRepository $participantRepository,
                          Request $request,
-                         EntityManagerInterface $entityManager): Response
+                         EntityManagerInterface $entityManager,
+                         UserPasswordEncoderInterface $passwordEncoder): Response
     {
 
         $profile = $participantRepository->find($id);
@@ -30,11 +32,18 @@ class ProfileController extends AbstractController
         $profileForm->handleRequest($request);
 
         if ($profileForm->isSubmitted() && $profileForm->isValid()) {
+            $profile->setPassword(
+                $passwordEncoder->encodePassword(
+                    $profile,
+                    $profileForm->get('password')->getData()
+                )
+            );
+
             $entityManager->persist($profile);
             $entityManager->flush();
 
             $this->addFlash('success', 'profil mis à jour');
-            return $this->redirectToRoute('main_team');
+            return $this->redirectToRoute('sortie_home');
         }
 
         return $this->render('profile/edit.html.twig', [

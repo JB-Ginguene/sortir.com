@@ -78,10 +78,10 @@ class SortieController extends AbstractController
         if ($sortieForm->isSubmitted() && $sortieForm->isValid()){
 
             if ($sortieForm->get('enregistrer')->isClicked()){
-                //On set l'état de la sortie à "créé"
+                //l'état de sortie est juste crée
                 $etatSortie = $entityManager->getRepository(Etat::class)->findOneBy(['libelle'=>'Créée']);
             }else{
-                //On set l'état de la sortie à "Ouvert"
+                //l'état de sortie est juste publiée
                 $etatSortie = $entityManager->getRepository(Etat::class)->findOneBy(['libelle'=>'Ouverte']);
             }
 
@@ -91,7 +91,7 @@ class SortieController extends AbstractController
             */
             $organisateur = $this->getUser();
 
-            //on set sur la sortie
+            //on set sur la sortie l'organisateur ainsi que l'état
             $sortie->setOrganisateur($organisateur)->setEtat($etatSortie);
 
             $entityManager->persist($sortie);
@@ -126,6 +126,11 @@ class SortieController extends AbstractController
         $sortieForm->handleRequest($request);
 
         if ($sortieForm->isSubmitted() && $sortieForm->isValid()){
+
+            if ($sortieForm->get('publier')->isClicked()){
+                $etatSortie = $entityManager->getRepository(Etat::class)->findOneBy(['libelle'=>'Ouverte']);
+                $sortie->setEtat($etatSortie);
+            }
 
             $entityManager->persist($sortie);
             $entityManager->flush();

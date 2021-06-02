@@ -1,5 +1,11 @@
+button{
+    margin-right: 1em;
+}
 .white-link{
     text-decoration: none;
     color: white;
     outline: none;
+}
+.hidden-div{
+    display: none;
 }

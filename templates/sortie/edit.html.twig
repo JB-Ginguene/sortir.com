@@ -15,12 +15,18 @@
                 {{ form_row(sortieForm.nbInscriptionsMax) }}
                 {{ form_row(sortieForm.duree) }}
                 {{ form_row(sortieForm.infosSortie) }}
-                <div>
+                <div class="row col-12 col-lg-8">
                     {{ form_row(sortieForm.enregistrer) }}
-                    {% if sortie.etat.libelle != 'Ouverte' %}
+                    {% if sortie.etat.libelle == 'Ouverte'  %}
+                        <div class="hidden-div">
+                            {{ form_row(sortieForm.publier) }}
+                        </div>
+                    {% else %}
                         {{ form_row(sortieForm.publier) }}
                     {% endif %}
+                    <div class="form-group">
                     <a href="{{ path('sortie_home') }}" class="white-link btn btn-secondary"> Retour </a>
+                    </div>
                 </div>
             </div>
             <div class="col-12 col-lg-6">
