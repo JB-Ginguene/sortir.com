@@ -99,6 +99,36 @@ class SortieController extends AbstractController
     }
 
     /**
+     * @Route("/sortie/edit/{id}", name="sortie_edit")
+     */
+    public
+    function edit($id,Request $request, EntityManagerInterface $entityManager): Response
+    {
+
+        $sortie = $entityManager->getRepository(Sortie::class)->find($id);
+
+        //pour limiter l'accès à l'organisateur de la sortie
+        if ($this->getUser() != $sortie->getOrganisateur() ){
+            return $this->redirectToRoute('sortie_home');
+        }
+
+        $sortieForm = $this->createForm(SortieType::class, $sortie);
+
+        $sortieForm->handleRequest($request);
+
+        if ($sortieForm->isSubmitted() && $sortieForm->isValid()){
+
+            $entityManager->persist($sortie);
+            $entityManager->flush();
+            $this->addFlash('success', 'Sortie éditée');
+            return $this->redirectToRoute('sortie_detail', ['id' => $sortie->getId()]);
+        }
+        return $this->render('sortie/edit.html.twig', [
+            'sortieForm'=>$sortieForm->createView()
+        ]);
+    }
+
+    /**
      * @Route("/sortie/ajax-site", name="sortie_ajax_site")
      */
     public function infosSite(Request $request, EntityManagerInterface $entityManager): Response

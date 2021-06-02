@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% form_theme sortieForm 'bootstrap_4_layout.html.twig' %}
+{% block body %}
+<div class="col-12 col-lg-4">
+    {{ form_start(sortieForm) }}
+    {{ form_widget(sortieForm) }}
+    <button class="btn btn-secondary" type="submit">Modifier</button>
+    {{ form_end(sortieForm) }}
+</div>
+
+    {% endblock %}
+
+    {% block title %}
+
+    {% endblock %}
+
