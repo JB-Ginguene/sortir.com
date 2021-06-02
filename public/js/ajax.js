@@ -3,16 +3,17 @@ window.onload = init;
 
 function init(){
     let select = document.getElementById('sortie_lieu');
-    let generer = document.getElementById('generer_adresse')
+    let genererButton = document.getElementById('generer_adresse')
     let lieu_field = select.options[select.selectedIndex].text;
 
-    generer.addEventListener('click',function (){
+    genererButton.addEventListener('click',function (){
         //pour actualiser l'élement du select
         lieu_field = select.options[select.selectedIndex].text;
-        //On prepare un bojet qui porte les infos
+        //On prepare un objet qui porte les infos
         let data = {'lieu' : lieu_field};
 
         fetch("ajax-site", {method: 'POST', body: JSON.stringify(data)})
+            //promesse : le contenu du data dans le dernier then
             .then(function (response){
                 return response.json();
             }).then(function (data) {
