@@ -3,9 +3,10 @@ window.onload = init;
 
 function init() {
     console.log(window.location.pathname);
+    console.log(window.location.href)
 
     // CREATION SORTIE
-    if (window.location.pathname === '/sortir.com/public/sortie/create') {
+    if (window.location.href === 'http://localhost/eni/Sortir/sortir.com/public/sortie/create#') {
         let select = document.getElementById('sortie_lieu');
         let genererButton = document.getElementById('generer_adresse')
         let lieu_field = select.options[select.selectedIndex].text;
@@ -28,10 +29,10 @@ function init() {
                 document.getElementById('ville').innerHTML = "Ville : " + data.ville;
             });
         })
-    //}
+    }
 
     // INSCRIPTION SORTIE (page d'accueil)
-    if (window.location.pathname === '/sortir.com/public/') {
+    if (window.location.href === 'http://localhost/eni/Sortir/sortir.com/public/') {
         let inscriptionButtons = Array.from(document.getElementsByClassName('sortie_inscription'));
         console.log(inscriptionButtons);
 
@@ -53,4 +54,6 @@ function init() {
             });
         });
     }
-}}
+
+}
+
