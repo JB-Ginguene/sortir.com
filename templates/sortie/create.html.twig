@@ -17,7 +17,13 @@
             {{ form_row(sortieForm.nbInscriptionsMax) }}
             {{ form_row(sortieForm.duree) }}
             {{ form_row(sortieForm.infosSortie) }}
-            <button class="btn btn-secondary">Créer</button>
+            <div class="row col-8">
+                {{ form_row(sortieForm.enregistrer) }}
+                {{ form_row(sortieForm.publier) }}
+                <div class="form-group">
+                    <a href="{{ path('sortie_home') }}" class="white-link btn btn-secondary"> Retour </a>
+                </div>
+            </div>
         </div>
         <div class="col-12 col-lg-6">
             {{ form_row(sortieForm.site) }}
@@ -25,6 +31,7 @@
             <a href="#" id="generer_adresse">Générer l'adresse</a>
             <div class="card">
                 <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted" id="ville"></h6>
                     <h6 class="card-subtitle mb-2 text-muted" id="rue"></h6>
                     <h6 class="card-subtitle mb-2 text-muted" id="code_postal"></h6>
                     <h6 class="card-subtitle mb-2 text-muted" id="latitude"></h6>

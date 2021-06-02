@@ -1,16 +1,52 @@
 {% extends 'base.html.twig' %}
 {% form_theme sortieForm 'bootstrap_4_layout.html.twig' %}
-{% block body %}
-<div class="col-12 col-lg-4">
-    {{ form_start(sortieForm) }}
-    {{ form_widget(sortieForm) }}
-    <button class="btn btn-secondary" type="submit">Modifier</button>
-    {{ form_end(sortieForm) }}
-</div>
-
-    {% endblock %}
 
     {% block title %}
 
     {% endblock %}
+{% block body %}
+    <div class="container">
+        {{ form_start(sortieForm) }}
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                {{ form_row(sortieForm.nom) }}
+                {{ form_row(sortieForm.dateHeureDebut) }}
+                {{ form_row(sortieForm.dateLimiteInscription) }}
+                {{ form_row(sortieForm.nbInscriptionsMax) }}
+                {{ form_row(sortieForm.duree) }}
+                {{ form_row(sortieForm.infosSortie) }}
+                <div class="row col-12 col-lg-8">
+                    {{ form_row(sortieForm.enregistrer) }}
+                    {% if sortie.etat.libelle == 'Ouverte'  %}
+                        <div class="hidden-div">
+                            {{ form_row(sortieForm.publier) }}
+                        </div>
+                    {% else %}
+                        {{ form_row(sortieForm.publier) }}
+                    {% endif %}
+                    <div class="form-group">
+                    <a href="{{ path('sortie_home') }}" class="white-link btn btn-secondary"> Retour </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6">
+                {{ form_row(sortieForm.site) }}
+                {{ form_row(sortieForm.lieu) }}
+                <a href="#" id="generer_adresse">Générer l'adresse</a>
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted" id="ville"></h6>
+                        <h6 class="card-subtitle mb-2 text-muted" id="rue"></h6>
+                        <h6 class="card-subtitle mb-2 text-muted" id="code_postal"></h6>
+                        <h6 class="card-subtitle mb-2 text-muted" id="latitude"></h6>
+                        <h6 class="card-subtitle mb-2 text-muted" id="longitude"></h6>
+                    </div>
+                </div>
+                <a href="#"> Ajouter un lieu </a>
+            </div>
+            {{ form_end(sortieForm) }}
+        </div>
+    </div>
+{% endblock %}
+
 

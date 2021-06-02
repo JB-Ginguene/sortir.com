@@ -21,6 +21,7 @@ function init(){
             document.getElementById('latitude').innerHTML = "Latitude : " + data.latitude;
             document.getElementById('longitude').innerHTML = "Longitude : " + data.longitude;
             document.getElementById('code_postal').innerHTML = "Code postal : " + data.code_postal;
+            document.getElementById('ville').innerHTML = "Ville : " + data.ville;
         });
     })
 }
