@@ -7,10 +7,11 @@ function init(){
     let lieu_field = select.options[select.selectedIndex].text;
 
     generer.addEventListener('click',function (){
-        //On prepare un bojet qui porte les infos
-        let data = {'lieu' : lieu_field};
         //pour actualiser l'élement du select
         lieu_field = select.options[select.selectedIndex].text;
+        //On prepare un bojet qui porte les infos
+        let data = {'lieu' : lieu_field};
+
         fetch("ajax-site", {method: 'POST', body: JSON.stringify(data)})
             .then(function (response){
                 return response.json();
