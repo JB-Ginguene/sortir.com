@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Form\ProfileFormType;
 use App\Repository\ParticipantRepository;
+use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,14 +47,17 @@ class ProfileController extends AbstractController
     /**
      * @Route("/profile/detail/{id}", name="profile_detail")
      */
-    public function detail($id, ParticipantRepository $participantRepository): Response
+    public function detail($id, ParticipantRepository $participantRepository, SortieRepository $sortieRepository): Response
     {
         $profile = $participantRepository->find($id);
+        $sortiesOrganisees = $sortieRepository->findByIdParticipant($id);
+
         if (!$profile) {
             throw $this->createNotFoundException("Désolé, ce profil n'existe pas");
         }
         return $this->render('profile/detail.html.twig', [
             'profile' => $profile,
+            'sortiesOrganisees'=>$sortiesOrganisees
         ]);
     }
 
