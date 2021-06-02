@@ -104,13 +104,19 @@ class SortieController extends AbstractController
     public
     function edit($id,Request $request, EntityManagerInterface $entityManager): Response
     {
+
         $sortie = $entityManager->getRepository(Sortie::class)->find($id);
+
+        //pour limiter l'accès à l'organisateur de la sortie
+        if ($this->getUser() != $sortie->getOrganisateur() ){
+            return $this->redirectToRoute('sortie_home');
+        }
+
         $sortieForm = $this->createForm(SortieType::class, $sortie);
 
         $sortieForm->handleRequest($request);
 
         if ($sortieForm->isSubmitted() && $sortieForm->isValid()){
-
 
             $entityManager->persist($sortie);
             $entityManager->flush();
