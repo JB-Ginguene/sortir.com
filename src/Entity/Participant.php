@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ParticipantRepository::class)
@@ -24,6 +25,9 @@ class Participant implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank(message="Veuillez renseigner votre email ")
+     * @Assert\Email(message="Veuillez renseigner un email valide")
+     *
      */
     private $email;
 
@@ -35,6 +39,11 @@ class Participant implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\Length(min=6,
+     *                max=15,
+     *                minMessage="Le mot de passe doit contenir au minimum 6 caractères",
+     *                maxMessage="Le mot de passe doit contenir au maximum 20 caractères")
+     *
      */
     private $password;
 
