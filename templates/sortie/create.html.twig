@@ -7,43 +7,57 @@
 {% endblock %}
 
 {% block body %}
-<div class="container">
-    {{ form_start(sortieForm) }}
-    <div class="row">
-        <div class="col-12 col-lg-6">
-            {{ form_row(sortieForm.nom) }}
-            {{ form_row(sortieForm.dateHeureDebut) }}
-            {{ form_row(sortieForm.dateLimiteInscription) }}
-            {{ form_row(sortieForm.nbInscriptionsMax) }}
-            {{ form_row(sortieForm.duree) }}
-            {{ form_row(sortieForm.infosSortie) }}
-            <div class="row col-8">
-                {{ form_row(sortieForm.enregistrer) }}
-                {{ form_row(sortieForm.publier) }}
-                <div class="form-group">
-                    <a href="{{ path('sortie_home') }}" class="white-link btn btn-secondary"> Retour </a>
+    <div class="container">
+        {{ form_start(sortieForm) }}
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                {{ form_row(sortieForm.nom) }}
+                {{ form_row(sortieForm.dateHeureDebut) }}
+                {{ form_row(sortieForm.dateLimiteInscription) }}
+                {{ form_row(sortieForm.nbInscriptionsMax) }}
+                {{ form_row(sortieForm.duree) }}
+                {{ form_row(sortieForm.infosSortie) }}
+                <div class="row col-12 col-lg-8">
+                    {{ form_row(sortieForm.enregistrer) }}
+                    {{ form_row(sortieForm.publier) }}
+                    <div class="form-group">
+                        <a href="{{ path('sortie_home') }}" class="white-link btn btn-secondary"> Retour </a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-12 col-lg-6">
-            {{ form_row(sortieForm.site) }}
-            {{ form_row(sortieForm.lieu) }}
-            <a href="#" id="generer_adresse">Générer l'adresse</a>
-            <div class="card">
-                <div class="card-body">
-                    <h6 class="card-subtitle mb-2 text-muted" id="ville"></h6>
-                    <h6 class="card-subtitle mb-2 text-muted" id="rue"></h6>
-                    <h6 class="card-subtitle mb-2 text-muted" id="code_postal"></h6>
-                    <h6 class="card-subtitle mb-2 text-muted" id="latitude"></h6>
-                    <h6 class="card-subtitle mb-2 text-muted" id="longitude"></h6>
+            <div class="col-12 col-lg-6">
+                {{ form_row(sortieForm.site) }}
+
+                <div class="row">
+                        <div class="col-10">
+                        {{ form_row(sortieForm.lieu) }}
+                        </div>
+                    <div class="col-2">
+                        <a href="{{path('lieu_create')}}" class="form-group">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus-circle svg" viewBox="0 0 16 16" >
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                            </svg>
+                        </a>
+                    </div>
                 </div>
+
+                <a href="#" id="generer_adresse">Générer l'adresse</a>
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted" id="ville"></h6>
+                        <h6 class="card-subtitle mb-2 text-muted" id="rue"></h6>
+                        <h6 class="card-subtitle mb-2 text-muted" id="code_postal"></h6>
+                        <h6 class="card-subtitle mb-2 text-muted" id="latitude"></h6>
+                        <h6 class="card-subtitle mb-2 text-muted" id="longitude"></h6>
+                    </div>
+                </div>
+
             </div>
-            <a href="#"> Ajouter un lieu </a>
+            {{ form_end(sortieForm) }}
         </div>
-        {{ form_end(sortieForm) }}
     </div>
-</div>
-    {% endblock %}
+{% endblock %}
 
 
 

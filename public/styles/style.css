@@ -9,3 +9,17 @@ button{
 .hidden-div{
     display: none;
 }
+
+.flash-success{
+    margin: 0 auto;
+    width: 30vw;
+    text-align: center;
+    background-color: #2abb9b ;
+    font-size: larger;
+}
+
+.svg{
+    position: absolute;
+    left: 30%;
+    bottom: 25%;
+}

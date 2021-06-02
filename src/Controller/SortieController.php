@@ -116,6 +116,7 @@ class SortieController extends AbstractController
 
         $sortie = $entityManager->getRepository(Sortie::class)->find($id);
 
+
         //pour limiter l'accès à l'organisateur de la sortie
         if ($this->getUser() != $sortie->getOrganisateur()) {
             return $this->redirectToRoute('sortie_home');
