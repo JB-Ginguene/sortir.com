@@ -76,8 +76,15 @@ class SortieController extends AbstractController
         $sortieForm->handleRequest($request);
 
         if ($sortieForm->isSubmitted() && $sortieForm->isValid()){
-            //On set l'état de la sortie à "Ouvert"
-            $etatSortie = $entityManager->getRepository(Etat::class)->findOneBy(['libelle'=>'Ouverte']);
+
+            if ($sortieForm->get('enregistrer')->isClicked()){
+                //On set l'état de la sortie à "créé"
+                $etatSortie = $entityManager->getRepository(Etat::class)->findOneBy(['libelle'=>'Créée']);
+            }else{
+                //On set l'état de la sortie à "Ouvert"
+                $etatSortie = $entityManager->getRepository(Etat::class)->findOneBy(['libelle'=>'Ouverte']);
+            }
+
             //On récupère l'utilisateur en session
             /**
              * @var Participant $organisateur
@@ -94,9 +101,11 @@ class SortieController extends AbstractController
         }
 
         return $this->render('sortie/create.html.twig', [
-            'sortieForm'=>$sortieForm->createView()
+            'sortieForm'=>$sortieForm->createView(),
+            'sortie'=>$sortie
         ]);
     }
+
 
     /**
      * @Route("/sortie/edit/{id}", name="sortie_edit")
@@ -124,14 +133,15 @@ class SortieController extends AbstractController
             return $this->redirectToRoute('sortie_detail', ['id' => $sortie->getId()]);
         }
         return $this->render('sortie/edit.html.twig', [
-            'sortieForm'=>$sortieForm->createView()
+            'sortieForm'=>$sortieForm->createView(),
+            'sortie'=>$sortie
         ]);
     }
 
     /**
      * @Route("/sortie/ajax-site", name="sortie_ajax_site")
      */
-    public function infosSite(Request $request, EntityManagerInterface $entityManager): Response
+    public function infosLieu(Request $request, EntityManagerInterface $entityManager): Response
     {
        $data = json_decode($request->getContent());
 
@@ -142,7 +152,8 @@ class SortieController extends AbstractController
        return new JsonResponse(['rue'=>$lieu->getRue(),
                                 'latitude'=>$lieu->getLatitude(),
                                 'longitude'=>$lieu->getLongitude(),
-                                'code_postal'=>$lieu->getVille()->getCodePostal()]);
+                                'code_postal'=>$lieu->getVille()->getCodePostal(),
+                                'ville'=>$lieu->getVille()->getNom()]);
 
 
     }
