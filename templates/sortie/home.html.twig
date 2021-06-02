@@ -97,9 +97,9 @@
                            title="Détails de la sortie">Détails </a>
                         {% if app.user %}
                             {% if app.user.id == sortie.organisateur.id %}
-                                {# <a href="{{ path('sortie_edit', {'id' : sortie.id}) }}" title="Modifier la sortie"> #}
+                                <a href="{{ path('sortie_edit', {'id' : sortie.id}) }}" title="Modifier la sortie">
                                 Modifier
-                                {# </a> #}
+                                </a>
                             {% endif %}
                         {% endif %}
                     </td>
