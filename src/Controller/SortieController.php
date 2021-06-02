@@ -165,16 +165,17 @@ class SortieController extends AbstractController
     }
 
     /**
-     * @Route("/sortie/ajax-sortie-inscription", name="sortie_ajax_sortie_inscription")
+     * @Route("/ajax-sortie-inscription", name="ajax_sortie_inscription")
      */
     public function inscriptionSortie(Request $request, EntityManagerInterface $entityManager): Response
     {
+
         $data = json_decode($request->getContent());
 
         $userid = $data->userid;
         $sortieid = $data->sortieid;
 
-        dd($data);
+
         $sortie = $entityManager->getRepository(Sortie::class)->find($sortieid);
         $user = $entityManager->getRepository(Participant::class)->find($userid);
         $sortie->addParticipant($user);

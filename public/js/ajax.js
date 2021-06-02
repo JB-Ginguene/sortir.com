@@ -28,7 +28,7 @@ function init() {
                 document.getElementById('ville').innerHTML = "Ville : " + data.ville;
             });
         })
-    }
+    //}
 
     // INSCRIPTION SORTIE (page d'accueil)
     if (window.location.pathname === '/sortir.com/public/') {
@@ -47,9 +47,10 @@ function init() {
                     .then(function (response) {
                         return response.json();
                     }).then(function (data) {
-                        sortieidstrg = toString(data.sortieid);
-                    document.querySelectorAll("[data-sortieid='" + data.sortieid + "']").innerHTML = "X";
+                    console.log("t'y est presque !!!")
+                    //document.querySelectorAll("[data-sortieid='" + data.sortieid + "']").innerHTML = "X";
                 });
             });
         });
-    }}
+    }
+}}
