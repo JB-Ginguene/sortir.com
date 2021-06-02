@@ -77,13 +77,22 @@
                         <td></td>
                     {% endif %}
 
+                    {% if app.user %}
+                        {% if app.user.id == sortie.organisateur.id %}
+                            <td>
+                                <a href="{{ path('app_profile', {'id' : sortie.organisateur.id}) }}" title="Détails de l'organisateur'">
+                                    {{ sortie.organisateur.pseudo }}
+                                </a>
+                            </td>
+                    {% else %}
+                        <td>
+                            <a href="{{ path('profile_detail', {'id' : sortie.organisateur.id}) }}" title="Détails de l'organisateur'">
+                            {{ sortie.organisateur.pseudo }}
+                            </a>
+                        </td>
+                        {% endif %}
+                    {% endif %}
 
-                    <td>
-                        {# TODO Ajouter lien vers détail du participant #}
-                        {# <a href="{{ path('participant_detail', {'id' : sortie.organisateur.id}) }}" title="Détails de l'organisateur'"> #}
-                        {{ sortie.organisateur.pseudo }}
-                        {# </a> #}
-                    </td>
                     <td><a href="{{ path('sortie_detail', {'id' : sortie.id}) }}"
                            title="Détails de la sortie">Détails </a>
                         {% if app.user %}

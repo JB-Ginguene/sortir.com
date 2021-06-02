@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Détail du profil</h1>
+    <h2>{{ profile.pseudo }}</h2>
+    <div class="container col-lg-10 col-md-20 col-sm-10 col-xs-12 bg-light mt-4 mb-2 pt-2 pb-2 align-self-center">
+        <div class="d-flex justify-content-between">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <p>Prenom : {{ profile.prenom }}</p>
+                <p>Nom : {{ profile.nom }}</p>
+                <p>Téléphone : {{ profile.telephone }}</p>
+                <p>Email : {{ profile.email }}</p>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <p>Prenom : {{ profile.prenom }}</p>
+                <p>Nom : {{ profile.nom }}</p>
+                <p>Téléphone : {{ profile.telephone }}</p>
+                <p>Email : {{ profile.email }}</p>
+            </div>
+        </div>
+    </div>
+
+{#    <h1>Sorties organisées :</h1>#}
+
+{#    <div class="container col-lg-10 col-md-20 col-sm-10 col-xs-12 d-flex justify-content-center container">#}
+{#        <table class="table">#}
+{#            <thead>#}
+{#            <tr>#}
+{#                #}{# TODO Ajouter pseudo et non prenom #}
+{#                <th scope="col">Pseudo</th>#}
+{#                <th scope="col">Nom</th>#}
+{#            </tr>#}
+{#            </thead>#}
+{#            <tbody>#}
+{#            {% for participant in sortie.participants %}#}
+{#                <tr>#}
+{#                    <th scope="row">{{ participant.pseudo }}</th>#}
+{#                    <td>{{ participant.nom }}</td>#}
+
+{#                </tr>#}
+{#            {% else %}#}
+{#                <div>Pas de partipants pour le moment</div>#}
+{#            {% endfor %}#}
+{#            </tbody>#}
+{#        </table>#}
+{#    </div>#}
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+
