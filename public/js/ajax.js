@@ -2,6 +2,7 @@
 window.onload = init;
 
 function init() {
+    /*
     console.log(window.location.pathname);
 
     // CREATION SORTIE
@@ -31,25 +32,24 @@ function init() {
     }
 
     // INSCRIPTION SORTIE (page d'accueil)
-    if (window.location.pathname === '/sortir.com/public/') {
-        let inscriptionButtons = Array.from(document.getElementsByClassName('sortie_inscription'));
-        console.log(inscriptionButtons);
+    if (window.location.pathname === '/sortir.com/public/') { */
+    let inscriptionButtons = Array.from(document.getElementsByClassName('sortie_inscription'));
+    console.log(inscriptionButtons);
 
-        inscriptionButtons.forEach(function (elem, idx) {
-            elem.addEventListener('click', function () {
-                let data = {'sortieid': elem.dataset.sortieid, 'userid': elem.dataset.userid};
-                console.log(data);
-                console.log(data.sortieid)
-                console.log(data.userid)
+    inscriptionButtons.forEach(function (elem, idx) {
+        elem.addEventListener('click', function () {
+            let data = {'sortieid': elem.dataset.sortieid, 'userid': elem.dataset.userid};
+            console.log(data);
+            console.log(data.sortieid)
+            console.log(data.userid)
 
-                fetch("ajax-sortie-inscription", {method: 'POST', body: JSON.stringify(data)})
-                    //promesse : le contenu du data dans le dernier then
-                    .then(function (response) {
-                        return response.json();
-                    }).then(function (data) {
-                        sortieidstrg = toString(data.sortieid);
-                    document.querySelectorAll("[data-sortieid='" + data.sortieid + "']").innerHTML = "X";
-                });
+            fetch("/sortie/ajax-sortie-inscription", {method: 'POST', body: JSON.stringify(data)})
+                //promesse : le contenu du data dans le dernier then
+                .then(function (response) {
+                    return response.json();
+                }).then(function (data) {
+                document.querySelectorAll("[data-sortieid='" + data.sortieid + "']").innerHTML = "X";
             });
         });
-    }}
+    });
+}
