@@ -75,20 +75,20 @@ class SortieController extends AbstractController
 
         $sortieForm->handleRequest($request);
 
-        if ($sortieForm->isSubmitted() && $sortieForm->isValid()){
+        if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
 
-            if ($sortieForm->get('enregistrer')->isClicked()){
+            if ($sortieForm->get('enregistrer')->isClicked()) {
                 //l'état de sortie est juste crée
-                $etatSortie = $entityManager->getRepository(Etat::class)->findOneBy(['libelle'=>'Créée']);
-            }else{
+                $etatSortie = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'Créée']);
+            } else {
                 //l'état de sortie est juste publiée
-                $etatSortie = $entityManager->getRepository(Etat::class)->findOneBy(['libelle'=>'Ouverte']);
+                $etatSortie = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'Ouverte']);
             }
 
             //On récupère l'utilisateur en session
             /**
              * @var Participant $organisateur
-            */
+             */
             $organisateur = $this->getUser();
 
             //on set sur la sortie l'organisateur ainsi que l'état
@@ -101,8 +101,8 @@ class SortieController extends AbstractController
         }
 
         return $this->render('sortie/create.html.twig', [
-            'sortieForm'=>$sortieForm->createView(),
-            'sortie'=>$sortie
+            'sortieForm' => $sortieForm->createView(),
+            'sortie' => $sortie
         ]);
     }
 
@@ -111,14 +111,14 @@ class SortieController extends AbstractController
      * @Route("/sortie/edit/{id}", name="sortie_edit")
      */
     public
-    function edit($id,Request $request, EntityManagerInterface $entityManager): Response
+    function edit($id, Request $request, EntityManagerInterface $entityManager): Response
     {
 
         $sortie = $entityManager->getRepository(Sortie::class)->find($id);
 
 
         //pour limiter l'accès à l'organisateur de la sortie
-        if ($this->getUser() != $sortie->getOrganisateur() ){
+        if ($this->getUser() != $sortie->getOrganisateur()) {
             return $this->redirectToRoute('sortie_home');
         }
 
@@ -126,10 +126,10 @@ class SortieController extends AbstractController
 
         $sortieForm->handleRequest($request);
 
-        if ($sortieForm->isSubmitted() && $sortieForm->isValid()){
+        if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
 
-            if ($sortieForm->get('publier')->isClicked()){
-                $etatSortie = $entityManager->getRepository(Etat::class)->findOneBy(['libelle'=>'Ouverte']);
+            if ($sortieForm->get('publier')->isClicked()) {
+                $etatSortie = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'Ouverte']);
                 $sortie->setEtat($etatSortie);
             }
 
@@ -139,8 +139,8 @@ class SortieController extends AbstractController
             return $this->redirectToRoute('sortie_detail', ['id' => $sortie->getId()]);
         }
         return $this->render('sortie/edit.html.twig', [
-            'sortieForm'=>$sortieForm->createView(),
-            'sortie'=>$sortie
+            'sortieForm' => $sortieForm->createView(),
+            'sortie' => $sortie
         ]);
     }
 
@@ -149,19 +149,36 @@ class SortieController extends AbstractController
      */
     public function infosLieu(Request $request, EntityManagerInterface $entityManager): Response
     {
-       $data = json_decode($request->getContent());
+        $data = json_decode($request->getContent());
 
-       $lieu = $data->lieu;
+        $lieu = $data->lieu;
 
-       $lieu = $entityManager->getRepository(Lieu::class)->findOneBy(['nom'=>$lieu]);
+        $lieu = $entityManager->getRepository(Lieu::class)->findOneBy(['nom' => $lieu]);
 
-       return new JsonResponse(['rue'=>$lieu->getRue(),
-                                'latitude'=>$lieu->getLatitude(),
-                                'longitude'=>$lieu->getLongitude(),
-                                'code_postal'=>$lieu->getVille()->getCodePostal(),
-                                'ville'=>$lieu->getVille()->getNom()]);
+        return new JsonResponse(['rue' => $lieu->getRue(),
+            'latitude' => $lieu->getLatitude(),
+            'longitude' => $lieu->getLongitude(),
+            'code_postal' => $lieu->getVille()->getCodePostal(),
+            'ville' => $lieu->getVille()->getNom()]);
 
 
     }
 
+    /**
+     * @Route("/sortie/ajax-sortie-inscription", name="sortie_ajax_sortie_inscription")
+     */
+    public function inscriptionSortie(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $data = json_decode($request->getContent());
+
+        $userid = $data->userid;
+        $sortieid = $data->sortieid;
+
+        dd($data);
+        $sortie = $entityManager->getRepository(Sortie::class)->find($sortieid);
+        $user = $entityManager->getRepository(Participant::class)->find($userid);
+        $sortie->addParticipant($user);
+
+        return new JsonResponse(['sortie' => $sortie]);
+    }
 }
