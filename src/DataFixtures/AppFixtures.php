@@ -28,103 +28,118 @@ class AppFixtures extends Fixture
         $manager->flush();
 
         // Ville
-        for ($i=0;$i<3;$i++){
+        $villeTab = ['Rennes' => 35000,
+            'Nantes' => 44000,
+            'Quimper' => 29000,
+            'Lyon' => 69000,
+            'Valence' => 26000,
+            'Paris' => 75000,
+            'Le Mans' => 72000
+        ];
 
-            $ville = new Ville();
-
-            switch ($i){
-                case 0 : $ville->setNom("Rennes")->setCodePostal("35000");
-                    break;
-                case 1 : $ville->setNom("Nantes")->setCodePostal("44000");
-                    break;
-                case 2 : $ville->setNom("Quimper")->setCodePostal("29000");
-            }
-
-            $manager->persist($ville);
-            $manager->flush();
+        foreach ($villeTab as $ville => $codePostal) {
+            $villeCree = new Ville();
+            $villeCree->setNom($ville)->setCodePostal($codePostal);
+            $manager->persist($villeCree);
         }
+        $manager->flush();
 
         // Lieu
-        for ($i=0;$i<7;$i++){
+        $lieuTab = [
+            'Ubu' => '1 Rue Saint-Hélier',
+            'Trempolino' => '6 Boulevard Léon Bureau',
+            'Novomax' => '2 Boulevard Dupleix',
+            'Le Transbo' => '3 Boulevard de Stalingrad',
+            'Le Mistral Palace' => '12 Rue Pasteur,',
+            'La Gaitée Lyrique' => '3bis Rue Papin',
+            'Excelsior' => 'Rue de la Raterie'
+        ];
 
-            $repoVilles = $manager->getRepository(Ville::class);
-            $villes = $repoVilles->findAll();
-
-            $lieu = new Lieu();
-
-            $lieu->setVille($generator->randomElement($villes))
-                    ->setNom($generator->word())
-                    ->setRue($generator->streetName)
-                    ->setLatitude($generator->randomFloat())
-                    ->setLongitude($generator->randomFloat());
-
-
-            $manager->persist($lieu);
-            $manager->flush();
+        $repoVilles = $manager->getRepository(Ville::class);
+        $villes = $repoVilles->findAll();
+        $i = 0;
+        foreach ($lieuTab as $nom => $rue) {
+            $lieuCree = new Lieu();
+            $lieuCree->setNom($nom)->setRue($rue)->setVille($villes[$i])->setLatitude($generator->randomFloat())->setLongitude($generator->randomFloat());;
+            $manager->persist($lieuCree);
+            $i++;
         }
+        $manager->flush();
 
         // Site
-        for ($i=0;$i<3;$i++){
-
+        $siteTab = ["CHARTRES DE BRETAGNE", "SAINT-HERBLAIN", "QUIMPER", "NIORT"];
+        foreach ($siteTab as $siteItem) {
             $site = new Site();
-
-            switch ($i){
-                case 0 : $site->setNom("CHARTRES DE BRETAGNE");
-                    break;
-                case 1 : $site->setNom("SAINT-HERBLAIN");
-                    break;
-                case 2 : $site->setNom("QUIMPER");
-            }
-
+            $site->setNom($siteItem);
             $manager->persist($site);
-            $manager->flush();
         }
+        $manager->flush();
 
         //Participant
-        for ($i = 0; $i < 10; $i++) {
-            $sites = $manager->getRepository(Site::class)->findAll();
+        $participantTab = [
+            'Duhamel' => ['Pierrot35', 'Pierre', '0299754085', 'pierre.duhamel@gmail.com', '123456Aa&', 'ROLE_USER'],
+            'Misthrow' => ['Kat212', 'Kathy', '0166559896', 'kat212@mail.com', '123456Aa&', 'ROLE_USER'],
+            'Guillou' => ['Gégé_Guigui', 'Gérard', '0612345678', 'gg@ggmail.com', '123456Aa&', 'ROLE_USER'],
+            'Morvan' => ['Morv666', 'Constance', '0299788956', 'constance.morvan@hotmail.com', '123456Aa&', 'ROLE_USER'],
+            'Costa' => ['MauroCosta', 'Mauro', '0212457889', 'mauro.costa@hotmail.it', '123456Aa&', 'ROLE_USER'],
+            'Teault' => ['Toinou123', 'Antoine', '0611223344', 'toinou@mail.com', '123456Aa&', 'ROLE_USER'],
+            'Galaxy' => ['Guillaume56', 'Guillaume', '0299887744', 'guillaume@mail.com', '123456Aa&', 'ROLE_USER'],
+            'LEBRANCHU' => ['PierreLB', 'Pierre', '0299756633', 'pierre@mail.com', '123456Aa&', 'ROLE_ADMIN'],
+            'ARESU' => ['AntoineAR', 'Antoine', '0623451289', 'antoine@mail.com', '123456Aa&', 'ROLE_ADMIN'],
+            'GINGUENE' => ['JBG', 'Jean-Baptiste', '0279895645', 'jb@mail.com', '123456Aa&', 'ROLE_ADMIN'],
+        ];
+        $sites = $manager->getRepository(Site::class)->findAll();
+        foreach ($participantTab as $nom => $data) {
             $participant = new Participant();
-            $participant->setNom($generator->word())
-                ->setPseudo($generator->word())
-                ->setPrenom($generator->word())
-                ->setTelephone($generator->phoneNumber)
-                ->setEmail($generator->email)
-                ->setPassword($generator->password(7,20))
-                ->setRoles(['ROLE_USER'])
+            $participant->setNom($nom)
+                ->setPseudo($data[0])
+                ->setPrenom($data[1])
+                ->setTelephone($data[2])
+                ->setEmail($data[3])
+                ->setPassword($data[4])
+                ->setRoles([$data[5]])
                 ->setSite($generator->randomElement($sites));
-            // on prépare
             $manager->persist($participant);
 
-            $manager->flush();
         }
+        $manager->flush();
 
         // Sortie
-        $etats = $manager->getRepository(Etat::class)->findAll();
+        $etatOuverte = $manager->getRepository(Etat::class)->findOneBy(['libelle' => 'Ouverte']);
+        $etatPassee = $manager->getRepository(Etat::class)->findOneBy(['libelle' => 'Passée']);
+        $etatEnCours = $manager->getRepository(Etat::class)->findOneBy(['libelle' => 'Activité en cours']);
+
         $lieux = $manager->getRepository(Lieu::class)->findAll();
         $sites = $manager->getRepository(Site::class)->findAll();
         $participants = $manager->getRepository(Participant::class)->findAll();
-        for ($i = 0; $i < 5; $i++) {
+
+        $sortiesTab = [
+            /*"nom"=>['dateDebut', 'dureeEnMin', 'dateLimiteInscription', 'infoSortie'],*/
+            "Concert  d'Henri Dès" => [new \DateTime('2021-06-20 20:30:00'), 90, new \DateTime('2021-06-19 20:30:00'), 'Super concert pour enfant !!!', $etatOuverte],
+            "Pétanque party" => [new \DateTime('2021-07-20 16:30:00'), 360, new \DateTime('2021-07-19 16:30:00'), 'Tournoi de pétanque inter-régional, pensez à prendre votre pastis.', $etatOuverte],
+            "Tournoi de ping-pong" => [new \DateTime('2020-06-20 20:30:00'), 90, new \DateTime('2021-06-19 20:30:00'), 'Apportez vos raquettes et venez participer au tournoi de pétanque!', $etatPassee],
+            "Conférence sur le suicide chez les développeur utilisant PL/SQL" => [new \DateTime('2021-06-20 20:30:00'), 90, new \DateTime('2021-06-19 20:30:00'), 'Conférence animée par Anthony Cosson', $etatOuverte],
+            "Soirée cinéma : marathon Star Wars" => [new \DateTime('2021-06-02 12:30:00'), 3600, new \DateTime('2021-05-28 20:30:00'), 'TA TA TA TA TATA TA TATA', $etatEnCours]
+        ];
+        foreach ($sortiesTab as $nom => $data) {
             $sortie = new Sortie();
-            $sortie->setNom($generator->sentence(3))
-                ->setEtat($generator->randomElement($etats))
+            $sortie->setNom($nom)
+                ->setEtat($data[4])
                 ->setLieu($generator->randomElement($lieux))
                 ->setSite($generator->randomElement($sites))
                 ->setOrganisateur($generator->randomElement($participants));
-            // on ajoute 3 participants pour chaque sortie :
-
-            for ($j = 0; $j < 3; $j++) {
+            // on ajoute entre 3 et 8 participants pour chaque sortie :
+            for ($j = 0; $j < $generator->numberBetween(3, 8); $j++) {
                 $sortie->addParticipant($generator->randomElement($participants));
             }
-            $sortie->setDateHeureDebut($generator->dateTime)
-                ->setDuree($generator->numberBetween(1, 5))
-                ->setDateLimiteInscription($generator->dateTimeAD($sortie->getDateHeureDebut()->format('Y-m-d H:i:s')))
-                ->setInfosSortie($generator->paragraph(2))
-                ->setNbInscriptionsMax(6);
-
-
-        $manager->persist($sortie);
+            $sortie->setDateHeureDebut($data[0])
+                ->setDuree($data[1])
+                ->setDateLimiteInscription($data[2])
+                ->setInfosSortie($data[3])
+                ->setNbInscriptionsMax($generator->numberBetween(8, 15));
+            $manager->persist($sortie);
         }
-
         $manager->flush();
     }
+
 }

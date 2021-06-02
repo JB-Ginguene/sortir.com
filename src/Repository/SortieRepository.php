@@ -28,34 +28,6 @@ class SortieRepository extends ServiceEntityRepository
         $this->security = $security;
     }
 
-    // /**
-    //  * @return Sortie[] Returns an array of Sortie objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Sortie
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
     public function findByPersonnalResearch(ResearchFilter $research)
     {
         // on récupère l'id de l'utilisateur connecté :
@@ -90,10 +62,16 @@ class SortieRepository extends ServiceEntityRepository
             $now = new \DateTime();
             $queryBuilder->andWhere("s.dateHeureDebut <= '" . $now->format('Y-m-d H:i:s') . "'");
         }
-
-
         $query = $queryBuilder->getQuery();
         return $query->getResult();
+    }
 
+    public function findByIdParticipant($id)
+    {
+        // s = sortie
+        $queryBuilder = $this->createQueryBuilder('s')
+            ->andWhere('s.organisateur = ' . $id);
+        $query = $queryBuilder->getQuery();
+        return $query->getResult();
     }
 }
