@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Etat;
 use App\Entity\Lieu;
 use App\Entity\Participant;
-use App\Entity\Site;
 use App\Entity\Sortie;
 use App\Form\ResearchFilterType;
 use App\Form\SortieType;
@@ -165,19 +164,14 @@ class SortieController extends AbstractController
     }
 
     /**
-     * @Route("/sortie/ajax-sortie-inscription", name="sortie_inscription")
+     * @Route("/ajax-sortie-inscription", name="ajax_sortie_inscription")
      */
     public function inscriptionSortie(Request $request, EntityManagerInterface $entityManager): Response
     {
         $data = json_decode($request->getContent());
-
         $userid = $data->userid;
         $sortieid = $data->sortieid;
-
-        $sortie = $entityManager->getRepository(Sortie::class)->find($sortieid);
-        $user = $entityManager->getRepository(Participant::class)->find($userid);
-        $sortie->addParticipant($user);
-
-        return new JsonResponse(['sortieid' => $sortie->getId()]);
+        //$entityManager->getRepository(Sortie::class)->ajouterParticipant($sortieid, $userid, $entityManager);
+        return new JsonResponse(['sortieid' => $sortieid]);
     }
 }

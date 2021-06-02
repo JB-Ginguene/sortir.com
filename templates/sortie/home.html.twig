@@ -53,11 +53,11 @@
             <tr>
                 <th scope="col">Nom de la sortie</th>
                 <th scope="col">Date</th>
-                <th scope="col">Cloture</th>
-                <th scope="col">Inscrits/places</th>
-                <th scope="col">Etat</th>
-                <th scope="col">Inscrit</th>
-                <th scope="col">Organisateur</th>
+                <th scope="col">Clôture</th>
+                <th scope="col">Inscrit·e·s/places</th>
+                <th scope="col">État</th>
+                <th scope="col">Inscrit·e</th>
+                <th scope="col">Organisateur·trice</th>
                 <th scope="col">Actions</th>
             </tr>
             </thead>
@@ -71,7 +71,7 @@
                     <td>{{ sortie.etat.libelle }}</td>
                     {% if sortie.participants.contains(app.user) %}
                         {# Oui, l'utilisateur connecté est bien inscrit : #}
-                        <td>X</td>
+                        <td><a class="bg-success btn btn-sm"" role="button">Inscrit·e</a></td>
                     {% else %}
                         {# Non, l'ulisateur connecté n'est pas inscrit à cette sortie : #}
                         <td><a data-sortieId="{{ sortie.id }}" data-userId="{{ app.user.id }}" class="sortie_inscription btn btn-light btn-lg" role="button">S'incrire</a></td>
@@ -115,5 +115,6 @@
     <div class="container">
         <a href="{{ path('sortie_create') }}" class="btn btn-secondary btn-lg" role="button">Créer une sortie</a>
     </div>
+    <h1 class="win-class"></h1>
 {% endblock %}
 

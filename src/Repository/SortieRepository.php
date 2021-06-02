@@ -2,12 +2,14 @@
 
 namespace App\Repository;
 
+use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\ResearchFilter\ResearchFilter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * @method Sortie|null find($id, $lockMode = null, $lockVersion = null)
@@ -74,4 +76,16 @@ class SortieRepository extends ServiceEntityRepository
         $query = $queryBuilder->getQuery();
         return $query->getResult();
     }
+
+    public function ajouterParticipant($idSortie, $idParticipant, EntityManagerInterface $entityManager)
+    {
+        $sortie = $this->find($idSortie);
+        $participant = $entityManager->getRepository(Participant::class)->find($idParticipant);
+
+        $sortie->addParticipant($participant);
+        $entityManager->persist($sortie);
+        $entityManager->flush();
+    }
+
+
 }
