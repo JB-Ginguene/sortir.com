@@ -20,28 +20,58 @@ function inscriptionDesinscription() {
                 .then(function (response) {
                     return response.json();
                 }).then(function (data) {
-                console.log("yolo inscription")
+                ////////////
+                if (data.participant !== data.participantMax) {
+                    let td = document.createElement('td');
+                    let a = document.createElement('a');
+                    a.classList.add("bg-success");
+                    a.classList.add("btn");
+                    a.classList.add("btn-sm");
+                    a.classList.add("sortie_desinscription");
+                    a.setAttribute("role", "button");
+                    a.setAttribute("data-sortieId", data.sortieid);
+                    a.setAttribute("data-userId", data.userid);
+                    a.innerHTML = "Inscrit·e";
+                    td.append(a);
+                    let parent = elem.parentNode;
+                    document.getElementById('nbreParticipant' + data.sortieid).innerHTML = data.participant + "/" + data.participantMax;
+                    if (parent.parentNode) {
+                        parent.parentNode.replaceChild(td, parent);
+                    }
+                }else if (data.participant === data.participantMax) {
+                    let td = document.createElement('td');
+                    // BOUTON 1 : COMPLET
+                    let a1 = document.createElement('a');
+                    a1.classList.add("bg-danger");
+                    a1.classList.add("btn");
+                    a1.classList.add("btn-sm");
+                    a1.classList.add("mb-1");
+                    a1.innerHTML = "Complet!";
 
-                let td = document.createElement('td');
-                let a = document.createElement('a');
-                a.classList.add("bg-success");
-                a.classList.add("btn");
-                a.classList.add("btn-sm");
-                a.classList.add("sortie_desinscription");
-                a.setAttribute("role", "button");
-                a.setAttribute("data-sortieId", data.sortieid);
-                a.setAttribute("data-userId", data.userid);
-                a.innerHTML = "Inscrit·e";
-                td.append(a);
-                let parent = elem.parentNode;
-                if (parent.parentNode){
-                    parent.parentNode.replaceChild(td, parent);
-                }
+                    // BOUTON 2 : DEJA INSCRIT :
+                    let a2 = document.createElement('a');
+                    a2.classList.add("bg-success");
+                    a2.classList.add("btn");
+                    a2.classList.add("btn-sm");
+                    a2.classList.add("sortie_desinscription");
+                    a2.setAttribute("role", "button");
+                    a2.setAttribute("data-sortieId", data.sortieid);
+                    a2.setAttribute("data-userId", data.userid);
+                    a2.innerHTML = "Inscrit·e";
 
-                inscriptionDesinscription();
+                    td.append(a1, a2);
+                    let parent = elem.parentNode;
+                    document.getElementById('nbreParticipant' + data.sortieid).innerHTML = data.participant + "/" + data.participantMax;
+                    if (parent.parentNode) {
+                        parent.parentNode.replaceChild(td, parent);
+                    }}
+
+                    /////////////////
+                    inscriptionDesinscription();
+                ///////////
             });
         });
-    });
+    })
 
     //DESINSCRIPTION :
     desinscriptionButtons.forEach(function (elem, idx) {
@@ -53,8 +83,6 @@ function inscriptionDesinscription() {
                 .then(function (response) {
                     return response.json();
                 }).then(function (data) {
-                console.log("desinscription yolooo !!!")
-                console.log(elem);
 
                 let td = document.createElement('td');
                 let a = document.createElement('a');
@@ -68,17 +96,8 @@ function inscriptionDesinscription() {
                 a.innerHTML = "S'inscrire";
                 td.append(a);
                 let parent = elem.parentNode;
-
-                let row = parent.parentNode;
-                console.log("row : ");
-                console.log(row);
-
-              row.getElementsByClassName('nbreParticipant').innerHTML = data./ ;
-
-                console.log("tdNbreParticipant : ");
-                console.log(tdNbreParticipant.valueOf());
-
-                if (parent.parentNode){
+                document.getElementById('nbreParticipant' + data.sortieid).innerHTML = data.participant + "/" + data.participantMax;
+                if (parent.parentNode) {
                     parent.parentNode.replaceChild(td, parent);
                 }
 

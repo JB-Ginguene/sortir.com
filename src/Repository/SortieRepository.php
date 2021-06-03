@@ -87,7 +87,7 @@ class SortieRepository extends ServiceEntityRepository
         $sortie = $this->find($idSortie);
         $participant = $entityManager->getRepository(Participant::class)->find($idParticipant);
 
-        //$sortie->addParticipant($participant);
+        $sortie->addParticipant($participant);
         $entityManager->persist($sortie);
         $entityManager->flush();
     }
@@ -96,8 +96,7 @@ class SortieRepository extends ServiceEntityRepository
     {
         $sortie = $this->find($idSortie);
         $participant = $entityManager->getRepository(Participant::class)->find($idParticipant);
-
-        //$sortie->removeParticipant($participant);
+        $sortie->removeParticipant($participant);
         $entityManager->persist($sortie);
         $entityManager->flush();
     }
