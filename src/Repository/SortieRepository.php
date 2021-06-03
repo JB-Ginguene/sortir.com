@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Security;
+use function Symfony\Component\String\s;
 
 /**
  * @method Sortie|null find($id, $lockMode = null, $lockVersion = null)
@@ -33,7 +34,7 @@ class SortieRepository extends ServiceEntityRepository
 
     public function findByPersonnalResearch(ResearchFilter $research, EntityManagerInterface $entityManager)
     {
-        $etatsPassee = $entityManager->getRepository(Etat::class)->findOneBy(['libelle'=>"Passée"]);
+        $etatsPassee = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => "Passée"]);
         // on récupère l'id de l'utilisateur connecté :
         $userId = $this->security->getUser()->getId();
         // s = sortie
@@ -42,7 +43,7 @@ class SortieRepository extends ServiceEntityRepository
             ->addSelect('participant')
 
             // on recupere uniquement les sorties NON archivées :
-            ->where("s.etat != ". $etatsPassee->getId());
+            ->where("s.etat != " . $etatsPassee->getId());
 
         if ($research->getSite()) {
             $queryBuilder->andWhere('s.site >= ' . $research->getSite()->getId());
@@ -101,16 +102,16 @@ class SortieRepository extends ServiceEntityRepository
         $entityManager->flush();
     }
 
-    public function findAllForHomePage(EntityManagerInterface $entityManager)
+    public function findAllForHomePage()
     {
         // s = sortie
-        $queryBuilder = $this->createQueryBuilder('s');
-        $queryBuilder->leftJoin('s.participants', 'participant')
-            ->addSelect('participant');
-
+        $queryBuilder = $this->createQueryBuilder('s')
+            ->leftJoin('s.participants', 'participant')
+            ->leftJoin('s.lieu', 'lieu')
+            ->leftJoin('s.etat', 'etat')
+            ->addSelect('participant')
+            ->addSelect('etat');
         $query = $queryBuilder->getQuery();
-
-        dd($query->getResult());
         return $query->getResult();
     }
 
