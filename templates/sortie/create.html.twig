@@ -20,6 +20,9 @@
                 <div class="row col-12 col-lg-8">
                     {{ form_row(sortieForm.enregistrer) }}
                     {{ form_row(sortieForm.publier) }}
+                    <div class="hidden-div">
+                        {{ form_row(sortieForm.annuler) }}
+                    </div>
                     <div class="form-group">
                         <a href="{{ path('sortie_home') }}" class="white-link btn btn-secondary"> Retour </a>
                     </div>
@@ -27,7 +30,6 @@
             </div>
             <div class="col-12 col-lg-6">
                 {{ form_row(sortieForm.site) }}
-
                 <div class="row">
                         <div class="col-10">
                         {{ form_row(sortieForm.lieu) }}
@@ -41,7 +43,6 @@
                         </a>
                     </div>
                 </div>
-
                 <a href="#" id="generer_adresse">Générer l'adresse</a>
                 <div class="card">
                     <div class="card-body">
@@ -52,7 +53,6 @@
                         <h6 class="card-subtitle mb-2 text-muted" id="longitude"></h6>
                     </div>
                 </div>
-
             </div>
             {{ form_end(sortieForm) }}
         </div>

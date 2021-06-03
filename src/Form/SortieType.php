@@ -41,6 +41,8 @@ class SortieType extends AbstractType
             ])
             ->add('publier',SubmitType::class,[
                 'label'=>'Publier'
+            ])->add('annuler', SubmitType::class,[
+                'label'=>'Annuler'
             ]);
 
     }

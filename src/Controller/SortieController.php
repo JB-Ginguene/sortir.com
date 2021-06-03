@@ -8,6 +8,7 @@ use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Form\ResearchFilterType;
 use App\Form\SortieType;
+use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
 use App\ResearchFilter\ResearchFilter;
 use Doctrine\ORM\EntityManagerInterface;
@@ -110,7 +111,7 @@ class SortieController extends AbstractController
      * @Route("/sortie/edit/{id}", name="sortie_edit")
      */
     public
-    function edit($id, Request $request, EntityManagerInterface $entityManager): Response
+    function edit($id, Request $request, EntityManagerInterface $entityManager, EtatRepository $etatRepository): Response
     {
 
         $sortie = $entityManager->getRepository(Sortie::class)->find($id);
@@ -127,15 +128,29 @@ class SortieController extends AbstractController
 
         if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
 
-            if ($sortieForm->get('publier')->isClicked()) {
-                $etatSortie = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'Ouverte']);
-                $sortie->setEtat($etatSortie);
+            //Verification si l'utilisateur souhaite annuler la sortie
+            if (!$sortieForm->get('annuler')->isClicked()){
+
+                //Verification si l'utilisateur souhaite publier une sortie
+                if ($sortieForm->get('publier')->isClicked()) {
+                    $sortie->setEtat($etatRepository->findOneBy(['libelle' => 'Ouverte']));
+                }
+
+                $entityManager->persist($sortie);
+                $entityManager->flush();
+                $this->addFlash('success', 'Sortie éditée');
+                $redirection = $this->redirectToRoute('sortie_detail', ['id' => $sortie->getId()]);
+
+            }else{
+                $sortie->setEtat($etatRepository->findOneBy(['libelle' => 'Annulée']));
+                $entityManager->persist($sortie);
+                $entityManager->flush();
+                $this->addFlash('success', 'Sortie annulée');
+
+                $redirection = $this->redirectToRoute('sortie_home');
             }
 
-            $entityManager->persist($sortie);
-            $entityManager->flush();
-            $this->addFlash('success', 'Sortie éditée');
-            return $this->redirectToRoute('sortie_detail', ['id' => $sortie->getId()]);
+            return $redirection;
         }
         return $this->render('sortie/edit.html.twig', [
             'sortieForm' => $sortieForm->createView(),
