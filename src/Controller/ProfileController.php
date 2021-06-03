@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Form\ProfileFormType;
+use App\ManageEntity\UpdateEntity;
 use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,7 +23,8 @@ class ProfileController extends AbstractController
                          ParticipantRepository $participantRepository,
                          Request $request,
                          EntityManagerInterface $entityManager,
-                         UserPasswordEncoderInterface $passwordEncoder): Response
+                         UserPasswordEncoderInterface $passwordEncoder,
+                         UpdateEntity $updateEntity): Response
     {
 
         $profile = $participantRepository->find($id);
@@ -33,6 +35,7 @@ class ProfileController extends AbstractController
         $profileForm->handleRequest($request);
 
         if ($profileForm->isSubmitted() && $profileForm->isValid()) {
+            //hash du password
             $profile->setPassword(
                 $passwordEncoder->encodePassword(
                     $profile,
@@ -40,8 +43,7 @@ class ProfileController extends AbstractController
                 )
             );
 
-            $entityManager->persist($profile);
-            $entityManager->flush();
+            $updateEntity->save($profile);
 
             $this->addFlash('success', 'profil mis à jour');
             return $this->redirectToRoute('sortie_home');

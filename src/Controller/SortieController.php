@@ -8,6 +8,7 @@ use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Form\ResearchFilterType;
 use App\Form\SortieType;
+use App\ManageEntity\UpdateEntity;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
 use App\ResearchFilter\ResearchFilter;
@@ -65,7 +66,7 @@ class SortieController extends AbstractController
      * @Route("/sortie/create", name="sortie_create")
      */
     public
-    function create(Request $request, EntityManagerInterface $entityManager): Response
+    function create(Request $request, EntityManagerInterface $entityManager, UpdateEntity $updateEntity): Response
     {
         $sortie = new Sortie();
         $sortieForm = $this->createForm(SortieType::class, $sortie);
@@ -91,8 +92,8 @@ class SortieController extends AbstractController
             //on set sur la sortie l'organisateur ainsi que l'état
             $sortie->setOrganisateur($organisateur)->setEtat($etatSortie);
 
-            $entityManager->persist($sortie);
-            $entityManager->flush();
+            $updateEntity->save($sortie);
+
             $this->addFlash('success', 'Sortie créée');
             return $this->redirectToRoute('sortie_detail', ['id' => $sortie->getId()]);
         }
@@ -108,7 +109,7 @@ class SortieController extends AbstractController
      * @Route("/sortie/edit/{id}", name="sortie_edit")
      */
     public
-    function edit($id, Request $request, EntityManagerInterface $entityManager, EtatRepository $etatRepository): Response
+    function edit($id, Request $request, EntityManagerInterface $entityManager, EtatRepository $etatRepository, UpdateEntity $updateEntity): Response
     {
 
         $sortie = $entityManager->getRepository(Sortie::class)->find($id);
@@ -133,15 +134,13 @@ class SortieController extends AbstractController
                     $sortie->setEtat($etatRepository->findOneBy(['libelle' => 'Ouverte']));
                 }
 
-                $entityManager->persist($sortie);
-                $entityManager->flush();
+                $updateEntity->save($sortie);
                 $this->addFlash('success', 'Sortie éditée');
                 $redirection = $this->redirectToRoute('sortie_detail', ['id' => $sortie->getId()]);
 
             } else {
                 $sortie->setEtat($etatRepository->findOneBy(['libelle' => 'Annulée']));
-                $entityManager->persist($sortie);
-                $entityManager->flush();
+                $updateEntity->save($sortie);
                 $this->addFlash('success', 'Sortie annulée');
 
                 $redirection = $this->redirectToRoute('sortie_home');
