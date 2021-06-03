@@ -12,7 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ParticipantRepository::class)
- * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @UniqueEntity(fields={"email"}, message="Il existe déjà un compte avec cet email")
+ * @UniqueEntity(fields={"pseudo"}, message="Ce pseudo est déjà utilisé")
  */
 class Participant implements UserInterface
 {
@@ -39,26 +40,53 @@ class Participant implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Ce champs ne peut être vide")
      * @Assert\Length(min=6,
      *                max=15,
      *                minMessage="Le mot de passe doit contenir au minimum 6 caractères",
      *                maxMessage="Le mot de passe doit contenir au maximum 20 caractères")
      *
+     * @Assert\Regex(pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,15}$^",
+     *              match=true,
+     *              message="Votre mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial")
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="Votre nom ne peut contenir un chiffre"
+     * )
+     * @Assert\Length(max=30,
+     *                maxMessage="Votre nom ne peut dépasser 30 caractères")
+     *
+     * @Assert\NotBlank(message="Ce champs ne peut être vide")
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="Votre prénom ne peut contenir un chiffre"
+     * )
+     * @Assert\NotBlank(message="Ce champs ne peut être vide")
+     * @Assert\Length(max=30,
+     *                maxMessage="Votre prenom ne peut dépasser 30 caractères")
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
+     * @Assert\Regex(
+     *     pattern="/^[0-9]/",
+     *     match=true,
+     *     message="Entrez un telephone valide"
+     * )
+     * @Assert\NotBlank(message="Ce champs ne peut être vide")
      */
     private $telephone;
 
@@ -79,6 +107,9 @@ class Participant implements UserInterface
     private $site;
 
     /**
+     * @Assert\NotBlank(message="Ce champs ne peut être vide")
+     * @Assert\Length(max=20,
+     *                maxMessage="Votre pseudo ne peut dépasser 20 caractères")
      * @ORM\Column(type="string", length=20, unique=true)
      */
     private $pseudo;

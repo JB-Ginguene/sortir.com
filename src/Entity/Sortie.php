@@ -6,6 +6,7 @@ use App\Repository\SortieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=SortieRepository::class)
@@ -21,31 +22,53 @@ class Sortie
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Assert\NotBlank(message="Ce champs ne peut être vide")
+     * @Assert\Length(min=6,
+     *                max=15,
+     *                minMessage="Le nom doit contenir au minimum 6 caractères",
+     *                maxMessage="Le nom doit contenir au maximum 30 caractères")
      */
     private $nom;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\GreaterThan(propertyPath="dateLimiteInscription")
+     * @Assert\DateTime(message="Il s'agit d'une date")
      */
     private $dateHeureDebut;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Assert\GreaterThan(value="0",
+     *                      message="Ne peut pas être négatif")
+     * @Assert\Regex(
+     *     pattern="/^[0-9]/",
+     *     match=true,
+     *     message="Entrez une duree valide")
      */
     private $duree;
 
     /**
      * @ORM\Column(type="date")
+     * @Assert\LessThan(propertyPath="dateHeureDebut")
+     * @Assert\Date(message="Il s'agit d'une date")
      */
     private $dateLimiteInscription;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\GreaterThan(value="2",
+     *                      message="Il doit y avoir au moins 2 participants-tes")
      */
     private $nbInscriptionsMax;
 
     /**
      * @ORM\Column(type="string", length=500, nullable=true)
+     * @Assert\NotBlank(message="Ce champs ne peut être vide")
+     * @Assert\Length(min=15,
+     *                max=500,
+     *                minMessage="Le nom doit contenir au minimum 15 caractères",
+     *                maxMessage="Le nom doit contenir au maximum 500 caractères")
      */
     private $infosSortie;
 
