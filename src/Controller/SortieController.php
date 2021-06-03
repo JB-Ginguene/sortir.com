@@ -23,7 +23,7 @@ class SortieController extends AbstractController
     /**
      * @Route("/", name="sortie_home")
      */
-    public function home(Request $request, SortieRepository $sortieRepository): Response
+    public function home(Request $request, SortieRepository $sortieRepository, EntityManagerInterface $entityManager): Response
     {
         $research = new ResearchFilter();
         $researchForm = $this->createForm(ResearchFilterType::class, $research);
@@ -32,7 +32,8 @@ class SortieController extends AbstractController
 
 
         if ($researchForm->isSubmitted() && $researchForm->isValid()) {
-            $sorties = $sortieRepository->findByPersonnalResearch($research);
+
+            $sorties = $sortieRepository->findByPersonnalResearch($research, $entityManager);
             return $this->render('sortie/home.html.twig', [
                 'researchForm' => $researchForm->createView(),
                 'sorties' => $sorties
@@ -184,7 +185,7 @@ class SortieController extends AbstractController
         $data = json_decode($request->getContent());
         $userid = $data->userid;
         $sortieid = $data->sortieid;
-        //$entityManager->getRepository(Sortie::class)->ajouterParticipant($sortieid, $userid, $entityManager);
+        $entityManager->getRepository(Sortie::class)->ajouterParticipant($sortieid, $userid, $entityManager);
         return new JsonResponse(['sortieid' => $sortieid, 'userid' => $userid]);
     }
     /**
@@ -195,7 +196,7 @@ class SortieController extends AbstractController
         $data = json_decode($request->getContent());
         $userid = $data->userid;
         $sortieid = $data->sortieid;
-        //$entityManager->getRepository(Sortie::class)->retirerParticipant($sortieid, $userid, $entityManager);
+        $entityManager->getRepository(Sortie::class)->retirerParticipant($sortieid, $userid, $entityManager);
         return new JsonResponse(['sortieid' => $sortieid, 'userid' => $userid]);
     }
 }

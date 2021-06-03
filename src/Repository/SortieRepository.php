@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Etat;
 use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\ResearchFilter\ResearchFilter;
@@ -30,14 +31,18 @@ class SortieRepository extends ServiceEntityRepository
         $this->security = $security;
     }
 
-    public function findByPersonnalResearch(ResearchFilter $research)
+    public function findByPersonnalResearch(ResearchFilter $research, EntityManagerInterface $entityManager)
     {
+        $etatsPassee = $entityManager->getRepository(Etat::class)->findOneBy(['libelle'=>"Passée"]);
         // on récupère l'id de l'utilisateur connecté :
         $userId = $this->security->getUser()->getId();
         // s = sortie
         $queryBuilder = $this->createQueryBuilder('s');
         $queryBuilder->leftJoin('s.participants', 'participant')
-            ->addSelect('participant');
+            ->addSelect('participant')
+
+            // on recupere uniquement les sorties NON archivées :
+            ->where("s.etat != ". $etatsPassee->getId());
 
         if ($research->getSite()) {
             $queryBuilder->andWhere('s.site >= ' . $research->getSite()->getId());
@@ -83,6 +88,16 @@ class SortieRepository extends ServiceEntityRepository
         $participant = $entityManager->getRepository(Participant::class)->find($idParticipant);
 
         $sortie->addParticipant($participant);
+        $entityManager->persist($sortie);
+        $entityManager->flush();
+    }
+
+    public function retirerParticipant($idSortie, $idParticipant, EntityManagerInterface $entityManager)
+    {
+        $sortie = $this->find($idSortie);
+        $participant = $entityManager->getRepository(Participant::class)->find($idParticipant);
+
+        $sortie->removeParticipant($participant);
         $entityManager->persist($sortie);
         $entityManager->flush();
     }
