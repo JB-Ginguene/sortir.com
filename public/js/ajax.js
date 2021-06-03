@@ -8,7 +8,7 @@ function init() {
 
 
     // CREATION SORTIE
-    if (window.location.href === route + 'sortie/create#') {
+    if (window.location.href === route + '#') {
         let select = document.getElementById('sortie_lieu');
         let genererButton = document.getElementById('generer_adresse')
         let lieu_field = select.options[select.selectedIndex].text;
@@ -36,7 +36,10 @@ function init() {
 // INSCRIPTION SORTIE (page d'accueil)
     if (window.location.href === route) {
         let inscriptionButtons = Array.from(document.getElementsByClassName('sortie_inscription'));
-        console.log(inscriptionButtons);
+        console.log("inscriptionButtons : " + inscriptionButtons);
+
+        let desinscriptionButtons = Array.from(document.getElementsByClassName('sortie_desinscription'));
+        console.log("desinscriptionButtons : " + desinscriptionButtons);
 
         inscriptionButtons.forEach(function (elem, idx) {
             elem.addEventListener('click', function () {
@@ -58,12 +61,13 @@ function init() {
                     a.classList.add("bg-success");
                     a.classList.add("btn");
                     a.classList.add("btn-sm");
+                    a.classList.add("sortie_desinscription");
                     a.setAttribute("role", "button");
                     a.innerHTML = "Inscrit·e";
                     td.append(a);
                     let parent = elem.parentNode;
                     parent.parentNode.replaceChild(td, parent);
-                    });
+                });
             });
         });
     }
