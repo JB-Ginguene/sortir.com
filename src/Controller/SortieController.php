@@ -27,19 +27,15 @@ class SortieController extends AbstractController
     {
         $research = new ResearchFilter();
         $researchForm = $this->createForm(ResearchFilterType::class, $research);
-
         $researchForm->handleRequest($request);
-
-
         if ($researchForm->isSubmitted() && $researchForm->isValid()) {
-
             $sorties = $sortieRepository->findByPersonnalResearch($research, $entityManager);
             return $this->render('sortie/home.html.twig', [
                 'researchForm' => $researchForm->createView(),
                 'sorties' => $sorties
             ]);
         } else {
-            $sorties = $sortieRepository->findAll();
+            $sorties = $sortieRepository->findAllForHomePage($entityManager);
             $userInSession = $this->getUser();
             return $this->render('sortie/home.html.twig', [
                 'researchForm' => $researchForm->createView(),

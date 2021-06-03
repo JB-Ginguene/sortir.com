@@ -101,5 +101,18 @@ class SortieRepository extends ServiceEntityRepository
         $entityManager->flush();
     }
 
+    public function findAllForHomePage(EntityManagerInterface $entityManager)
+    {
+        // s = sortie
+        $queryBuilder = $this->createQueryBuilder('s');
+        $queryBuilder->leftJoin('s.participants', 'participant')
+            ->addSelect('participant');
+
+        $query = $queryBuilder->getQuery();
+
+        dd($query->getResult());
+        return $query->getResult();
+    }
+
 
 }
