@@ -20,8 +20,6 @@ function inscriptionDesinscription() {
                 .then(function (response) {
                     return response.json();
                 }).then(function (data) {
-                console.log("yolo inscription")
-
                 let td = document.createElement('td');
                 let a = document.createElement('a');
                 a.classList.add("bg-success");
@@ -34,7 +32,8 @@ function inscriptionDesinscription() {
                 a.innerHTML = "Inscrit·e";
                 td.append(a);
                 let parent = elem.parentNode;
-                if (parent.parentNode){
+                document.getElementById('nbreParticipant' + data.sortieid).innerHTML = data.participant + "/" + data.participantMax;
+                if (parent.parentNode) {
                     parent.parentNode.replaceChild(td, parent);
                 }
 
@@ -53,8 +52,6 @@ function inscriptionDesinscription() {
                 .then(function (response) {
                     return response.json();
                 }).then(function (data) {
-                console.log("desinscription yolooo !!!")
-                console.log(elem);
 
                 let td = document.createElement('td');
                 let a = document.createElement('a');
@@ -68,17 +65,8 @@ function inscriptionDesinscription() {
                 a.innerHTML = "S'inscrire";
                 td.append(a);
                 let parent = elem.parentNode;
-
-                let row = parent.parentNode;
-                console.log("row : ");
-                console.log(row);
-
-              row.getElementsByClassName('nbreParticipant').innerHTML = data./ ;
-
-                console.log("tdNbreParticipant : ");
-                console.log(tdNbreParticipant.valueOf());
-
-                if (parent.parentNode){
+                document.getElementById('nbreParticipant' + data.sortieid).innerHTML = data.participant + "/" + data.participantMax;
+                if (parent.parentNode) {
                     parent.parentNode.replaceChild(td, parent);
                 }
 

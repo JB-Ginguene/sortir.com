@@ -67,7 +67,7 @@
                     <th scope="row">{{ sortie.nom }}</th>
                     <td>{{ sortie.dateHeureDebut|date("m/d/Y H:i") }}</td>
                     <td>{{ sortie.dateLimiteInscription|date("m/d/Y") }}</td>
-                    <td class="nbreParticipant" data-sortieId="{{ sortie.id }}" data-userId="{{ app.user.id }}">{{ sortie.participants|length }}/{{ sortie.nbInscriptionsMax }}</td>
+                    <td><span id="nbreParticipant{{ sortie.id }}">{{ sortie.participants|length }}/{{ sortie.nbInscriptionsMax }}</span></td>
                     <td>{{ sortie.etat.libelle }}</td>
                     {% if sortie.etat.libelle == "Passée" %}
                         <td><a class="bg-info btn btn-sm">Sortie passée</a></td>
