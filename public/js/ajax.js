@@ -59,14 +59,17 @@ function init() {
         }
     */
 
-// INSCRIPTION SORTIE (page d'accueil)
+// DES/INSCRIPTION SORTIE (page d'accueil)
     if (url === '') {
         let inscriptionButtons = Array.from(document.getElementsByClassName('sortie_inscription'));
-        console.log("inscriptionButtons : " + inscriptionButtons);
+        console.log("inscriptionButtons début : ");
+        console.log(inscriptionButtons);
 
         let desinscriptionButtons = Array.from(document.getElementsByClassName('sortie_desinscription'));
-        console.log("desinscriptionButtons : " + desinscriptionButtons);
+        console.log("desinscriptionButtons début : ");
+        console.log(desinscriptionButtons);
 
+        //INSCRIPTION
         inscriptionButtons.forEach(function (elem, idx) {
             elem.addEventListener('click', function () {
                 let data = {'sortieid': elem.dataset.sortieid, 'userid': elem.dataset.userid};
@@ -79,7 +82,7 @@ function init() {
                     .then(function (response) {
                         return response.json();
                     }).then(function (data) {
-                    console.log("t'y es  presque !!!")
+                    console.log("yolo inscription")
                     console.log(elem);
 
                     let td = document.createElement('td');
@@ -89,13 +92,61 @@ function init() {
                     a.classList.add("btn-sm");
                     a.classList.add("sortie_desinscription");
                     a.setAttribute("role", "button");
+                    a.setAttribute("data-sortieId", data.sortieid);
+                    a.setAttribute("data-userId", data.userid);
                     a.innerHTML = "Inscrit·e";
                     td.append(a);
                     let parent = elem.parentNode;
                     parent.parentNode.replaceChild(td, parent);
+                    inscriptionButtons = Array.from(document.getElementsByClassName('sortie_inscription'));
+                    console.log("inscriptionButtons fin inscription: ");
+                    console.log(inscriptionButtons);
+                    desinscriptionButtons = Array.from(document.getElementsByClassName('sortie_desinscription'));
+                    console.log("desinscriptionButtons fin inscription: ");
+                    console.log(desinscriptionButtons);
                 });
             });
         });
+
+        //DESINSCRIPTION :
+       desinscriptionButtons.forEach(function (elem, idx) {
+            elem.addEventListener('click', function () {
+                let data = {'sortieid': elem.dataset.sortieid, 'userid': elem.dataset.userid};
+                console.log(data);
+                console.log(data.sortieid)
+                console.log(data.userid)
+
+                fetch("ajax-sortie-desinscription", {method: 'POST', body: JSON.stringify(data)})
+                    //promesse : le contenu du data dans le dernier then
+                    .then(function (response) {
+                        return response.json();
+                    }).then(function (data) {
+                    console.log("desinscription yolooo !!!")
+                    console.log(elem);
+
+                    let td = document.createElement('td');
+                    let a = document.createElement('a');
+                    a.classList.add("bg-warning");
+                    a.classList.add("btn");
+                    a.classList.add("btn-sm");
+                    a.classList.add("sortie_inscription");
+                    a.setAttribute("role", "button");
+                    a.setAttribute("data-sortieId", data.sortieid);
+                    a.setAttribute("data-userId", data.userid);
+                    a.innerHTML = "S'inscrire";
+                    td.append(a);
+                    let parent = elem.parentNode;
+                    parent.parentNode.replaceChild(td, parent);
+                    inscriptionButtons = Array.from(document.getElementsByClassName('sortie_inscription'));
+                    console.log("inscriptionButtons fin desinscription: ");
+                    console.log(inscriptionButtons);
+                    desinscriptionButtons = Array.from(document.getElementsByClassName('sortie_desinscription'));
+                    console.log("desinscriptionButtons fin desinscription: ");
+                    console.log(desinscriptionButtons);
+                });
+            });
+        });
+
     }
 }
 

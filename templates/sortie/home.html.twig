@@ -71,10 +71,10 @@
                     <td>{{ sortie.etat.libelle }}</td>
                     {% if sortie.participants.contains(app.user) %}
                         {# Oui, l'utilisateur connecté est bien inscrit : #}
-                        <td><a class="bg-success btn btn-sm sortie_desinscription"" role="button">Inscrit·e</a></td>
+                        <td><a data-sortieId="{{ sortie.id }}" data-userId="{{ app.user.id }}"class="bg-success btn btn-sm sortie_desinscription"" role="button">Inscrit·e</a></td>
                     {% else %}
                         {# Non, l'ulisateur connecté n'est pas inscrit à cette sortie : #}
-                        <td><a data-sortieId="{{ sortie.id }}" data-userId="{{ app.user.id }}" class="sortie_inscription btn btn-light btn-lg" role="button">S'incrire</a></td>
+                        <td><a data-sortieId="{{ sortie.id }}" data-userId="{{ app.user.id }}" class="bg-warning sortie_inscription btn btn-light btn-sm" role="button">S'incrire</a></td>
                     {% endif %}
 
                     {% if app.user %}
