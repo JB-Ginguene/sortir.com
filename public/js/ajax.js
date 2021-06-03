@@ -37,6 +37,7 @@ function inscriptionDesinscription() {
                 if (parent.parentNode){
                     parent.parentNode.replaceChild(td, parent);
                 }
+
                 inscriptionDesinscription();
             });
         });
@@ -67,6 +68,16 @@ function inscriptionDesinscription() {
                 a.innerHTML = "S'inscrire";
                 td.append(a);
                 let parent = elem.parentNode;
+
+                let row = parent.parentNode;
+                console.log("row : ");
+                console.log(row);
+
+              row.getElementsByClassName('nbreParticipant').innerHTML = data./ ;
+
+                console.log("tdNbreParticipant : ");
+                console.log(tdNbreParticipant.valueOf());
+
                 if (parent.parentNode){
                     parent.parentNode.replaceChild(td, parent);
                 }

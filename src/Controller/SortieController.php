@@ -186,7 +186,11 @@ class SortieController extends AbstractController
         $userid = $data->userid;
         $sortieid = $data->sortieid;
         $entityManager->getRepository(Sortie::class)->ajouterParticipant($sortieid, $userid, $entityManager);
-        return new JsonResponse(['sortieid' => $sortieid, 'userid' => $userid]);
+        return new JsonResponse([
+            'sortieid' => $sortieid,
+            'userid' => $userid,
+            'participant' => $userid,
+            'userid' => $userid,]);
     }
     /**
      * @Route("/ajax-sortie-desinscription", name="ajax_sortie_desinscription")

@@ -54,7 +54,7 @@
                 <th scope="col">Nom de la sortie</th>
                 <th scope="col">Date</th>
                 <th scope="col">Fin inscription</th>
-                <th scope="col">Inscrit·e·s/places</th>
+                <th scope="col">Inscrit·e·s /places</th>
                 <th scope="col">État</th>
                 <th scope="col">Inscrit·e</th>
                 <th scope="col">Organisateur·trice</th>
@@ -67,29 +67,44 @@
                     <th scope="row">{{ sortie.nom }}</th>
                     <td>{{ sortie.dateHeureDebut|date("m/d/Y H:i") }}</td>
                     <td>{{ sortie.dateLimiteInscription|date("m/d/Y") }}</td>
-                    <td>{{ sortie.participants|length }}/{{ sortie.nbInscriptionsMax }}</td>
+                    <td class="nbreParticipant" data-sortieId="{{ sortie.id }}" data-userId="{{ app.user.id }}">{{ sortie.participants|length }}/{{ sortie.nbInscriptionsMax }}</td>
                     <td>{{ sortie.etat.libelle }}</td>
-                    {% if sortie.participants.contains(app.user) %}
+                    {% if sortie.etat.libelle == "Passée" %}
+                        <td><a class="bg-info btn btn-sm">Sortie passée</a></td>
+                    {% elseif sortie.participants|length >= sortie.nbInscriptionsMax %}
+                        <td><a class="bg-danger btn btn-sm mb-1">Complet!</a>
+                        {% if sortie.participants.contains(app.user) %}
+                            <a data-sortieId="{{ sortie.id }}" data-userId="{{ app.user.id }}"
+                               class="bg-success btn btn-sm sortie_desinscription" role="button">Inscrit·e</a>
+                            {% endif %}
+                        </td>
+
+                    {% elseif sortie.participants.contains(app.user) %}
                         {# Oui, l'utilisateur connecté est bien inscrit : #}
-                        <td><a data-sortieId="{{ sortie.id }}" data-userId="{{ app.user.id }}"class="bg-success btn btn-sm sortie_desinscription"" role="button">Inscrit·e</a></td>
+                        <td><a data-sortieId="{{ sortie.id }}" data-userId="{{ app.user.id }}"
+                               class="bg-success btn btn-sm sortie_desinscription" role="button">Inscrit·e</a></td>
                     {% else %}
                         {# Non, l'ulisateur connecté n'est pas inscrit à cette sortie : #}
-                        <td><a data-sortieId="{{ sortie.id }}" data-userId="{{ app.user.id }}" class="bg-warning sortie_inscription btn btn-light btn-sm" role="button">S'incrire</a></td>
+                        <td><a data-sortieId="{{ sortie.id }}" data-userId="{{ app.user.id }}"
+                               class="bg-warning sortie_inscription btn btn-light btn-sm" role="button">S'incrire</a>
+                        </td>
                     {% endif %}
 
                     {% if app.user %}
                         {% if app.user.id == sortie.organisateur.id %}
                             <td>
-                                <a href="{{ path('app_profile', {'id' : sortie.organisateur.id}) }}" title="Détails de l'organisateur'">
+                                <a href="{{ path('app_profile', {'id' : sortie.organisateur.id}) }}"
+                                   title="Détails de l'organisateur'">
                                     {{ sortie.organisateur.pseudo }}
                                 </a>
                             </td>
-                    {% else %}
-                        <td>
-                            <a href="{{ path('profile_detail', {'id' : sortie.organisateur.id}) }}" title="Détails de l'organisateur'">
-                            {{ sortie.organisateur.pseudo }}
-                            </a>
-                        </td>
+                        {% else %}
+                            <td>
+                                <a href="{{ path('profile_detail', {'id' : sortie.organisateur.id}) }}"
+                                   title="Détails de l'organisateur'">
+                                    {{ sortie.organisateur.pseudo }}
+                                </a>
+                            </td>
                         {% endif %}
                     {% endif %}
 
@@ -98,7 +113,7 @@
                         {% if app.user %}
                             {% if app.user.id == sortie.organisateur.id %}
                                 <a href="{{ path('sortie_edit', {'id' : sortie.id}) }}" title="Modifier la sortie">
-                                Modifier
+                                    Modifier
                                 </a>
                             {% endif %}
                         {% endif %}
