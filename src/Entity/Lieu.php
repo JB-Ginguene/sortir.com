@@ -6,6 +6,7 @@ use App\Repository\LieuRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=LieuRepository::class)
@@ -21,21 +22,41 @@ class Lieu
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Assert\NotBlank(message="Ce champs ne peut être vide")
+     * @Assert\Length(min=6,
+     *                max=15,
+     *                minMessage="Le nom doit contenir au minimum 6 caractères",
+     *                maxMessage="Le nom doit contenir au maximum 30 caractères")
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=30, nullable=true)
+     * @Assert\NotBlank(message="Ce champs ne peut être vide")
+     * @Assert\Length(min=6,
+     *                max=15,
+     *                minMessage="La rue doit contenir au minimum 6 caractères",
+     *                maxMessage="La rue doit contenir au maximum 30 caractères")
      */
     private $rue;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Assert\NotBlank(message="Ce champs ne peut être vide")
+     * @Assert\Regex(
+     *     pattern="/^[0-9]/",
+     *     match=true,
+     *     message="Entrez une latitude valide")
      */
     private $latitude;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Assert\NotBlank(message="Ce champs ne peut être vide")
+     * @Assert\Regex(
+     *     pattern="/^[0-9]/",
+     *     match=true,
+     *     message="Entrez une longitude valide")
      */
     private $longitude;
 
