@@ -23,7 +23,8 @@ class AppFixtures extends Fixture
         // "Ouverte" = sortie OUVERTE à la réservation, visible de tous = RESERVABLE
         // "Clôturée" = sortie FERMEE à la réservation, visible de tous
         // "Activité en cours" = sortie en cours
-        // "Passée" = sortie ARCHIVEE, ayant une date de fin > d'un mois à aujourd'hui
+        // "Passée" = sortie ayant une date de fin > d'un mois à aujourd'hui
+        // "Archivée" = sortie ARCHIVEE, fin de sortie > à un mois
         // "Annulée" = sortie annulée, visible de tous jusqu'à un mois après la sortie, mais non réservable
         $etatTab = ["Créée", "Ouverte", "Clôturée", "Activité en cours", "Passée", "Annulée"];
         foreach ($etatTab as $etatItem) {
