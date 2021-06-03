@@ -159,8 +159,6 @@ class SortieController extends AbstractController
             'longitude' => $lieu->getLongitude(),
             'code_postal' => $lieu->getVille()->getCodePostal(),
             'ville' => $lieu->getVille()->getNom()]);
-
-
     }
 
     /**
