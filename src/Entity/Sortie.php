@@ -33,7 +33,7 @@ class Sortie
     /**
      * @ORM\Column(type="datetime")
      * @Assert\GreaterThan(propertyPath="dateLimiteInscription")
-     * @Assert\DateTime(message="Il s'agit d'une date")
+     *
      */
     private $dateHeureDebut;
 
@@ -51,13 +51,13 @@ class Sortie
     /**
      * @ORM\Column(type="date")
      * @Assert\LessThan(propertyPath="dateHeureDebut")
-     * @Assert\Date(message="Il s'agit d'une date")
+     *
      */
     private $dateLimiteInscription;
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\GreaterThan(value="2",
+     * @Assert\GreaterThan(value="1",
      *                      message="Il doit y avoir au moins 2 participants-tes")
      */
     private $nbInscriptionsMax;
