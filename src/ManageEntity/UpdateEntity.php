@@ -14,7 +14,7 @@ class UpdateEntity
 {
     private $entityManager;
 
-    function __construct(EntityManagerInterface $entityManager  )
+    public function __construct(EntityManagerInterface $entityManager  )
     {
         $this->entityManager = $entityManager;
     }
