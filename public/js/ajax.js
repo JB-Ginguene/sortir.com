@@ -3,12 +3,11 @@ window.onload = init;
 
 function init() {
 
-    let route = window.location.protocol + "//" + window.location.host + window.location.pathname;
-    console.log('route : ' + route);
-
+    let url = window.location.href.split('sortir.com/public/')[1];
+    console.log('url : ' + url)
 
     // CREATION SORTIE
-    if (window.location.href === route + '#') {
+    if (url.includes('create')) {
         let select = document.getElementById('sortie_lieu');
         let genererButton = document.getElementById('generer_adresse')
         let lieu_field = select.options[select.selectedIndex].text;
@@ -32,9 +31,36 @@ function init() {
             });
         })
     }
+    /*
+        // EDITION SORTIE
+        if (url.includes('edit')) {
+            let select = document.getElementById('sortie_lieu');
+            let genererButton = document.getElementById('generer_adresse')
+            let lieu_field = select.options[select.selectedIndex].text;
+
+            genererButton.addEventListener('click', function () {
+                //pour actualiser l'élement du select
+                lieu_field = select.options[select.selectedIndex].text;
+                //On prepare un objet qui porte les infos
+                let data = {'lieu': lieu_field};
+
+                fetch("ajax-site2", {method: 'POST', body: JSON.stringify(data)})
+                    //promesse : le contenu du data dans le dernier then
+                    .then(function (response) {
+                        return response.json();
+                    }).then(function (data) {
+                    document.getElementById('rue').innerHTML = "Adresse : " + data.rue;
+                    document.getElementById('latitude').innerHTML = "Latitude : " + data.latitude;
+                    document.getElementById('longitude').innerHTML = "Longitude : " + data.longitude;
+                    document.getElementById('code_postal').innerHTML = "Code postal : " + data.code_postal;
+                    document.getElementById('ville').innerHTML = "Ville : " + data.ville;
+                });
+            })
+        }
+    */
 
 // INSCRIPTION SORTIE (page d'accueil)
-    if (window.location.href === route) {
+    if (url === '') {
         let inscriptionButtons = Array.from(document.getElementsByClassName('sortie_inscription'));
         console.log("inscriptionButtons : " + inscriptionButtons);
 
