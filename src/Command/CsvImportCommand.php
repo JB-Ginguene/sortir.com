@@ -71,6 +71,8 @@ class CsvImportCommand extends Command
 
         $data = $this->getDataFromFile();
 
+        $io->progressStart(count($data));
+
         foreach ($data as $row){
             $participant = new Participant();
             $string = implode(";",$row);
@@ -86,7 +88,10 @@ class CsvImportCommand extends Command
                         ->setRoles(["ROLE_USER"]);
             $compteur++;
             $this->updateEntity->save($participant);
+
+            $io->progressAdvance();
         }
+
 
         $io->success("Super ! ".$compteur." participants ont été ajoutés");
 
