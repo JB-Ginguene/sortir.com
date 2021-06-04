@@ -8,6 +8,7 @@ use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Form\ResearchFilterType;
 use App\Form\SortieType;
+use App\ManageEntity\ClotureSortie;
 use App\ManageEntity\UpdateEntity;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
@@ -24,7 +25,7 @@ class SortieController extends AbstractController
     /**
      * @Route("/", name="sortie_home")
      */
-    public function home(Request $request, SortieRepository $sortieRepository, EntityManagerInterface $entityManager): Response
+    public function home(Request $request, SortieRepository $sortieRepository, EntityManagerInterface $entityManager, ClotureSortie $clotureSortie): Response
     {
         $research = new ResearchFilter();
         $researchForm = $this->createForm(ResearchFilterType::class, $research);
@@ -36,11 +37,17 @@ class SortieController extends AbstractController
                 'sorties' => $sorties
             ]);
         } else {
-            $sorties = $sortieRepository->findAllForHomePage($entityManager);
+
+            $sorties = $sortieRepository->findAllForHomePage();
+
+            //Actualisation pour le cloturage
+            $sortiesActualisee = $clotureSortie->actualisationCloture($sorties);
+
             $userInSession = $this->getUser();
+
             return $this->render('sortie/home.html.twig', [
                 'researchForm' => $researchForm->createView(),
-                'sorties' => $sorties
+                'sorties' => $sortiesActualisee
             ]);
         }
     }
