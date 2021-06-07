@@ -7,12 +7,15 @@ use App\Entity\Site;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use function Sodium\add;
 
 class ProfileFormType extends AbstractType
 {
@@ -38,7 +41,21 @@ class ProfileFormType extends AbstractType
                 'class' => Site::class,
                 'choice_label' => 'nom'
 
+            ])
+            ->add('avatar', FileType::class, [
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new Image
+                    (
+                        [
+                            'maxSize' => '5024k',
+                            'mimeTypesMessage' => 'format non supporté'
+                        ]
+                    )
+                ]
             ]);
+
     }
 
     public function configureOptions(OptionsResolver $resolver)

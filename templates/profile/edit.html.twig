@@ -1,5 +1,6 @@
+
 {% extends 'base.html.twig' %}
-{% form_theme profileForm 'bootstrap_4_layout.html.twig' %}
+  {% form_theme profileForm 'bootstrap_4_layout.html.twig' %}
 
 {% block title %}Profile{% endblock %}
 
@@ -9,13 +10,21 @@
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
 
-    <h2>Mon profil</h2>
-
-    <div class="col-12 col-lg-4">
-        {{ form_start(profileForm)}}
-        {{ form_widget(profileForm) }}
-        <button type="submit" class="btn btn-secondary">Enregistrer</button>
-        <a class="btn btn-secondary " href="{{ path('sortie_home') }}">Annuler</a>
-        {{ form_end(profileForm) }}
+    <h4 align="center">Mon profil</h4>
+    <div id="global">
+        <div class="d-flex justify-content-between">
+            <div class="avatar">
+                <img class="img-fluid float-left" src="{{ profile.avatar }}" alt="avatar">
+            </div>
+            <div>
+                {{ form_start(profileForm) }}
+                {{ form_widget(profileForm) }}
+                <div class="form-group">
+                    <button type="submit" class="btn btn-secondary">Enregistrer</button>
+                    <a href="{{ path('sortie_home') }}" class="white-link btn btn-secondary"> Annuler </a>
+                </div>
+                {{ form_end(profileForm) }}
+            </div>
+        </div>
     </div>
 {% endblock %}

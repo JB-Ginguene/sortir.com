@@ -23,3 +23,15 @@ button{
     left: 30%;
     bottom: 25%;
 }
+
+.avatar{
+    display: flex;
+    margin-top: 30%;
+    margin-block: auto;
+    height: 300px;
+    width: 200px;
+}
+#global{
+    margin: 0 auto;
+    width: 40%;
+}
