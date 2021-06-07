@@ -116,8 +116,11 @@ class CsvImportCommand extends Command
 
         $data = $serializer->decode($fileString, $fileExtension);
 
-
         return $data;
+    }
+
+    private function hashPassword(){
+
     }
 
 }
