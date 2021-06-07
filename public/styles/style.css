@@ -23,3 +23,10 @@ button{
     left: 30%;
     bottom: 25%;
 }
+
+.login-form{
+    height: 70vh;
+}
+.login-button{
+    width: 100%;
+}
