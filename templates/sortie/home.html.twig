@@ -100,7 +100,7 @@
                     {% if app.user %}
                         {% if app.user.id == sortie.organisateur.id %}
                             <td class="d-none d-lg-table-cell">
-                                <a href="{{ path('app_profile', {'id' : sortie.organisateur.id}) }}"
+                                <a href="{{ path('profile_detail', {'id' : sortie.organisateur.id}) }}"
                                    title="Détails de l'organisateur'">
                                     {{ sortie.organisateur.pseudo }}
                                 </a>
