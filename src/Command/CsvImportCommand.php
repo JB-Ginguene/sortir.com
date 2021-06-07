@@ -13,6 +13,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -29,9 +30,12 @@ class CsvImportCommand extends Command
 
     private $participantRepository;
 
+    private $passwordEncoder;
+
     public function __construct(EntityManagerInterface $entityManager,
                                 ParticipantRepository $participantRepository,
                                 UpdateEntity $updateEntity,
+                                UserPasswordEncoderInterface $passwordEncoder,
                                 string $dataDirectory)
     {
         parent::__construct();
@@ -39,6 +43,7 @@ class CsvImportCommand extends Command
         $this->entityManager = $entityManager;
         $this->dataDirectory = $dataDirectory;
         $this->updateEntity =$updateEntity;
+        $this->passwordEncoder=$passwordEncoder;
 
     }
 
@@ -86,19 +91,26 @@ class CsvImportCommand extends Command
                         ->setPseudo($attributs[5])
                         ->setSite($this->entityManager->getRepository(Site::class)->findOneBy(['nom'=>$attributs[6]]))
                         ->setRoles(["ROLE_USER"]);
-            $compteur++;
+
+            $this->hashPassword($participant);
+
             $this->updateEntity->save($participant);
 
+            $compteur++;
             $io->progressAdvance();
         }
 
+        $io->text("");
 
         $io->success("Super ! ".$compteur." participants ont été ajoutés");
 
         return Command::SUCCESS;
     }
 
-
+    /**
+     * Fonction qui permet d'extraire les données du fichier csv, pour les retourner sous forme d'un array
+     * @return mixed
+     */
     private function getDataFromFile()
     {
         $file = $this->dataDirectory . 'data.csv';
@@ -119,8 +131,14 @@ class CsvImportCommand extends Command
         return $data;
     }
 
-    private function hashPassword(){
+    /**
+     * Fonction qui permet d'hasher le password utilisateur
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param Participant $participant
+     */
+    private function hashPassword(Participant $participant){
 
+        $participant->setPassword($this->passwordEncoder->encodePassword($participant, $participant->getPassword()));
     }
 
 }
