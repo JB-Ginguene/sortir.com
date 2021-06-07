@@ -26,7 +26,7 @@ class AppFixtures extends Fixture
         // "Passée" = sortie ayant une date de fin > d'un mois à aujourd'hui
         // "Archivée" = sortie ARCHIVEE, fin de sortie > à un mois
         // "Annulée" = sortie annulée, visible de tous jusqu'à un mois après la sortie, mais non réservable
-        $etatTab = ["Créée", "Ouverte", "Clôturée", "Activité en cours", "Passée", "Annulée"];
+        $etatTab = ["Créée", "Ouverte", "Clôturée", "Activité en cours", "Passée", "Annulée", "Archivée"];
         foreach ($etatTab as $etatItem) {
             $etat = new Etat();
             $etat->setLibelle($etatItem);

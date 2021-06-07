@@ -32,6 +32,12 @@ class SortieRepository extends ServiceEntityRepository
         $this->security = $security;
     }
 
+    /**
+     * Fonction qui permet d'effectuer une recherche personnalisée grâce à des filtres
+     * @param ResearchFilter $research
+     * @param EntityManagerInterface $entityManager
+     * @return int|mixed|string
+     */
     public function findByPersonnalResearch(ResearchFilter $research, EntityManagerInterface $entityManager)
     {
         $etatsPassee = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => "Passée"]);
@@ -92,6 +98,11 @@ class SortieRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    /**
+     * Fonction qui permet de retourner les sorties grâce à un id organisateur
+     * @param $id
+     * @return int|mixed|string
+     */
     public function findByIdParticipant($id)
     {
         // s = sortie
@@ -101,6 +112,12 @@ class SortieRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    /**
+     * Fonction qui permet d'ajouter un participant à une sortie
+     * @param $idSortie
+     * @param $idParticipant
+     * @param EntityManagerInterface $entityManager
+     */
     public function ajouterParticipant($idSortie, $idParticipant, EntityManagerInterface $entityManager)
     {
         $sortie = $this->find($idSortie);
@@ -111,6 +128,12 @@ class SortieRepository extends ServiceEntityRepository
         $entityManager->flush();
     }
 
+    /**
+     * Fonction qui permet de retirer un participant d'une sortie
+     * @param $idSortie
+     * @param $idParticipant
+     * @param EntityManagerInterface $entityManager
+     */
     public function retirerParticipant($idSortie, $idParticipant, EntityManagerInterface $entityManager)
     {
         $sortie = $this->find($idSortie);
@@ -119,6 +142,7 @@ class SortieRepository extends ServiceEntityRepository
         $entityManager->persist($sortie);
         $entityManager->flush();
     }
+
 
     public function findDetailSortieById($id)
     {
@@ -139,9 +163,13 @@ class SortieRepository extends ServiceEntityRepository
         return $query->getSingleResult();
     }
 
-    public function findAllForHomePage()
+    /**
+     * Fonction qui retourne la liste de toutes les sorties
+     * @param EntityManagerInterface $entityManager
+     * @return int|mixed|string
+     */
+    public function findAllForHomePage(EntityManagerInterface $entityManager)
     {
-        // s = sortie
         $queryBuilder = $this->createQueryBuilder('s')
             ->leftJoin('s.participants', 'participant')
             ->leftJoin('s.lieu', 'lieu')
