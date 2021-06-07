@@ -73,11 +73,6 @@ class Sortie
     private $infosSortie;
 
     /**
-     * @ORM\Column(type="string", length=250, nullable=true)
-     */
-    private $urlPhoto;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Lieu::class, inversedBy="sortie")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -184,18 +179,6 @@ class Sortie
     public function setInfosSortie(?string $infosSortie): self
     {
         $this->infosSortie = $infosSortie;
-
-        return $this;
-    }
-
-    public function getUrlPhoto(): ?string
-    {
-        return $this->urlPhoto;
-    }
-
-    public function setUrlPhoto(?string $urlPhoto): self
-    {
-        $this->urlPhoto = $urlPhoto;
 
         return $this;
     }

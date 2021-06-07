@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} | Mon profil{% endblock %}
+
+{% block body %}
+
+    <div align="center">
+        <h2>{{ profile.pseudo }}</h2>
+    </div>
+
+    <div class="container col-lg-10 col-md-20 col-sm-10 col-xs-12 bg-light mt-4 mb-2 pt-2 pb-2 align-self-center">
+        <div class="d-flex justify-content-between">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <img src="{{ profile.avatar }}" alt="avatar">
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <p>Prenom : {{ profile.prenom }}</p>
+                <p>Nom : {{ profile.nom }} </p>
+                <p>Téléphone : {{ profile.telephone }}</p>
+                <p>Email : {{ profile.email }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div align="center">
+        <a href="{{ path('profile_edit', {'id' : app.user.id}) }}" class="white-link btn btn-secondary"> Modifier mon
+            profil </a>
+        <a href="{{ path('sortie_home') }}" class="white-link btn btn-secondary"> Retour </a>
+
+    </div>
+{% endblock %}
+
+
+
+
+

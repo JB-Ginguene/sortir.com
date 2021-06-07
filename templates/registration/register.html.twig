@@ -8,11 +8,13 @@
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
 
-    <h1>Inscrire un participant</h1>
-    <div class="col-12 col-lg-4">
+    <div class="col-12 col-lg-4 offset-lg-4 ">
+        <h1>Inscrire un·e participant·e</h1>
         {{ form_start(registrationForm) }}
            {{ form_widget(registrationForm) }}
-            <button type="submit" class="btn btn-primary">Register</button>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary ">Register</button>
+        </div>
         {{ form_end(registrationForm) }}
     </div>
 {% endblock %}

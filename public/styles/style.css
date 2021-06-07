@@ -31,3 +31,23 @@ button{
     background-color: darkslategrey;
     max-height: 150px;
 }
+
+
+.login-form{
+    height: 70vh;
+}
+.login-button{
+    width: 100%;
+}
+
+.avatar{
+    display: flex;
+    margin-top: 30%;
+    margin-block: auto;
+    height: 300px;
+    width: 200px;
+}
+#global{
+    margin: 0 auto;
+    width: 40%;
+}
