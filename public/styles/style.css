@@ -23,3 +23,11 @@ button{
     left: 30%;
     bottom: 25%;
 }
+
+.borderDetailSortie{
+    position: absolute;
+    margin-right: 10px;
+    border: 2px solid darkslategrey;
+    background-color: darkslategrey;
+    max-height: 150px;
+}

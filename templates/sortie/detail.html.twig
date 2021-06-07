@@ -3,10 +3,10 @@
 {% block title %}{{ parent() }} / Détail{% endblock %}
 
 {% block body %}
-    <h1>Détail de la sortie</h1>
-    <div class="container col-lg-10 col-md-20 col-sm-10 col-xs-12 bg-light mt-4 mb-2 pt-2 pb-2 align-self-center">
+    <h1 class="ml-4">Détail de la sortie</h1>
+    <div class="container col-lg-10 col-md-10 col-sm-10 col-xs-10 bg-light justify-content-center mb-2">
         <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div class="col-lg-6 col-md-6 col-sm-11 col-xs-11">
                 <p>Nom de la sortie : {{ sortie.nom }}</p>
                 <p>Date et heure de la sortie : {{ sortie.dateHeureDebut|date("m/d/Y H:i") }}</p>
                 <p>Date limite d'inscription : {{ sortie.dateLimiteInscription|date("m/d/Y") }}</p>
@@ -16,7 +16,11 @@
                 <p>Durée : {{ sortie.duree }}</p>
                 <p>Description et infos : {{ sortie.infosSortie }}</p>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 border-left">
+            <div class="d-flex ">
+                <did class="d-none d-md-table-cell align-self-center h-100 borderDetailSortie"></did>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-11 col-xs-11">
                 <p>Ville organisatrice : {{ sortie.site.nom }}</p>
                 <p>Lieu : {{ sortie.lieu.nom }}</p>
                 <p>Rue : {{ sortie.lieu.rue }}</p>
@@ -59,10 +63,10 @@
         </div>
     </div>
 
-    <h1>Détail des participants :</h1>
+    <h1 class="ml-4">Détail des participants</h1>
 
     <div class="container col-lg-10 col-md-20 col-sm-10 col-xs-12 d-flex justify-content-center container">
-        <table class="table">
+        <table class="table table-hover">
             <thead>
             <tr>
                 {# TODO Ajouter pseudo et non prenom #}
@@ -73,9 +77,8 @@
             <tbody>
             {% for participant in sortie.participants %}
                 <tr>
-                    <th scope="row">{{ participant.pseudo }}</th>
+                    <th scope="row"><a class="text-decoration-none" href="{{ path('app_profile', {'id' : participant.id}) }}" title="Détails du participant">{{ participant.pseudo }}</a></th>
                     <td>{{ participant.nom }}</td>
-
                 </tr>
             {% else %}
                 <div>Pas de partipants pour le moment</div>
