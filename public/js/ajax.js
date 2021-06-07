@@ -1,111 +1,236 @@
 //une fois que la page est chargée on appel la fonction init
 window.onload = init;
 
-function inscriptionDesinscription() {
-    let inscriptionButtons = Array.from(document.getElementsByClassName('sortie_inscription'));
-    console.log("inscriptionButtons début : ");
-    console.log(inscriptionButtons);
+function inscriptionDesinscription($path) {
+    if ($path === '') {
+        let inscriptionButtons = Array.from(document.getElementsByClassName('sortie_inscription'));
+        console.log("inscriptionButtons début : ");
+        console.log(inscriptionButtons);
 
-    let desinscriptionButtons = Array.from(document.getElementsByClassName('sortie_desinscription'));
-    console.log("desinscriptionButtons début : ");
-    console.log(desinscriptionButtons);
+        let desinscriptionButtons = Array.from(document.getElementsByClassName('sortie_desinscription'));
+        console.log("desinscriptionButtons début : ");
+        console.log(desinscriptionButtons);
+        // PAGE ACCUEIL INSCRIPTION
+        inscriptionButtons.forEach(function (elem) {
+            elem.addEventListener('click', function () {
+                let data = {'sortieid': elem.dataset.sortieid, 'userid': elem.dataset.userid};
 
-    //INSCRIPTION
-    inscriptionButtons.forEach(function (elem, idx) {
-        elem.addEventListener('click', function () {
-            let data = {'sortieid': elem.dataset.sortieid, 'userid': elem.dataset.userid};
+                fetch("ajax-sortie-inscription", {method: 'POST', body: JSON.stringify(data)})
+                    //promesse : le contenu du data dans le dernier then
+                    .then(function (response) {
+                        return response.json();
+                    }).then(function (data) {
+                    ////////////
+                    if (data.participant !== data.participantMax) {
+                        let td = document.createElement('td');
+                        let a = document.createElement('a');
+                        a.classList.add("bg-success");
+                        a.classList.add("btn");
+                        a.classList.add("btn-sm");
+                        a.classList.add("sortie_desinscription");
+                        a.setAttribute("role", "button");
+                        a.setAttribute("data-sortieId", data.sortieid);
+                        a.setAttribute("data-userId", data.userid);
+                        a.innerHTML = "Inscrit·e";
+                        td.append(a);
+                        let parent = elem.parentNode;
+                        document.getElementById('nbreParticipant' + data.sortieid).innerHTML = data.participant + "/" + data.participantMax;
+                        if (parent.parentNode) {
+                            parent.parentNode.replaceChild(td, parent);
+                        }
+                    } else if (data.participant === data.participantMax) {
+                        let td = document.createElement('td');
+                        // BOUTON 1 : COMPLET
+                        let a1 = document.createElement('a');
+                        a1.classList.add("bg-danger");
+                        a1.classList.add("btn");
+                        a1.classList.add("btn-sm");
+                        a1.classList.add("mb-1");
+                        a1.innerHTML = "Complet!";
 
-            fetch("ajax-sortie-inscription", {method: 'POST', body: JSON.stringify(data)})
-                //promesse : le contenu du data dans le dernier then
-                .then(function (response) {
-                    return response.json();
-                }).then(function (data) {
-                ////////////
-                if (data.participant !== data.participantMax) {
+                        // BOUTON 2 : DEJA INSCRIT :
+                        let a2 = document.createElement('a');
+                        a2.classList.add("bg-success");
+                        a2.classList.add("btn");
+                        a2.classList.add("btn-sm");
+                        a2.classList.add("sortie_desinscription");
+                        a2.setAttribute("role", "button");
+                        a2.setAttribute("data-sortieId", data.sortieid);
+                        a2.setAttribute("data-userId", data.userid);
+                        a2.innerHTML = "Inscrit·e";
+
+                        td.append(a1, a2);
+                        let parent = elem.parentNode;
+                        document.getElementById('nbreParticipant' + data.sortieid).innerHTML = data.participant + "/" + data.participantMax;
+                        if (parent.parentNode) {
+                            parent.parentNode.replaceChild(td, parent);
+                        }
+                    }
+
+                    /////////////////
+                    inscriptionDesinscription('');
+                    ///////////
+                });
+            });
+        })
+
+        //DESINSCRIPTION :
+        desinscriptionButtons.forEach(function (elem) {
+            elem.addEventListener('click', function () {
+                let data = {'sortieid': elem.dataset.sortieid, 'userid': elem.dataset.userid};
+
+                fetch("ajax-sortie-desinscription", {method: 'POST', body: JSON.stringify(data)})
+                    //promesse : le contenu du data dans le dernier then
+                    .then(function (response) {
+                        return response.json();
+                    }).then(function (data) {
+
                     let td = document.createElement('td');
                     let a = document.createElement('a');
-                    a.classList.add("bg-success");
+                    a.classList.add("bg-warning");
                     a.classList.add("btn");
                     a.classList.add("btn-sm");
-                    a.classList.add("sortie_desinscription");
+                    a.classList.add("sortie_inscription");
                     a.setAttribute("role", "button");
                     a.setAttribute("data-sortieId", data.sortieid);
                     a.setAttribute("data-userId", data.userid);
-                    a.innerHTML = "Inscrit·e";
+                    a.innerHTML = "S'inscrire";
                     td.append(a);
                     let parent = elem.parentNode;
                     document.getElementById('nbreParticipant' + data.sortieid).innerHTML = data.participant + "/" + data.participantMax;
                     if (parent.parentNode) {
                         parent.parentNode.replaceChild(td, parent);
                     }
-                }else if (data.participant === data.participantMax) {
-                    let td = document.createElement('td');
-                    // BOUTON 1 : COMPLET
-                    let a1 = document.createElement('a');
-                    a1.classList.add("bg-danger");
-                    a1.classList.add("btn");
-                    a1.classList.add("btn-sm");
-                    a1.classList.add("mb-1");
-                    a1.innerHTML = "Complet!";
+                    inscriptionDesinscription('');
+                });
+            });
+        });
+    }
+    if ($path === 'sortie/detail') {
+        let inscriptionButtons = document.getElementById('sortie_inscription');
+        console.log("inscriptionButtons début : ");
+        console.log(inscriptionButtons);
 
-                    // BOUTON 2 : DEJA INSCRIT :
-                    let a2 = document.createElement('a');
-                    a2.classList.add("bg-success");
-                    a2.classList.add("btn");
-                    a2.classList.add("btn-sm");
-                    a2.classList.add("sortie_desinscription");
-                    a2.setAttribute("role", "button");
-                    a2.setAttribute("data-sortieId", data.sortieid);
-                    a2.setAttribute("data-userId", data.userid);
-                    a2.innerHTML = "Inscrit·e";
+        let desinscriptionButtons = document.getElementById('sortie_desinscription');
+        console.log("desinscriptionButtons début : ");
+        console.log(desinscriptionButtons);
+        // PAGE DETAIL INSCRIPTION
+        if (inscriptionButtons) {
+            inscriptionButtons.addEventListener('click', function () {
+                let data = {
+                    'sortieid': inscriptionButtons.dataset.sortieid,
+                    'userid': inscriptionButtons.dataset.userid
+                };
+                console.log(data)
+                fetch("inscription", {method: 'POST', body: JSON.stringify(data)})
+                    //promesse : le contenu du data dans le dernier then
+                    .then(function (response) {
+                        return response.json();
+                    }).then(function (data) {
+                        // Si non-complet :
+                    if (data.participant !== data.participantMax) {
+                        let a = document.createElement('a');
+                        a.classList.add("bg-success");
+                        a.classList.add("btn");
+                        a.classList.add("btn-lg");
+                        a.setAttribute("id", "sortie_desinscription");
+                        a.setAttribute("role", "button");
+                        a.setAttribute("data-sortieId", data.sortieid);
+                        a.setAttribute("data-userId", data.userid);
+                        a.innerHTML = "Inscrit·e";
+                        // création div :
+                        let div = document.createElement('div');
+                        div.classList.add("container");
+                        div.classList.add("text-center");
+                        div.append(a);
+                        let parent = inscriptionButtons.parentNode;
+                        document.getElementById('nbreParticipant' + data.sortieid).innerHTML = data.participant + "/" + data.participantMax;
+                        if (parent.parentNode) {
+                            parent.parentNode.replaceChild(div, parent);
+                        }
+                    } else if (data.participant === data.participantMax) {
+                        // BOUTON 1 : COMPLET
+                        let a1 = document.createElement('a');
+                        a1.classList.add("bg-danger");
+                        a1.classList.add("btn");
+                        a1.classList.add("btn-lg");
+                        a1.innerHTML = "Complet!";
 
-                    td.append(a1, a2);
-                    let parent = elem.parentNode;
-                    document.getElementById('nbreParticipant' + data.sortieid).innerHTML = data.participant + "/" + data.participantMax;
-                    if (parent.parentNode) {
-                        parent.parentNode.replaceChild(td, parent);
-                    }}
+                        // BOUTON 2 : DEJA INSCRIT :
+                        let a2 = document.createElement('a');
+                        a2.classList.add("bg-success");
+                        a2.classList.add("btn");
+                        a2.classList.add("btn-lg");
+                        a2.setAttribute("id", "sortie_desinscription");
+                        a2.setAttribute("role", "button");
+                        a2.setAttribute("data-sortieId", data.sortieid);
+                        a2.setAttribute("data-userId", data.userid);
+                        a2.innerHTML = "Inscrit·e";
+
+                        //div contenant les boutons :
+                        let div = document.createElement('div');
+                        div.classList.add("container");
+                        div.classList.add("text-center");
+                        div.classList.add("justify-content-between");
+                        div.classList.add("d-flex");
+                        div.append(a1, a2);
+                        let parent = inscriptionButtons.parentNode;
+                        document.getElementById('nbreParticipant' + data.sortieid).innerHTML = data.participant + "/" + data.participantMax;
+                        if (parent.parentNode) {
+                            parent.parentNode.replaceChild(div, parent);
+                        }
+                    }
 
                     /////////////////
-                    inscriptionDesinscription();
-                ///////////
+                    inscriptionDesinscription('sortie/detail');
+                    ///////////
+                });
             });
-        });
-    })
+        }
 
-    //DESINSCRIPTION :
-    desinscriptionButtons.forEach(function (elem, idx) {
-        elem.addEventListener('click', function () {
-            let data = {'sortieid': elem.dataset.sortieid, 'userid': elem.dataset.userid};
+        //DESINSCRIPTION :
+        if (desinscriptionButtons) {
+            desinscriptionButtons.addEventListener('click', function () {
+                    let data = {
+                        'sortieid': desinscriptionButtons.dataset.sortieid,
+                        'userid': desinscriptionButtons.dataset.userid
+                    };
+                    fetch("desinscription", {
+                        method: 'POST',
+                        body: JSON.stringify(data)
+                    })
+                        //promesse : le contenu du data dans le dernier then
+                        .then(function (response) {
+                            return response.json();
+                        }).then(function (data) {
+                        // création bouton :
+                        let a = document.createElement('a');
+                        a.classList.add("bg-warning");
+                        a.classList.add("btn");
+                        a.classList.add("btn-lg");
+                        a.setAttribute("id", "sortie_inscription");
+                        a.setAttribute("role", "button");
+                        a.setAttribute("data-sortieId", data.sortieid);
+                        a.setAttribute("data-userId", data.userid);
+                        a.innerHTML = "S'inscrire";
+                        // création div :
+                        let div = document.createElement('div');
+                        div.classList.add("container");
+                        div.classList.add("text-center");
+                        div.append(a);
 
-            fetch("ajax-sortie-desinscription", {method: 'POST', body: JSON.stringify(data)})
-                //promesse : le contenu du data dans le dernier then
-                .then(function (response) {
-                    return response.json();
-                }).then(function (data) {
-
-                let td = document.createElement('td');
-                let a = document.createElement('a');
-                a.classList.add("bg-warning");
-                a.classList.add("btn");
-                a.classList.add("btn-sm");
-                a.classList.add("sortie_inscription");
-                a.setAttribute("role", "button");
-                a.setAttribute("data-sortieId", data.sortieid);
-                a.setAttribute("data-userId", data.userid);
-                a.innerHTML = "S'inscrire";
-                td.append(a);
-                let parent = elem.parentNode;
-                document.getElementById('nbreParticipant' + data.sortieid).innerHTML = data.participant + "/" + data.participantMax;
-                if (parent.parentNode) {
-                    parent.parentNode.replaceChild(td, parent);
+                        let parent = desinscriptionButtons.parentNode;
+                        document.getElementById('nbreParticipant' + data.sortieid).innerHTML = data.participant + "/" + data.participantMax;
+                        if (parent.parentNode) {
+                            parent.parentNode.replaceChild(div, parent);
+                        }
+                        inscriptionDesinscription('sortie/detail');
+                    });
                 }
+            );
 
-                inscriptionDesinscription();
-            });
-        });
-    });
-
+        }
+    }
 }
 
 function init() {
@@ -167,7 +292,14 @@ function init() {
 
 // DES/INSCRIPTION SORTIE (page d'accueil)
     if (url === '') {
-        inscriptionDesinscription();
+        $path = '';
+        inscriptionDesinscription($path);
+    }
+
+    // DES/INSCRIPTION SORTIE (page détail )
+    if (url.includes('sortie/detail')) {
+        $path = 'sortie/detail';
+        inscriptionDesinscription($path);
     }
 }
 

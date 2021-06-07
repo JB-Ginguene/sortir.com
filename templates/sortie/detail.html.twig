@@ -5,16 +5,18 @@
 {% block body %}
     <h1>Détail de la sortie</h1>
     <div class="container col-lg-10 col-md-20 col-sm-10 col-xs-12 bg-light mt-4 mb-2 pt-2 pb-2 align-self-center">
-        <div class="d-flex justify-content-between">
+        <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <p>Nom de la sortie : {{ sortie.nom }}</p>
                 <p>Date et heure de la sortie : {{ sortie.dateHeureDebut|date("m/d/Y H:i") }}</p>
                 <p>Date limite d'inscription : {{ sortie.dateLimiteInscription|date("m/d/Y") }}</p>
-                <p>Nombre de particpants : {{ sortie.participants|length }}/{{ sortie.nbInscriptionsMax }}</p>
+                <p>Nombre de particpants : <span
+                            id="nbreParticipant{{ sortie.id }}">{{ sortie.participants|length }}/{{ sortie.nbInscriptionsMax }}</span>
+                </p>
                 <p>Durée : {{ sortie.duree }}</p>
                 <p>Description et infos : {{ sortie.infosSortie }}</p>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 border-left">
                 <p>Ville organisatrice : {{ sortie.site.nom }}</p>
                 <p>Lieu : {{ sortie.lieu.nom }}</p>
                 <p>Rue : {{ sortie.lieu.rue }}</p>
@@ -24,12 +26,50 @@
             </div>
         </div>
     </div>
-    {% if app.user.id == sortie.organisateur.id %}
-        <div class="container text-center">
-            <a href="{{ path('sortie_edit', {'id' : sortie.id}) }}" class="btn btn-secondary btn-lg" role="button">Modifier</a>
-        </div>
-    {% endif %}
+    <div class="container">
+        <div class="d-flex justify-content-between">
+            {% if sortie.etat.libelle == "Passée" %}
+                <td><a class="bg-info btn btn-lg">Sortie passée</a></td>
+            {% elseif sortie.participants|length >= sortie.nbInscriptionsMax %}
+                <td><a class="bg-danger btn btn-sm mb-1">Complet!</a>
+                    {% if sortie.participants.contains(app.user) %}
+                        <a data-sortieId="{{ sortie.id }}" data-userId="{{ app.user.id }}"
+                           class="bg-success btn btn-sm sortie_desinscription" role="button">Inscrit·e</a>
+                    {% endif %}
+                </td>
 
+            {% elseif sortie.participants.contains(app.user) %}
+                {# Oui, l'utilisateur connecté est bien inscrit : #}
+                <td><a data-sortieId="{{ sortie.id }}" data-userId="{{ app.user.id }}"
+                       class="bg-success btn btn-sm sortie_desinscription" role="button">Inscrit·e</a></td>
+            {% else %}
+                {# Non, l'ulisateur connecté n'est pas inscrit à cette sortie : #}
+                <td><a data-sortieId="{{ sortie.id }}" data-userId="{{ app.user.id }}"
+                       class="bg-warning sortie_inscription btn btn-light btn-sm" role="button">S'incrire555</a>
+                </td>
+            {% endif %}
+
+
+            {% if sortie.participants.contains(app.user) %}
+                {# Dejà inscrit, on met le bouton de desinscription : #}
+                <div class="container text-center">
+                    <a data-sortieId="{{ sortie.id }}" data-userId="{{ app.user.id }}" id="sortie_desinscription"
+                       class="bg-success btn btn-lg" role="button">Inscrit·e</a></div>
+            {% elseif sortie.participants|length  <=  sortie.nbInscriptionsMax %}
+                {# Pas inscrit et il y a encore de la place : #}
+                <div class="container text-center">
+                    <a data-sortieId="{{ sortie.id }}" data-userId="{{ app.user.id }}" id="sortie_inscription"
+                       class="bg-warning btn btn-light btn-lg" role="button">S'incrire</a>
+                </div>
+            {% endif %}
+            {% if app.user.id == sortie.organisateur.id %}
+                <div class="container text-center">
+                    <a href="{{ path('sortie_edit', {'id' : sortie.id}) }}" class="btn btn-secondary btn-lg"
+                       role="button">Modifier</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
 
     <h1>Détail des participants :</h1>
 
