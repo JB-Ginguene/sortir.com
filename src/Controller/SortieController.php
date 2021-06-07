@@ -53,12 +53,12 @@ class SortieController extends AbstractController
     }
 
     /**
-     * @Route("/sortie/detail/{id}", name="sortie_detail")
+     * @Route("/sortie/detail/{id}", name="sortie_detail", requirements={"id"="\d+"})
      */
     public
     function detail($id, SortieRepository $sortieRepository): Response
     {
-        $sortie = $sortieRepository->find($id);
+        $sortie = $sortieRepository->findDetailSortieById($id);
 
         if (!$sortie) {
             throw $this->createNotFoundException("Désolé, la sortie demandée n'existe pas dans notre base de données");
@@ -212,6 +212,42 @@ class SortieController extends AbstractController
             'userid' => $userid,
             'participant' => $sortie->getParticipants()->count(),
             'participantMax' => $sortie->getNbInscriptionsMax(),
+        ]);
+    }
+
+    /**
+     * @Route("/sortie/detail/inscription", name="detail_inscription")
+     */
+    public function inscriptionSortieDetail(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $data = json_decode($request->getContent());
+        $userid = $data->userid;
+        $sortieid = $data->sortieid;
+        $sortie = $entityManager->getRepository(Sortie::class)->find($sortieid);
+        $entityManager->getRepository(Sortie::class)->ajouterParticipant($sortieid, $userid, $entityManager);
+        return new JsonResponse([
+            'sortieid' => $sortieid,
+            'userid' => $userid,
+            'participant' => $sortie->getParticipants()->count(),
+            'participantMax' => $sortie->getNbInscriptionsMax()
+        ]);
+    }
+
+    /**
+     * @Route("/sortie/detail/desinscription", name="detail_desinscription")
+     */
+    public function desinscriptionSortieDetail(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $data = json_decode($request->getContent());
+        $userid = $data->userid;
+        $sortieid = $data->sortieid;
+        $entityManager->getRepository(Sortie::class)->retirerParticipant($sortieid, $userid, $entityManager);
+        $sortie = $entityManager->getRepository(Sortie::class)->find($sortieid);
+        return new JsonResponse([
+            'sortieid' => $sortieid,
+            'userid' => $userid,
+            'participant' => $sortie->getParticipants()->count(),
+            'participantMax' => $sortie->getNbInscriptionsMax()
         ]);
     }
 }

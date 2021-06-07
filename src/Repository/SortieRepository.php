@@ -40,35 +40,53 @@ class SortieRepository extends ServiceEntityRepository
         // s = sortie
         $queryBuilder = $this->createQueryBuilder('s');
         $queryBuilder->leftJoin('s.participants', 'participant')
+            ->leftJoin('s.lieu', 'lieu')
+            ->leftJoin('s.etat', 'etat')
+            ->leftJoin('s.site', 'site')
+            ->leftJoin('lieu.ville', 'ville')
             ->addSelect('participant')
+            ->addSelect('etat')
+            ->addSelect('lieu')
+            ->addSelect('site')
+            ->addSelect('ville')
 
             // on recupere uniquement les sorties NON archivées :
             ->where("s.etat != " . $etatsPassee->getId());
 
         if ($research->getSite()) {
-            $queryBuilder->andWhere('s.site >= ' . $research->getSite()->getId());
+            $queryBuilder->andWhere('s.site >= :id')
+                ->setParameter('id', $research->getSite()->getId());
         }
         if ($research->getNomSortie()) {
-            $queryBuilder->andWhere("s.nom LIKE '%" . $research->getNomSortie() . "%'");
+            $queryBuilder->andWhere("s.nom LIKE :nom")
+                ->setParameter('nom', "%" . $research->getNomSortie() . "%");
         }
         if ($research->getDateMin()) {
-            $queryBuilder->andWhere("s.dateHeureDebut >= '" . $research->getDateMin()->format('Y-m-d H:i:s') . "'");
+            $queryBuilder->andWhere("s.dateHeureDebut >= :dateMin")
+                ->setParameter('dateMin', $research->getDateMin()->format('Y-m-d H:i:s'));
         }
         if ($research->getDateMax()) {
-            $queryBuilder->andWhere("s.dateHeureDebut <= '" . $research->getDateMax()->format('Y-m-d H:i:s') . "'");
+            $queryBuilder->andWhere("s.dateHeureDebut <= :dateMax")
+                ->setParameter('dateMax', $research->getDateMax()->format('Y-m-d H:i:s'));
         }
         if (in_array('organisateur', $research->getSpecificitees())) {
-            $queryBuilder->andWhere('s.organisateur = ' . $userId);
+            $queryBuilder->andWhere('s.organisateur = :userid')
+                ->setParameter('userid', $userId);
         }
         if (in_array('inscrit', $research->getSpecificitees())) {
-            $queryBuilder->andWhere('participant.id = ' . $userId);
+            $queryBuilder->andWhere('participant.id = :userid')
+                ->setParameter('userid', $userId);
         }
         if (in_array('noninscrit', $research->getSpecificitees())) {
-            $queryBuilder->andWhere('participant.id != ' . $userId);
+            $queryBuilder->andWhere('participant.id != :userid')
+                ->setParameter('userid', $userId);
         }
         if (in_array('sortiespassees', $research->getSpecificitees())) {
             $now = new \DateTime();
-            $queryBuilder->andWhere("s.dateHeureDebut <= '" . $now->format('Y-m-d H:i:s') . "'");
+            $nowMinusOneMonth = $now->modify('-1month');
+            $queryBuilder->andWhere("s.dateHeureDebut <= :dateNow AND s.dateHeureDebut >= :dateNowMinusOneMonth")
+            ->setParameter('dateNow', $now->format('Y-m-d H:i:s'))
+            ->setParameter('dateNowMinusOneMonth', $nowMinusOneMonth->format('Y-m-d H:i:s'));
         }
         $query = $queryBuilder->getQuery();
         return $query->getResult();
@@ -100,6 +118,25 @@ class SortieRepository extends ServiceEntityRepository
         $sortie->removeParticipant($participant);
         $entityManager->persist($sortie);
         $entityManager->flush();
+    }
+
+    public function findDetailSortieById($id)
+    {
+        // s = sortie
+        $queryBuilder = $this->createQueryBuilder('s')
+            ->leftJoin('s.participants', 'participant')
+            ->leftJoin('s.lieu', 'lieu')
+            ->leftJoin('s.etat', 'etat')
+            ->leftJoin('s.site', 'site')
+            ->leftJoin('lieu.ville', 'ville')
+            ->addSelect('participant')
+            ->addSelect('etat')
+            ->addSelect('lieu')
+            ->addSelect('site')
+            ->addSelect('ville')
+            ->where('s.id = ' . $id);
+        $query = $queryBuilder->getQuery();
+        return $query->getSingleResult();
     }
 
     public function findAllForHomePage()
