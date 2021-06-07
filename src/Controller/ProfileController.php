@@ -8,6 +8,7 @@ use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +18,7 @@ class ProfileController extends AbstractController
 {
 
     /**
-     * @Route("/profile/{id}", name="app_profile")
+     * @Route("/profile/{id}", name="profile_edit")
      */
     public function edit($id,
                          ParticipantRepository $participantRepository,
@@ -34,19 +35,31 @@ class ProfileController extends AbstractController
         $profileForm = $this->createForm(ProfileFormType::class, $profile);
         $profileForm->handleRequest($request);
 
+
         if ($profileForm->isSubmitted() && $profileForm->isValid()) {
             //hash du password
             $profile->setPassword(
                 $passwordEncoder->encodePassword(
                     $profile,
                     $profileForm->get('password')->getData()
-                )
-            );
+                ));
+
+            $file = $profileForm->get('avatar')->getData();
+
+            /**
+             * @var UploadedFile $file
+             */
+
+            if ($file) {
+                $newFileName = $profile->getNom() . '-' . uniqid() . '-' . $file->guessExtension();
+                $file->move($this->getParameter('upload_profile_avatar_dir'), $newFileName);
+                $profile->setAvatar($newFileName);
+            }
 
             $updateEntity->save($profile);
 
             $this->addFlash('success', 'profil mis à jour');
-            return $this->redirectToRoute('sortie_home');
+            return $this->render('profile/view.html.twig');
         }
 
         return $this->render('profile/edit.html.twig', [
@@ -68,8 +81,23 @@ class ProfileController extends AbstractController
         }
         return $this->render('profile/detail.html.twig', [
             'profile' => $profile,
-            'sortiesOrganisees'=>$sortiesOrganisees
+            'sortiesOrganisees' => $sortiesOrganisees
         ]);
     }
 
+    /**
+     * @Route("/profile/view/{id}", name="profile_view")
+     */
+
+    public function view($id, ParticipantRepository $participantRepository): Response
+    {
+        $profile = $participantRepository->find($id);
+
+        if (!$profile) {
+            throw $this->createNotFoundException("Désolé, ce profil n'existe pas");
+        }
+        return $this->render('profile/view.html.twig', [
+            "profile" => $profile
+        ]);
+    }
 }

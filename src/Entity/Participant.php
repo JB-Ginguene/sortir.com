@@ -10,6 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
+
 /**
  * @ORM\Entity(repositoryClass=ParticipantRepository::class)
  * @UniqueEntity(fields={"email"}, message="Il existe déjà un compte avec cet email")
@@ -113,6 +114,12 @@ class Participant implements UserInterface
      * @ORM\Column(type="string", length=20, unique=true)
      */
     private $pseudo;
+
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $avatar;
+
 
     public function __construct()
     {
@@ -320,5 +327,16 @@ class Participant implements UserInterface
         return $this;
     }
 
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?string $avatar): self
+    {
+        $this->avatar = $avatar;
+
+        return $this;
+    }
 
 }
