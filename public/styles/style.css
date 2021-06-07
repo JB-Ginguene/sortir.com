@@ -6,6 +6,11 @@ button{
     color: white;
     outline: none;
 }
+.white-link:hover{
+    text-decoration: none;
+    color: white;
+    outline: none;
+}
 .hidden-div{
     display: none;
 }
@@ -24,6 +29,15 @@ button{
     bottom: 25%;
 }
 
+.borderDetailSortie{
+    position: absolute;
+    margin-right: 10px;
+    border: 2px solid darkslategrey;
+    background-color: darkslategrey;
+    max-height: 150px;
+}
+
+
 .login-form{
     height: 70vh;
 }
@@ -41,4 +55,15 @@ button{
 #global{
     margin: 0 auto;
     width: 40%;
+}
+
+.link-text-deco-none{
+    text-decoration: none;
+    outline: none;
+    color: black;
+}
+.link-text-deco-none:hover{
+    text-decoration: none;
+    outline: none;
+    color: black;
 }
