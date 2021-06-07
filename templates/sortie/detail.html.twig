@@ -77,7 +77,7 @@
             <tbody>
             {% for participant in sortie.participants %}
                 <tr>
-                    <th scope="row"><a class="text-decoration-none" href="{{ path('app_profile', {'id' : participant.id}) }}" title="Détails du participant">{{ participant.pseudo }}</a></th>
+                    <th scope="row"><a class="link-text-deco-none" href="{{ path('profile_detail', {'id' : participant.id}) }}" title="Détails du participant">{{ participant.pseudo }}</a></th>
                     <td>{{ participant.nom }}</td>
                 </tr>
             {% else %}
