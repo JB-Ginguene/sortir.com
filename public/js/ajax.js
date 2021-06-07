@@ -155,6 +155,11 @@ function inscriptionDesinscription($path) {
                         a1.classList.add("btn");
                         a1.classList.add("btn-lg");
                         a1.innerHTML = "Complet!";
+                        a1.setAttribute("id", "btn-complet");
+                        let divComplet = document.createElement('div');
+                        divComplet.classList.add("container");
+                        divComplet.classList.add("text-center");
+                        divComplet.append(a1);
 
                         // BOUTON 2 : DEJA INSCRIT :
                         let a2 = document.createElement('a');
@@ -166,14 +171,18 @@ function inscriptionDesinscription($path) {
                         a2.setAttribute("data-sortieId", data.sortieid);
                         a2.setAttribute("data-userId", data.userid);
                         a2.innerHTML = "Inscrit·e";
+                        let divInscrit = document.createElement('div');
+                        divInscrit.classList.add("container");
+                        divInscrit.classList.add("text-center");
+                        divInscrit.append(a2);
 
-                        //div contenant les boutons :
+                        //div contenant les div des boutons boutons :
                         let div = document.createElement('div');
                         div.classList.add("container");
                         div.classList.add("text-center");
                         div.classList.add("justify-content-between");
                         div.classList.add("d-flex");
-                        div.append(a1, a2);
+                        div.append(divComplet, divInscrit);
                         let parent = inscriptionButtons.parentNode;
                         document.getElementById('nbreParticipant' + data.sortieid).innerHTML = data.participant + "/" + data.participantMax;
                         if (parent.parentNode) {
@@ -203,6 +212,13 @@ function inscriptionDesinscription($path) {
                         .then(function (response) {
                             return response.json();
                         }).then(function (data) {
+                            // suppression du bouton complet si déja présent sur la page :
+                        if (document.getElementById('btn-complet')){
+                            btnComplet =document.getElementById('btn-complet');
+                            divBtnComplet = btnComplet.parentNode;
+                            divBtnComplet.parentNode.removeChild(divBtnComplet);
+                        }
+
                         // création bouton :
                         let a = document.createElement('a');
                         a.classList.add("bg-warning");
