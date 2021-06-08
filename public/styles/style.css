@@ -1,6 +1,11 @@
 button{
     margin-right: 1em;
 }
+
+main{
+    margin-bottom: 10vh;
+}
+
 .white-link{
     text-decoration: none;
     color: white;
@@ -80,4 +85,8 @@ height: 0;
     left: 0;
     width: 100% !important;
     height: 100% !important;
+}
+
+.submit-create-sortie{
+    margin-top: 2em;
 }
