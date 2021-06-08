@@ -339,4 +339,5 @@ class Participant implements UserInterface
         return $this;
     }
 
+
 }
