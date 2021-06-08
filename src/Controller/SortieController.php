@@ -32,7 +32,7 @@ class SortieController extends AbstractController
                          UpdateSorties $updateSorties,
                          CustomRedirections $customRedirections): Response
     {
-
+        //Redirection au login si il n'y a pas d'utilisateur connecté
         if (null == $this->getUser()){
             return $this->redirectToRoute('app_login');
         }

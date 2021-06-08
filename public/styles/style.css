@@ -1,6 +1,11 @@
 button{
     margin-right: 1em;
 }
+
+main{
+    margin-bottom: 10vh;
+}
+
 .white-link{
     text-decoration: none;
     color: white;
@@ -66,4 +71,8 @@ button{
     text-decoration: none;
     outline: none;
     color: black;
+}
+
+.submit-create-sortie{
+    margin-top: 2em;
 }
