@@ -8,6 +8,8 @@ use App\Entity\Sortie;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -21,11 +23,26 @@ class SortieType extends AbstractType
         $builder
             ->add('nom')
             ->add('dateHeureDebut', DateTimeType::class,[
-                'date_widget' => 'choice'
+                'widget' => 'single_text',
+                'html5' => false,
+                'attr' => [
+                    'class' => 'combinedPickerInput',
+                    'placeholder' => date('d/m/y H:i')
+                ],
+                'format' => 'dd/MM/yyyy H:i',
+                'label' => 'Date et heure de début',
+                'translation_domain' => 'Default'
             ])
-            ->add('dateLimiteInscription')
-            ->add('nbInscriptionsMax')
-            ->add('duree')
+            ->add('dateLimiteInscription', DateType::class,[
+                'widget' => 'single_text',
+                'label' => 'Date limite d\'inscription',
+            ])
+            ->add('nbInscriptionsMax', null,[
+                'label'=>'Nombre d\'inscriptions maximum'
+                ])
+            ->add('duree',null,[
+                'label'=>'Durée'
+            ])
             ->add('infosSortie')
             //->add('urlPhoto')
             ->add('site', EntityType::class,[

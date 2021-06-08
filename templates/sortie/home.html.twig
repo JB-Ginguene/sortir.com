@@ -74,6 +74,10 @@
                     <td class="d-none d-lg-table-cell">{{ sortie.etat.libelle }}</td>
                     {% if sortie.etat.libelle == "Passée" %}
                         <td class="d-none d-lg-table-cell"><a class="bg-info btn btn-sm">Sortie passée</a></td>
+                    {% elseif sortie.etat.libelle == "Créée" %}
+                        <td class="d-none d-lg-table-cell"><a class="bg-info btn btn-sm">Inscriptions bientôt ouvertes</a></td>
+                    {% elseif sortie.etat.libelle == "Annulée" %}
+                        <td class="d-none d-lg-table-cell"><a class="bg-info btn btn-sm">Annulée</a></td>
                     {% elseif sortie.participants|length >= sortie.nbInscriptionsMax %}
                         <td class="d-none d-lg-table-cell"><a class="bg-danger btn btn-sm mb-1">Complet!</a>
                             {% if sortie.participants.contains(app.user) %}

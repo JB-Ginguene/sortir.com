@@ -24,7 +24,7 @@ class Lieu
      * @ORM\Column(type="string", length=30)
      * @Assert\NotBlank(message="Ce champs ne peut être vide")
      * @Assert\Length(min=6,
-     *                max=15,
+     *                max=30,
      *                minMessage="Le nom doit contenir au minimum 6 caractères",
      *                maxMessage="Le nom doit contenir au maximum 30 caractères")
      */
@@ -34,7 +34,7 @@ class Lieu
      * @ORM\Column(type="string", length=30, nullable=true)
      * @Assert\NotBlank(message="Ce champs ne peut être vide")
      * @Assert\Length(min=6,
-     *                max=15,
+     *                max=30,
      *                minMessage="La rue doit contenir au minimum 6 caractères",
      *                maxMessage="La rue doit contenir au maximum 30 caractères")
      */
@@ -70,6 +70,16 @@ class Lieu
      * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="lieux")
      */
     private $sortie;
+
+    /**
+     * @ORM\Column(type="string", length=500)
+     * @Assert\NotBlank(message="Ce champs ne peut être vide")
+     * @Assert\Length(min=2,
+     *                max=500,
+     *                minMessage="La rue doit contenir au minimum 2 caractères",
+     *                maxMessage="La rue doit contenir au maximum 500 caractères")
+     */
+    private $urlMap;
 
     public function __construct()
     {
@@ -167,6 +177,18 @@ class Lieu
                 $sortie->setLieu(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUrlMap(): ?string
+    {
+        return $this->urlMap;
+    }
+
+    public function setUrlMap(string $urlMap): self
+    {
+        $this->urlMap = $urlMap;
 
         return $this;
     }
