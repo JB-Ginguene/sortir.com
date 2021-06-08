@@ -1,9 +1,22 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <div class="container error-page">
+        <div class="row">
+            <div class="col-12 col-lg-6 " >
+                    <h1 class="error-title">Oops</h1>
+                    <h3>Il semble que vous ayez rencontré un problème...</h3>
+                    <br>
+                    <br>
+                    <p> Vous pouvez retourner à la page de connexion en cliquant sur ce <a href="{{ path('sortie_home') }}">
+                        lien </a></p>
+            </div>
+            <div class=" col-12 col-lg-6" >
 
-    <h1>Une erreur est survenue...</h1>
-    <h2>Vous pouvez retourner à la page de connexion en cliquant sur ce <a href="{{ path('sortie_home') }}"> lien </a> </h2>
+                <img src="{{ asset('images/error/404.gif') }}" alt="triste" class="img-fluid">
 
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
