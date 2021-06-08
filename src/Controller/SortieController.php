@@ -123,7 +123,7 @@ class SortieController extends AbstractController
 
 
     /**
-     * @Route("/sortie/edit/{id}", name="sortie_edit")
+     * @Route("/sortie/edit/{id}", name="sortie_edit", requirements={"id"="\d+"})
      */
     public
     function edit($id, Request $request, EntityManagerInterface $entityManager, EtatRepository $etatRepository, UpdateEntity $updateEntity): Response
@@ -175,6 +175,24 @@ class SortieController extends AbstractController
      * @Route("/sortie/ajax-site", name="sortie_ajax_site")
      */
     public function infosLieu(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $data = json_decode($request->getContent());
+
+        $lieu = $data->lieu;
+
+        $lieu = $entityManager->getRepository(Lieu::class)->findOneBy(['nom' => $lieu]);
+
+        return new JsonResponse(['rue' => $lieu->getRue(),
+            'latitude' => $lieu->getLatitude(),
+            'longitude' => $lieu->getLongitude(),
+            'code_postal' => $lieu->getVille()->getCodePostal(),
+            'ville' => $lieu->getVille()->getNom()]);
+    }
+
+    /**
+     * @Route("/sortie/edit/ajax-site", name="edit_ajax_site")
+     */
+    public function infosLieu2(Request $request, EntityManagerInterface $entityManager): Response
     {
         $data = json_decode($request->getContent());
 

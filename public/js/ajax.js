@@ -282,7 +282,7 @@ function init() {
             });
         })
     }
-    /*
+
         // EDITION SORTIE
         if (url.includes('edit')) {
             let select = document.getElementById('sortie_lieu');
@@ -295,7 +295,7 @@ function init() {
                 //On prepare un objet qui porte les infos
                 let data = {'lieu': lieu_field};
 
-                fetch("ajax-site2", {method: 'POST', body: JSON.stringify(data)})
+                fetch("ajax-site", {method: 'POST', body: JSON.stringify(data)})
                     //promesse : le contenu du data dans le dernier then
                     .then(function (response) {
                         return response.json();
@@ -308,7 +308,7 @@ function init() {
                 });
             })
         }
-    */
+
 
 // DES/INSCRIPTION SORTIE (page d'accueil)
     if (url === '') {

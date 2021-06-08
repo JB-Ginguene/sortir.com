@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -27,7 +28,8 @@ class SortieType extends AbstractType
                 'html5' => false,
                 'attr' => [
                     'class' => 'combinedPickerInput',
-                    'placeholder' => date('d/m/y H:i')
+                    'placeholder' => date('d/m/y H:i'),
+                    'value'=> date('d/m/y H:i')
                 ],
                 'format' => 'dd/MM/yyyy H:i',
                 'label' => 'Date et heure de début',
@@ -43,7 +45,9 @@ class SortieType extends AbstractType
             ->add('duree',null,[
                 'label'=>'Durée'
             ])
-            ->add('infosSortie')
+            ->add('infosSortie',TextareaType::class,[
+                'label' => 'Informations (15 caractères minimum)'
+            ])
             //->add('urlPhoto')
             ->add('site', EntityType::class,[
                 'class'=>Site::class,
