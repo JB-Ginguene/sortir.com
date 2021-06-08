@@ -142,6 +142,7 @@ function inscriptionDesinscription($path) {
                         let div = document.createElement('div');
                         div.classList.add("container");
                         div.classList.add("text-center");
+                        div.classList.add("mb-2");
                         div.append(a);
                         let parent = inscriptionButtons.parentNode;
                         document.getElementById('nbreParticipant' + data.sortieid).innerHTML = data.participant + "/" + data.participantMax;
@@ -159,6 +160,7 @@ function inscriptionDesinscription($path) {
                         let divComplet = document.createElement('div');
                         divComplet.classList.add("container");
                         divComplet.classList.add("text-center");
+                        divComplet.classList.add("mb-2");
                         divComplet.append(a1);
 
                         // BOUTON 2 : DEJA INSCRIT :
@@ -174,6 +176,7 @@ function inscriptionDesinscription($path) {
                         let divInscrit = document.createElement('div');
                         divInscrit.classList.add("container");
                         divInscrit.classList.add("text-center");
+                        divInscrit.classList.add("mb-2");
                         divInscrit.append(a2);
 
                         //div contenant les div des boutons boutons :
@@ -233,6 +236,7 @@ function inscriptionDesinscription($path) {
                         let div = document.createElement('div');
                         div.classList.add("container");
                         div.classList.add("text-center");
+                        div.classList.add("mb-2");
                         div.append(a);
 
                         let parent = desinscriptionButtons.parentNode;

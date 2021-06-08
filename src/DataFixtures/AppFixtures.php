@@ -53,21 +53,21 @@ class AppFixtures extends Fixture
 
         // Lieu
         $lieuTab = [
-            'Ubu' => '1 Rue Saint-Hélier',
-            'Trempolino' => '6 Boulevard Léon Bureau',
-            'Novomax' => '2 Boulevard Dupleix',
-            'Le Transbo' => '3 Boulevard de Stalingrad',
-            'Le Mistral Palace' => '12 Rue Pasteur,',
-            'La Gaitée Lyrique' => '3bis Rue Papin',
-            'Excelsior' => 'Rue de la Raterie'
+            'Ubu' => ['1 Rue Saint-Hélier', '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2664.1193690682544!2d-1.6753732851400955!3d48.10793297922107!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x480ede4ab549957d%3A0xfc80ffddb3eb3f65!2sUbu!5e0!3m2!1sen!2sfr!4v1623136161175!5m2!1sen!2sfr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>'],
+            'Trempolino' => ['6 Boulevard Léon Bureau', '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2710.6089525798293!2d-1.5651436851852008!3d47.20466597916004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4805ec7140f99ef5%3A0xd90c9bc18aff33fb!2sTrempolino!5e0!3m2!1sen!2sfr!4v1623136139451!5m2!1sen!2sfr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>'],
+            'Novomax' => ['2 Boulevard Dupleix', '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2669.9864877707696!2d-4.099770785145794!3d47.99464827921225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4810d5903ceebf77%3A0xd55b284f0a3ba8ba!2zTGUgTm92b21heCAvIFBvbGFyaXTDqVtTXQ!5e0!3m2!1sen!2sfr!4v1623136181788!5m2!1sen!2sfr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>'],
+            'Le Transbo' => ['3 Boulevard de Stalingrad', '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2782.365816463682!2d4.858259314745117!3d45.78389847910598!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47f4ea9662b489a1%3A0xaf591eb6032d14e7!2sLe%20Transbordeur!5e0!3m2!1sen!2sfr!4v1623136209135!5m2!1sen!2sfr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>'],
+            'Le Mistral Palace' => ['12 Rue Pasteur,', '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2824.7293858247713!2d4.889578414704018!3d44.928838479098175!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47f5582db8aba3b3%3A0x84ccb56ee2177460!2sMistral%20Palace!5e0!3m2!1sen!2sfr!4v1623136248496!5m2!1sen!2sfr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>'],
+            'La Gaitée Lyrique' => ['3bis Rue Papin', '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.5621452460146!2d2.3512054148983212!3d48.86655927928828!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66e1088588271%3A0x7d95ac3236605c3a!2sGait%C3%A9%20Lyrique!5e0!3m2!1sen!2sfr!4v1623136265888!5m2!1sen!2sfr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>'],
+            'Excelsior' => ['Rue de la Raterie', '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2670.9842883259657!2d0.15767681485324728!3d47.97536227921079!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e2858e7ce2352f%3A0x8ee5594c43437a0c!2sLa%20P%C3%A9niche%20Excelsior!5e0!3m2!1sen!2sfr!4v1623136292257!5m2!1sen!2sfr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>']
         ];
 
         $repoVilles = $manager->getRepository(Ville::class);
         $villes = $repoVilles->findAll();
         $i = 0;
-        foreach ($lieuTab as $nom => $rue) {
+        foreach ($lieuTab as $nom => $data) {
             $lieuCree = new Lieu();
-            $lieuCree->setNom($nom)->setRue($rue)->setVille($villes[$i])->setLatitude($generator->randomFloat())->setLongitude($generator->randomFloat());;
+            $lieuCree->setNom($nom)->setRue($data[0])->setVille($villes[$i])->setUrlMap($data[1])->setLatitude($generator->randomFloat())->setLongitude($generator->randomFloat());;
             $manager->persist($lieuCree);
             $i++;
         }

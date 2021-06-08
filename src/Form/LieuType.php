@@ -22,6 +22,7 @@ class LieuType extends AbstractType
                 'class'=>Ville::class,
                 'choice_label'=>'nom'
             ])
+            ->add('urlMap')
         ;
     }
 
