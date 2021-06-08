@@ -91,3 +91,10 @@ height: 0;
 .submit-create-sortie{
     margin-top: 2em;
 }
+
+.error-page{
+    margin-top: 10vh;
+}
+.error-title{
+    font-size: 5em;
+}
