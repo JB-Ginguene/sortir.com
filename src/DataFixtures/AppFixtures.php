@@ -121,12 +121,11 @@ class AppFixtures extends Fixture
         $participants = $manager->getRepository(Participant::class)->findAll();
 
         $sortiesTab = [
-            /*"nom"=>['dateDebut', 'dureeEnMin', 'dateLimiteInscription', 'infoSortie'],*/
             "Concert  d'Henri Dès" => [new \DateTime('2021-06-20 20:30:00'), 90, new \DateTime('2021-06-19 20:30:00'), 'Super concert pour enfant !!!', $etatOuverte],
             "Pétanque party" => [new \DateTime('2021-07-20 16:30:00'), 360, new \DateTime('2021-07-19 16:30:00'), 'Tournoi de pétanque inter-régional, pensez à prendre votre pastis.', $etatOuverte],
             "Tournoi de ping-pong" => [new \DateTime('2020-06-20 20:30:00'), 90, new \DateTime('2021-06-19 20:30:00'), 'Apportez vos raquettes et venez participer au tournoi de pétanque!', $etatPassee],
-            "Conférence sur le suicide chez les développeur utilisant PL/SQL" => [new \DateTime('2021-06-20 20:30:00'), 90, new \DateTime('2021-06-19 20:30:00'), 'Conférence animée par Anthony Cosson', $etatOuverte],
-            "Soirée cinéma : marathon Star Wars" => [new \DateTime('2021-06-02 12:30:00'), 3600, new \DateTime('2021-05-28 20:30:00'), 'TA TA TA TA TATA TA TATA', $etatEnCours]
+            "Dev PL/SQL Anonymes" => [new \DateTime('2021-06-20 20:30:00'), 90, new \DateTime('2021-06-19 20:30:00'), 'Soirée animée par Anthony Cosson, after-suicide', $etatOuverte],
+            "Soirée marathon Star Wars" => [new \DateTime('2021-06-02 12:30:00'), 3600, new \DateTime('2021-05-28 20:30:00'), 'TA TA TA TA TATA TA TATA', $etatEnCours]
         ];
         foreach ($sortiesTab as $nom => $data) {
             $sortie = new Sortie();
