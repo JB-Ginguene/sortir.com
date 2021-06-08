@@ -30,7 +30,7 @@ class ProfileController extends AbstractController
 
         $profile = $participantRepository->find($id);
         if (!$profile) {
-            throw $this->createNotFoundException("Ce profil n'existe pas");
+            throw $this->createNotFoundException("Ce profile n'existe pas");
         }
         $profileForm = $this->createForm(ProfileFormType::class, $profile);
         $profileForm->handleRequest($request);
@@ -58,8 +58,10 @@ class ProfileController extends AbstractController
 
             $updateEntity->save($profile);
 
-            $this->addFlash('success', 'profil mis à jour');
-            return $this->render('profile/view.html.twig');
+            $this->addFlash('success', 'profile mis à jour');
+            return $this->redirectToRoute('profile_detail',[
+                'id'=> $profile->getId()
+            ]);
         }
 
         return $this->render('profile/edit.html.twig', [
@@ -77,7 +79,7 @@ class ProfileController extends AbstractController
         $sortiesOrganisees = $sortieRepository->findByIdParticipant($id);
 
         if (!$profile) {
-            throw $this->createNotFoundException("Désolé, ce profil n'existe pas");
+            throw $this->createNotFoundException("Désolé, ce profile n'existe pas");
         }
         return $this->render('profile/detail.html.twig', [
             'profile' => $profile,
@@ -85,19 +87,4 @@ class ProfileController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/profile/view/{id}", name="profile_view")
-     */
-
-    public function view($id, ParticipantRepository $participantRepository): Response
-    {
-        $profile = $participantRepository->find($id);
-
-        if (!$profile) {
-            throw $this->createNotFoundException("Désolé, ce profil n'existe pas");
-        }
-        return $this->render('profile/view.html.twig', [
-            "profile" => $profile
-        ]);
-    }
 }

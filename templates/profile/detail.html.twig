@@ -1,64 +1,74 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<h1>Détail du profil</h1>
-<div align="center">
-    <h2>{{ profile.pseudo }}</h2>
-</div>
 
-<div class="container col-lg-10 col-md-20 col-sm-10 col-xs-12 bg-light mt-4 mb-2 pt-2 pb-2 align-self-center">
-    <div class="d-flex justify-content-between">
-        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-            <img src="{{ profile.avatar }}" alt="avatar">
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-            <p>Prenom : {{ profile.prenom }}</p>
-            <p>Nom : {{ profile.nom }}</p>
-            <p>Téléphone : {{ profile.telephone }}</p>
-            <p>Email : {{ profile.email }}</p>
+    <div align="center">
+        <h2>{{ profile.pseudo }}</h2>
+    </div>
+
+    <div class="container" col-lg-10 col-md-20 col-sm-10 col-xs-12 bg-light mt-4 mb-2 pt-2 pb-2 align-self-center>
+        <div class="d-flex justify-content-between">
+            <div class="avatar">
+                <img class="img-responsive" src="{{ asset('images/avatar/'~ profile.avatar) }}" alt="avatar">
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <p>Prenom : {{ profile.prenom }}</p>
+                <p>Nom : {{ profile.nom }}</p>
+                <p>Téléphone : {{ profile.telephone }}</p>
+                <p>Email : {{ profile.email }}</p>
+            </div>
         </div>
     </div>
-</div>
-
-
-<h1>Sorties organisées :</h1>
-
-<div class="container col-lg-10 col-md-20 col-sm-10 col-xs-12 d-flex justify-content-center container">
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">Nom sortie</th>
-            <th scope="col">Remplissage</th>
-            <th scope="col">Options</th>
-        </tr>
-        </thead>
-        <tbody>
+    <div align="center">
+        <a href="{{ path('profile_edit', {'id' : app.user.id}) }}" class="white-link btn btn-secondary"> Modifier mon
+            profil </a>
+        <a href="{{ path('sortie_home') }}" class="white-link btn btn-secondary"> Retour </a>
+    </div>
+    {% if sortiesOrganisees %}
         {% for sortiesOrganisee in sortiesOrganisees %}
-            <tr>
-                <th scope="row">{{ sortiesOrganisee.nom }}</th>
-                <td>{{ sortiesOrganisee.participants|length }}/{{ sortiesOrganisee.nbInscriptionsMax }}</td>
-                <td><a href="{{ path('sortie_detail', {'id' : sortiesOrganisee.id}) }}"
-                       title="Détails de la sortie">Détails </a>
-                    {% if app.user %}
-                        {% if app.user.id == sortiesOrganisee.organisateur.id %}
-                            <a href="{{ path('sortie_edit', {'id' : sortiesOrganisee.id}) }}"
-                               title="Modifier la sortie">
-                                Modifier
-                            </a>
-                        {% endif %}
-                    {% endif %}
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <th colspan="3" class="alert alert-warning text-center"> Pas de sorties pour le moment</th>
-            </tr>
-        {% endfor %}
-    
-        </tbody>
-    </table>
-</div>
+            {% if app.user.id != sortieOrganisees.user.id %}
+                <h1>Sorties organisées :</h1>
 
+                <div class="container col-lg-10 col-md-20 col-sm-10 col-xs-12 d-flex justify-content-center container">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Nom sortie</th>
+                            <th scope="col">Remplissage</th>
+                            <th scope="col">Options</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for sortiesOrganisee in sortiesOrganisees %}
+                            <tr>
+                                <th scope="row">{{ sortiesOrganisee.nom }}</th>
+                                <td>{{ sortiesOrganisee.participants|length }}
+                                    /{{ sortiesOrganisee.nbInscriptionsMax }}</td>
+                                <td><a href="{{ path('sortie_detail', {'id' : sortiesOrganisee.id}) }}"
+                                       title="Détails de la sortie">Détails </a>
+                                    {% if app.user %}
+                                        {% if app.user.id == sortiesOrganisee.organisateur.id %}
+                                            <a href="{{ path('sortie_edit', {'id' : sortiesOrganisee.id}) }}"
+                                               title="Modifier la sortie">
+                                                Modifier
+                                            </a>
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <th colspan="3" class="alert alert-warning text-center"> Pas de sorties pour le moment
+                                </th>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
 {% endblock %}
 
 {% block title %}
