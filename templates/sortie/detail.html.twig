@@ -11,7 +11,7 @@
                     <div class="col-lg-12 col-md-6 col-sm-12 col-xs-12">
                         <p>Nom de la sortie : {{ sortie.nom }}</p>
                         <p>Date et heure de la sortie : {{ sortie.dateHeureDebut|date("m/d/Y H:i") }}</p>
-                        <p>Date limite d'inscription : {{ sortie.dateLimiteInscription|date("m/d/Y") }}</p>
+                        <p>Date limite d'inscription : {{ sortie.dateLimiteInscription|date("m/d/Y H:i") }}</p>
                         <p>Nombre de particpants : <span
                                     id="nbreParticipant{{ sortie.id }}">{{ sortie.participants|length }}/{{ sortie.nbInscriptionsMax }}</span>
                         </p>
@@ -53,7 +53,7 @@
                                        class="bg-warning btn btn-light btn-lg" role="button">S'incrire</a>
                                 </div>
                             {% endif %}
-                            {% if app.user.id == sortie.organisateur.id %}
+                            {% if app.user.id == sortie.organisateur.id and (sortie.etat == 'Ouverte' or sortie.etat == 'Créée')  %}
                                 <div class="col-5 mb-2">
                                     <a href="{{ path('sortie_edit', {'id' : sortie.id}) }}" class="btn btn-secondary btn-lg"
                                        role="button">Modifier</a>

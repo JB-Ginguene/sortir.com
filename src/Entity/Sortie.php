@@ -53,7 +53,7 @@ class Sortie
     private $duree;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      * @Assert\LessThan(propertyPath="dateHeureDebut",
      *                  message="La date limite d'inscription doit être inférieure à la date de début de la soirée")
      * @Assert\GreaterThan("-1 day",

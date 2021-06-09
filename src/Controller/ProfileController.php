@@ -8,6 +8,7 @@ use App\Form\ProfileFormType;
 use App\ManageEntity\UpdateEntity;
 use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
+use App\Upload\ProfilAvatar;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -28,12 +29,13 @@ class ProfileController extends AbstractController
                          Request $request,
                          EntityManagerInterface $entityManager,
                          UserPasswordEncoderInterface $passwordEncoder,
-                         UpdateEntity $updateEntity): Response
+                         UpdateEntity $updateEntity,
+                         ProfilAvatar $profilAvatar ): Response
     {
 
         $profile = $participantRepository->find($id);
         if (!$profile) {
-            throw $this->createNotFoundException("Ce profile n'existe pas");
+            throw $this->createNotFoundException("Ce profil n'existe pas");
         }
         $profileForm = $this->createForm(ProfileFormType::class, $profile);
         $profileForm->handleRequest($request);
@@ -48,22 +50,17 @@ class ProfileController extends AbstractController
                 ));
 
             $file = $profileForm->get('avatar')->getData();
-
-            /**
-             * @var UploadedFile $file
-             */
-
-            if ($file) {
-                $newFileName = $profile->getNom() . '-' . uniqid() . '-' . $file->guessExtension();
-                $file->move($this->getParameter('upload_profile_avatar_dir'), $newFileName);
-                $profile->setAvatar($newFileName);
+            if ($file)
+            {
+                $directory = $this->getParameter('upload_profile_avatar_dir');
+                $profilAvatar->save($file, $profile,$directory);
             }
 
             $updateEntity->save($profile);
 
-            $this->addFlash('success', 'profile mis à jour');
-            return $this->redirectToRoute('profile_detail',[
-                'id'=> $profile->getId()
+            $this->addFlash('success', 'profil mis à jour');
+            return $this->redirectToRoute('profile_detail', [
+                'id' => $profile->getId()
             ]);
         }
 
@@ -82,7 +79,7 @@ class ProfileController extends AbstractController
         $sortiesOrganisees = $sortieRepository->findByIdParticipant($id);
 
         if (!$profile) {
-            throw $this->createNotFoundException("Désolé, ce profile n'existe pas");
+            throw $this->createNotFoundException("Désolé, ce profil n'existe pas");
         }
         return $this->render('profile/detail.html.twig', [
             'profile' => $profile,
