@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme villeForm 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+<div class="col-12 col-lg-4 offset-lg-4">
+    {{ form_start(villeForm) }}
+    <h1>Ajouter une ville</h1>
+    {{ form_widget(villeForm) }}
+    <div class="text-center">
+        <button class="btn btn-secondary">Ajouter</button>
+    </div>
+    {{ form_end(villeForm) }}
+</div>
+{% endblock %}
+
+
+

@@ -27,6 +27,13 @@ main{
     background-color: #2abb9b ;
     font-size: larger;
 }
+.flash-error{
+    margin: 0 auto;
+    width: 30vw;
+    text-align: center;
+    background-color: #e08283;
+    font-size: larger;
+}
 
 .svg{
     position: absolute;
