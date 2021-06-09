@@ -127,7 +127,7 @@ function inscriptionDesinscription($path) {
                     .then(function (response) {
                         return response.json();
                     }).then(function (data) {
-                        // Si non-complet :
+                    // Si non-complet :
                     if (data.participant !== data.participantMax) {
                         let a = document.createElement('a');
                         a.classList.add("bg-success");
@@ -215,9 +215,9 @@ function inscriptionDesinscription($path) {
                         .then(function (response) {
                             return response.json();
                         }).then(function (data) {
-                            // suppression du bouton complet si déja présent sur la page :
-                        if (document.getElementById('btn-complet')){
-                            btnComplet =document.getElementById('btn-complet');
+                        // suppression du bouton complet si déja présent sur la page :
+                        if (document.getElementById('btn-complet')) {
+                            btnComplet = document.getElementById('btn-complet');
                             divBtnComplet = btnComplet.parentNode;
                             divBtnComplet.parentNode.removeChild(divBtnComplet);
                         }
@@ -283,34 +283,33 @@ function init() {
         })
     }
 
-        // EDITION SORTIE
-        if (url.includes('edit')) {
-            let select = document.getElementById('sortie_lieu');
-            let genererButton = document.getElementById('generer_adresse')
-            let lieu_field = select.options[select.selectedIndex].text;
+    // EDITION SORTIE
+    if (url.includes('edit')) {
+        let select = document.getElementById('sortie_lieu');
+        let genererButton = document.getElementById('generer_adresse')
+        let lieu_field = select.options[select.selectedIndex].text;
 
-            genererButton.addEventListener('click', function () {
-                //pour actualiser l'élement du select
-                lieu_field = select.options[select.selectedIndex].text;
-                //On prepare un objet qui porte les infos
-                let data = {'lieu': lieu_field};
+        genererButton.addEventListener('click', function () {
+            //pour actualiser l'élement du select
+            lieu_field = select.options[select.selectedIndex].text;
+            //On prepare un objet qui porte les infos
+            let data = {'lieu': lieu_field};
 
-                fetch("ajax-site", {method: 'POST', body: JSON.stringify(data)})
-                    //promesse : le contenu du data dans le dernier then
-                    .then(function (response) {
-                        return response.json();
-                    }).then(function (data) {
-                    document.getElementById('rue').innerHTML = "Adresse : " + data.rue;
-                    document.getElementById('latitude').innerHTML = "Latitude : " + data.latitude;
-                    document.getElementById('longitude').innerHTML = "Longitude : " + data.longitude;
-                    document.getElementById('code_postal').innerHTML = "Code postal : " + data.code_postal;
-                    document.getElementById('ville').innerHTML = "Ville : " + data.ville;
-                });
-            })
-        }
+            fetch("ajax-site", {method: 'POST', body: JSON.stringify(data)})
+                //promesse : le contenu du data dans le dernier then
+                .then(function (response) {
+                    return response.json();
+                }).then(function (data) {
+                document.getElementById('rue').innerHTML = "Adresse : " + data.rue;
+                document.getElementById('latitude').innerHTML = "Latitude : " + data.latitude;
+                document.getElementById('longitude').innerHTML = "Longitude : " + data.longitude;
+                document.getElementById('code_postal').innerHTML = "Code postal : " + data.code_postal;
+                document.getElementById('ville').innerHTML = "Ville : " + data.ville;
+            });
+        })
+    }
 
-
-// DES/INSCRIPTION SORTIE (page d'accueil)
+    // DES/INSCRIPTION SORTIE (page d'accueil)
     if (url === '') {
         $path = '';
         inscriptionDesinscription($path);
@@ -320,6 +319,33 @@ function init() {
     if (url.includes('sortie/detail')) {
         $path = 'sortie/detail';
         inscriptionDesinscription($path);
+    }
+
+    //MANAGEMENT DES PARTICIPANTS :
+    if (url.includes('profile/management')) {
+        let deleteProfileButtons = Array.from(document.getElementsByClassName('profile_delete'));
+        console.log("deleteProfileButtons début : ");
+        console.log(deleteProfileButtons);
+
+        deleteProfileButtons.forEach(function (elem) {
+            elem.addEventListener('click', function () {
+                let data = {'participantId': elem.dataset.participantid};
+                console.log(data)
+                fetch("ajax-profile-delete", {method: 'POST', body: JSON.stringify(data)})
+                    .then(function (response) {
+                        return response.json();
+                    }).then(function (data) {
+                    console.log('Ce participant a été supprimé : ')
+                    console.log(data.nom)
+                    console.log(data.prenom)
+                    console.log('Elem.parentNode.parentNode :')
+                    console.log(elem.parentNode.parentNode)
+                    let row = elem.parentNode.parentNode;
+                    row.parentNode.removeChild(row);
+                });
+            });
+        })
+
     }
 }
 

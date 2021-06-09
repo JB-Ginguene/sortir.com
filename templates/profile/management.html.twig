@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <container>
+        <h1>Gestion des participants</h1>
+        <div class="container col-lg-10 col-md-20 col-sm-10 col-xs-12 d-flex justify-content-center container">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Pseudo</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for participant in participants %}
+                    <tr>
+                        <th scope="row">
+                            <a class="link-text-deco-none" href="{{ path('profile_detail', {'id' : participant.id}) }}"
+                               title="Détails du participant">{{ participant.pseudo }}</a>
+                        </th>
+                        <td>{{ participant.nom }}</td>
+                        <td>
+                            <a class="bg-danger btn btn-sm mb-1 text-white profile_delete"
+                               data-participantid="{{ participant.id }}"
+                               title="Détails du participant">Supprimer</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <div>Pas de partipants pour le moment</div>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </container>
+
+{% endblock %}
+
+{% block title %}{{ parent() }} / Gestion des participants{% endblock %}
+
