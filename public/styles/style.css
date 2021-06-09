@@ -53,6 +53,7 @@ main{
 .avatar{
     display: flex;
     margin-top: 30%;
+    margin-left: 20%;
     margin-block: auto;
     height: 200px;
     width: 200px;

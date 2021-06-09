@@ -58,7 +58,7 @@ class ProfileController extends AbstractController
 
             $updateEntity->save($profile);
 
-            $this->addFlash('success', 'profile mis à jour');
+            $this->addFlash('success', 'profil mis à jour');
             return $this->redirectToRoute('profile_detail',[
                 'id'=> $profile->getId()
             ]);
@@ -79,7 +79,7 @@ class ProfileController extends AbstractController
         $sortiesOrganisees = $sortieRepository->findByIdParticipant($id);
 
         if (!$profile) {
-            throw $this->createNotFoundException("Désolé, ce profile n'existe pas");
+            throw $this->createNotFoundException("Désolé, ce profil n'existe pas");
         }
         return $this->render('profile/detail.html.twig', [
             'profile' => $profile,
