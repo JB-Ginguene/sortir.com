@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Participant;
+use App\Entity\Sortie;
 use App\Form\ProfileFormType;
 use App\ManageEntity\UpdateEntity;
 use App\Repository\ParticipantRepository;
@@ -10,6 +12,7 @@ use App\Upload\ProfilAvatar;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,7 +22,7 @@ class ProfileController extends AbstractController
 {
 
     /**
-     * @Route("/profile/{id}", name="profile_edit")
+     * @Route("/profile/{id}", name="profile_edit", requirements={"id"="\d+"})
      */
     public function edit($id,
                          ParticipantRepository $participantRepository,
@@ -68,7 +71,7 @@ class ProfileController extends AbstractController
     }
 
     /**
-     * @Route("/profile/detail/{id}", name="profile_detail")
+     * @Route("/profile/detail/{id}", name="profile_detail", requirements={"id"="\d+"})
      */
     public function detail($id, ParticipantRepository $participantRepository, SortieRepository $sortieRepository): Response
     {
@@ -81,6 +84,37 @@ class ProfileController extends AbstractController
         return $this->render('profile/detail.html.twig', [
             'profile' => $profile,
             'sortiesOrganisees' => $sortiesOrganisees
+        ]);
+    }
+
+    /**
+     * @Route("/admin/profile/management", name="profile_management")
+     */
+    public function profileManagement(ParticipantRepository $participantRepository): Response
+    {
+        $participants= $participantRepository->findAll();
+        if (!$participants) {
+            throw $this->createNotFoundException("Désolé, aucun particpants!");
+        }
+        return $this->render('profile/management.html.twig', [
+            'participants' => $participants
+        ]);
+    }
+
+    /**
+     * @Route("/admin/profile/ajax-profile-delete", name="profile_management_ajax_profile_delete")
+     */
+    public function desinscriptionSortieDetail(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $data = json_decode($request->getContent());
+        $participantId = $data->participantId;
+        $participant = $entityManager->getRepository(Participant::class)->find($participantId);
+        $entityManager->remove($participant);
+        $entityManager->flush();
+        return new JsonResponse([
+            'participantid' => $participantId,
+            'nom' => $participant->getNom(),
+            'prenom'=>$participant->getPrenom()
         ]);
     }
 
