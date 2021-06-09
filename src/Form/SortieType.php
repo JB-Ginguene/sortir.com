@@ -25,17 +25,16 @@ class SortieType extends AbstractType
             ->add('nom')
             ->add('dateHeureDebut', DateTimeType::class,[
                 'widget' => 'single_text',
-                'html5' => false,
+                'label' => 'Date et heure de début',
+                /*'html5' => false,
                 'attr' => [
-                    'class' => 'combinedPickerInput',
-                    'placeholder' => date('d/m/y H:i'),
                     'value'=> date('d/m/y H:i')
                 ],
-                'format' => 'dd/MM/yyyy H:i',
-                'label' => 'Date et heure de début',
+                'format' => 'dd/MM/y H:i',
+
                 'translation_domain' => 'Default'
-            ])
-            ->add('dateLimiteInscription', DateType::class,[
+            */])
+            ->add('dateLimiteInscription', DateTimeType::class,[
                 'widget' => 'single_text',
                 'label' => 'Date limite d\'inscription',
             ])

@@ -32,7 +32,10 @@ class Sortie
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\GreaterThan(propertyPath="dateLimiteInscription")
+     * @Assert\GreaterThan(propertyPath="dateLimiteInscription",
+     *                      message="La date de début doit être supérieur à la date limite d'inscription")
+     * @Assert\GreaterThan("+1 hours",
+     *                      message="L'heure de début ne peut être inférieure à aujourd'hui +2h")
      *
      */
     private $dateHeureDebut;
@@ -41,6 +44,7 @@ class Sortie
      * @ORM\Column(type="integer", nullable=true)
      * @Assert\GreaterThan(value="0",
      *                      message="Ne peut pas être négatif")
+     * @Assert\NotBlank(message="Ce champs ne peut être vide")
      * @Assert\Regex(
      *     pattern="/^[0-9]/",
      *     match=true,
@@ -49,8 +53,11 @@ class Sortie
     private $duree;
 
     /**
-     * @ORM\Column(type="date")
-     * @Assert\LessThan(propertyPath="dateHeureDebut")
+     * @ORM\Column(type="datetime")
+     * @Assert\LessThan(propertyPath="dateHeureDebut",
+     *                  message="La date limite d'inscription doit être inférieure à la date de début de la soirée")
+     * @Assert\GreaterThan("-1 day",
+     *                      message="La date limite d'inscription ne peut être révolue")
      *
      */
     private $dateLimiteInscription;

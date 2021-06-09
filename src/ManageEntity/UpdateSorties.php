@@ -35,6 +35,7 @@ class UpdateSorties
         $etatCloture = null;
         $etatPassee = null;
         $etatArchivee = null;
+        $etatEnCours = null;
 
         /**@var Etat $etat **/
         foreach ($listeEtat as $etat){
@@ -49,6 +50,7 @@ class UpdateSorties
                     break;
                 case 'Archivée': $etatArchivee = $etat;
                     break;
+                case 'Activité en cours' : $etatEnCours = $etat;
             }
         }
 
@@ -57,11 +59,32 @@ class UpdateSorties
 
         $sortiesActualisees = $this->actualisationPasseeArchivee($listeSorties, $etatPassee, $etatArchivee);
 
+        $sortiesActualisees =$this->actualisationEnCours($listeSorties,$etatEnCours,$etatOuverte);
+
         $sortiesActualisees = $this->hideArchives($listeSorties, $etatArchivee);
 
         return $sortiesActualisees;
 
     }
+
+    /**
+     * Fonction qui permet de retirer les sorties Archivées d'une liste de sorties
+     * @param $listeSorties
+     * @return mixed
+     */
+    public function retirerArchives($listeSorties){
+        $etatArchivee = $this->entityManager->getRepository(Etat::class)->findOneBy(['libelle'=>'Archivée']);
+
+        for ($i=0;$i <= count($listeSorties);$i++){
+            if ($listeSorties[$i]->getEtat() == $etatArchivee){
+                unset($listeSorties[$i]);
+            }
+        }
+
+        return $listeSorties;
+    }
+
+
 
     /**
      * Fonction qui permet d'actualiser l'état "Cloturée" sur une liste de sorties
@@ -100,20 +123,29 @@ class UpdateSorties
      * @param $etatPassee
      * @param $etatArchivee
      * @return mixed
+     * @throws \Exception
      */
     private function actualisationPasseeArchivee($listeSorties, $etatPassee, $etatArchivee){
-        $now = new \DateTime();
-        $nowMinusOneMonth = $now->modify('-1month');
 
         /**@var \App\Entity\Sortie $sortie */
         foreach ($listeSorties as $sortie){
+            $now = new \DateTime();
 
-            if ($sortie->getDateHeureDebut() < $now && $sortie->getEtat() != $etatArchivee){
+            $dateDebut = new \DateTime($sortie->getDateHeureDebut()->format('Y-m-d H:i')) ;
+
+
+            $dureeSortie = $sortie->getDuree();
+
+            /**@var \DateTime $dateDebut
+             *
+             */
+            if ($dateDebut->modify('+'.$dureeSortie.' minutes') < $now && $sortie->getEtat() != $etatArchivee){
                 $sortie->setEtat($etatPassee);
+                //dd($dateDebut);
             }
 
             //Si la date de fin est supérieur à 1 mois : on set l'état à Archivee
-            if ($sortie->getDateHeureDebut() < $nowMinusOneMonth && $sortie->getEtat() == $etatPassee){
+            if ($sortie->getDateHeureDebut() < $now->modify('-1month') && $sortie->getEtat() == $etatPassee){
                 $sortie->setEtat($etatArchivee);
             }
 
@@ -121,6 +153,18 @@ class UpdateSorties
         }
 
         return $listeSorties;
+    }
+
+    private function actualisationEnCours($listeSorties, $etatEnCours, $etatOuverte){
+        $now = new \DateTime();
+
+        /**@var \App\Entity\Sortie $sortie */
+        foreach ($listeSorties as $sortie){
+            if ($sortie->getDateHeureDebut() < $now && $sortie->getEtat() == $etatOuverte ){
+                $sortie->setEtat($etatEnCours);
+            }
+            $this->updateEntity->save($sortie);
+        }
     }
 
     /**

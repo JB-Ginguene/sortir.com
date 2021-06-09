@@ -67,7 +67,7 @@
                 <tr>
                     <th scope="row">{{ sortie.nom }}</th>
                     <td>{{ sortie.dateHeureDebut|date("m/d/Y H:i") }}</td>
-                    <td class="d-none d-lg-table-cell">{{ sortie.dateLimiteInscription|date("m/d/Y") }}</td>
+                    <td class="d-none d-lg-table-cell">{{ sortie.dateLimiteInscription|date("m/d/Y H:i") }}</td>
                     <td class="d-none d-lg-table-cell"><span
                                 id="nbreParticipant{{ sortie.id }}">{{ sortie.participants|length }}/{{ sortie.nbInscriptionsMax }}</span>
                     </td>
@@ -78,6 +78,8 @@
                         <td class="d-none d-lg-table-cell"><a class="bg-info btn btn-sm">Inscriptions bientôt ouvertes</a></td>
                     {% elseif sortie.etat.libelle == "Annulée" %}
                         <td class="d-none d-lg-table-cell"><a class="bg-info btn btn-sm">Annulée</a></td>
+                    {% elseif sortie.etat.libelle == "Activité en cours" %}
+                        <td class="d-none d-lg-table-cell"><a class="bg-info btn btn-sm">En cours</a></td>
                     {% elseif sortie.participants|length >= sortie.nbInscriptionsMax %}
                         <td class="d-none d-lg-table-cell"><a class="bg-danger btn btn-sm mb-1">Complet!</a>
                             {% if sortie.participants.contains(app.user) %}
@@ -122,7 +124,7 @@
                     <td><a href="{{ path('sortie_detail', {'id' : sortie.id}) }}"
                            title="Détails de la sortie">Détails </a>
                         {% if app.user %}
-                            {% if app.user.id == sortie.organisateur.id %}
+                            {% if app.user.id == sortie.organisateur.id and (sortie.etat == 'Ouverte' or sortie.etat == 'Créée')%}
                                 <a href="{{ path('sortie_edit', {'id' : sortie.id}) }}" title="Modifier la sortie">
                                     Modifier
                                 </a>
