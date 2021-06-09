@@ -28,10 +28,9 @@ class SortieType extends AbstractType
                 'html5' => false,
                 'attr' => [
                     'class' => 'combinedPickerInput',
-                    'placeholder' => date('d/m/y H:i'),
                     'value'=> date('d/m/y H:i')
                 ],
-                'format' => 'dd/MM/yyyy H:i',
+                'format' => 'dd/MM/y H:i',
                 'label' => 'Date et heure de début',
                 'translation_domain' => 'Default'
             ])
