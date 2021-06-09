@@ -10,7 +10,6 @@ use App\Form\ResearchFilterType;
 use App\Form\SortieType;
 use App\ManageEntity\UpdateSorties;
 use App\ManageEntity\UpdateEntity;
-use App\ManageRoutes\CustomRedirections;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
 use App\ResearchFilter\ResearchFilter;
@@ -29,8 +28,7 @@ class SortieController extends AbstractController
     public function home(Request $request,
                          SortieRepository $sortieRepository,
                          EntityManagerInterface $entityManager,
-                         UpdateSorties $updateSorties,
-                         CustomRedirections $customRedirections): Response
+                         UpdateSorties $updateSorties): Response
     {
         //Redirection au login si il n'y a pas d'utilisateur connecté
         if (null == $this->getUser()){
@@ -66,8 +64,7 @@ class SortieController extends AbstractController
     /**
      * @Route("/sortie/detail/{id}", name="sortie_detail", requirements={"id"="\d+"})
      */
-    public
-    function detail($id, SortieRepository $sortieRepository): Response
+    public function detail($id, SortieRepository $sortieRepository): Response
     {
         $sortie = $sortieRepository->findDetailSortieById($id);
 
@@ -83,8 +80,7 @@ class SortieController extends AbstractController
     /**
      * @Route("/sortie/create", name="sortie_create")
      */
-    public
-    function create(Request $request, EntityManagerInterface $entityManager, UpdateEntity $updateEntity): Response
+    public function create(Request $request, EntityManagerInterface $entityManager, UpdateEntity $updateEntity): Response
     {
         $sortie = new Sortie();
         $sortieForm = $this->createForm(SortieType::class, $sortie);
@@ -126,8 +122,7 @@ class SortieController extends AbstractController
     /**
      * @Route("/sortie/edit/{id}", name="sortie_edit", requirements={"id"="\d+"})
      */
-    public
-    function edit($id, Request $request, EntityManagerInterface $entityManager, EtatRepository $etatRepository, UpdateEntity $updateEntity): Response
+    public function edit($id, Request $request, EntityManagerInterface $entityManager, EtatRepository $etatRepository, UpdateEntity $updateEntity): Response
     {
 
         $sortie = $entityManager->getRepository(Sortie::class)->find($id);
