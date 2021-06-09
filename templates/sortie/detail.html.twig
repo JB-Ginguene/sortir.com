@@ -3,7 +3,7 @@
 {% block title %}{{ parent() }} / Détail{% endblock %}
 
 {% block body %}
-    <div class="row d-flex justify-content-center col-lg-12 col-md-12 col-sm-11 col-xs-11">
+    <div class="row justify-content-center col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="row d-md-flex col-lg-12 col-md-12 col-sm-12 col-xs-12 m-2">
             <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 bg-light p-2">
                 <h1 class="ml-4">Détail de la sortie</h1>
@@ -26,35 +26,35 @@
                     </div>
 
                     {# BOUTONS INFOS, INSCRIPTION, COMPLET... #}
-                    <div class="container">
-                        <div class="d-flex justify-content-between">
+                    <div class="container justify-content-between">
+                        <div class="row justify-content-center mb-1 text-center">
                             {% if sortie.etat.libelle == "Passée" %}
-                                <div class="container text-center mb-2"><a class="bg-info btn btn-lg">Sortie passée</a></div>
+                                <div class="col-5 mb-2"><a class="bg-info btn btn-lg">Sortie passée</a></div>
                             {% elseif sortie.etat.libelle == "Créée" %}
-                                <div class="container text-center mb-2"><a class="bg-info btn btn-lg">Inscriptions bientôt ouvertes</a></div>
+                                <div class="col-5 mb-2"><a class="bg-info btn btn-lg">Inscriptions bientôt ouvertes</a></div>
                             {% elseif sortie.participants|length >= sortie.nbInscriptionsMax %}
-                                <div class="container text-center mb-2"><a class="bg-danger btn btn-lg" id="btn-complet">Complet!</a>
+                                <div class="col-5 mb-2"><a class="bg-danger btn btn-lg" id="btn-complet">Complet!</a>
                                 </div>
                                 {% if sortie.participants.contains(app.user) %}
-                                    <div class="container text-center mb-2">
+                                    <div class="col-5 mb-2">
                                         <a data-sortieId="{{ sortie.id }}" data-userId="{{ app.user.id }}"
                                            id="sortie_desinscription"
                                            class="bg-success btn btn-lg" role="button">Inscrit·e</a></div>
                                 {% endif %}
                             {% elseif sortie.participants.contains(app.user) %}
                                 {# Oui, l'utilisateur connecté est bien inscrit : #}
-                                <div class="container text-center mb-2">
+                                <div class="col-5 mb-2">
                                     <a data-sortieId="{{ sortie.id }}" data-userId="{{ app.user.id }}" id="sortie_desinscription"
                                        class="bg-success btn btn-lg" role="button">Inscrit·e</a></div>
                             {% else %}
                                 {# Non, l'ulisateur connecté n'est pas inscrit à cette sortie : #}
-                                <div class="container text-center mb-2">
+                                <div class="col-5 mb-2">
                                     <a data-sortieId="{{ sortie.id }}" data-userId="{{ app.user.id }}" id="sortie_inscription"
                                        class="bg-warning btn btn-light btn-lg" role="button">S'incrire</a>
                                 </div>
                             {% endif %}
                             {% if app.user.id == sortie.organisateur.id %}
-                                <div class="container text- mb-2">
+                                <div class="col-5 mb-2">
                                     <a href="{{ path('sortie_edit', {'id' : sortie.id}) }}" class="btn btn-secondary btn-lg"
                                        role="button">Modifier</a>
                                 </div>
@@ -65,9 +65,8 @@
             </div>
 
             {# MAP #}
-            <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12  p-2">
-                <h1 class="ml-4" id="lieu">Détail lieu</h1>
-                <div class="google-maps m-2">
+            <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 bg-light p-2">
+                <div id="lieu" class="google-maps m-2">
                     {{ sortie.lieu.urlMap|raw }}
                 </div>
             </div>
