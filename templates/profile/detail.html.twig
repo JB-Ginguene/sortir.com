@@ -46,7 +46,7 @@
                             <td><a href="{{ path('sortie_detail', {'id' : sortiesOrganisee.id}) }}"
                                    title="Détails de la sortie">Détails </a>
                                 {% if app.user %}
-                                    {% if app.user.id == sortiesOrganisee.organisateur.id %}
+                                    {% if app.user.id == sortiesOrganisee.organisateur.id and (sortiesOrganisee.etat == 'Ouverte' or sortiesOrganisee.etat == 'Créée') %}
                                         <a href="{{ path('sortie_edit', {'id' : sortiesOrganisee.id}) }}"
                                            title="Modifier la sortie">
                                             Modifier
