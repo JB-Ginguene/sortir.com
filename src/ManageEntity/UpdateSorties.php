@@ -35,6 +35,7 @@ class UpdateSorties
         $etatCloture = null;
         $etatPassee = null;
         $etatArchivee = null;
+        $etatEnCours = null;
 
         /**@var Etat $etat **/
         foreach ($listeEtat as $etat){
@@ -49,6 +50,7 @@ class UpdateSorties
                     break;
                 case 'Archivée': $etatArchivee = $etat;
                     break;
+                case 'Activité en cours' : $etatEnCours = $etat;
             }
         }
 
@@ -56,6 +58,8 @@ class UpdateSorties
         $sortiesActualisees = $this->actualisationCloture($listeSorties, $etatOuverte, $etatCloture);
 
         $sortiesActualisees = $this->actualisationPasseeArchivee($listeSorties, $etatPassee, $etatArchivee);
+
+        $sortiesActualisees =$this->actualisationEnCours($listeSorties,$etatEnCours,$etatOuverte);
 
         $sortiesActualisees = $this->hideArchives($listeSorties, $etatArchivee);
 
@@ -119,6 +123,7 @@ class UpdateSorties
      * @param $etatPassee
      * @param $etatArchivee
      * @return mixed
+     * @throws \Exception
      */
     private function actualisationPasseeArchivee($listeSorties, $etatPassee, $etatArchivee){
 
@@ -126,7 +131,8 @@ class UpdateSorties
         foreach ($listeSorties as $sortie){
             $now = new \DateTime();
 
-            $dateDebut = $sortie->getDateHeureDebut() ;
+            $dateDebut = new \DateTime($sortie->getDateHeureDebut()->format('Y-m-d H:i')) ;
+
 
             $dureeSortie = $sortie->getDuree();
 
@@ -135,6 +141,7 @@ class UpdateSorties
              */
             if ($dateDebut->modify('+'.$dureeSortie.' minutes') < $now && $sortie->getEtat() != $etatArchivee){
                 $sortie->setEtat($etatPassee);
+                //dd($dateDebut);
             }
 
             //Si la date de fin est supérieur à 1 mois : on set l'état à Archivee
@@ -146,6 +153,18 @@ class UpdateSorties
         }
 
         return $listeSorties;
+    }
+
+    private function actualisationEnCours($listeSorties, $etatEnCours, $etatOuverte){
+        $now = new \DateTime();
+
+        /**@var \App\Entity\Sortie $sortie */
+        foreach ($listeSorties as $sortie){
+            if ($sortie->getDateHeureDebut() < $now && $sortie->getEtat() == $etatOuverte ){
+                $sortie->setEtat($etatEnCours);
+            }
+            $this->updateEntity->save($sortie);
+        }
     }
 
     /**
