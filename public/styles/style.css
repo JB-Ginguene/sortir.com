@@ -126,3 +126,9 @@ height: 0;
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     background: linear-gradient(to left, rgba(222, 222, 222, 0.5), rgba(235, 242, 255, 0.5))
 }
+.table-wrapper {
+    background-color: #B0413E;
+    max-height: 60vh;
+    overflow: auto;
+    display:inline-block;
+}

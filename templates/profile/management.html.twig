@@ -26,12 +26,12 @@
                                data-participantid="{{ participant.id }}"
                                title="Détails du participant">Supprimer</a>
                             {% if participant.isactif == true %}
-                            <a class="bg-warning btn btn-sm mb-1 text-white profile_change_actif"
+                            <a class="bg-warning btn btn-sm mb-1 text-white profile_change_desactiver"
                                data-participantid="{{ participant.id }}"
                                data-indextab="{{ loop.index-1 }}"
                                title="Détails du participant">Désactiver</a>
                             {% elseif participant.isactif == false %}
-                                <a class="bg-success btn btn-sm mb-1 text-white profile_change_actif"
+                                <a class="bg-success btn btn-sm mb-1 text-white profile_change_activer"
                                    data-participantid="{{ participant.id }}"
                                    data-indextab="{{ loop.index-1 }}"
                                    title="Détails du participant">Activer</a>
