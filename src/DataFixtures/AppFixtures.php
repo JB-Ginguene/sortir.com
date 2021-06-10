@@ -84,16 +84,16 @@ class AppFixtures extends Fixture
 
         //Participant
         $participantTab = [
-            'Duhamel' => ['Pierrot35', 'Pierre', '0299754085', 'pierre.duhamel@gmail.com', '123456Aa&', 'ROLE_USER'],
-            'Misthrow' => ['Kat212', 'Kathy', '0166559896', 'kat212@mail.com', '123456Aa&', 'ROLE_USER'],
-            'Guillou' => ['Gégé_Guigui', 'Gérard', '0612345678', 'gg@ggmail.com', '123456Aa&', 'ROLE_USER'],
-            'Morvan' => ['Morv666', 'Constance', '0299788956', 'constance.morvan@hotmail.com', '123456Aa&', 'ROLE_USER'],
-            'Costa' => ['MauroCosta', 'Mauro', '0212457889', 'mauro.costa@hotmail.it', '123456Aa&', 'ROLE_USER'],
-            'Teault' => ['Toinou123', 'Antoine', '0611223344', 'toinou@mail.com', '123456Aa&', 'ROLE_USER'],
-            'Galaxy' => ['Guillaume56', 'Guillaume', '0299887744', 'guillaume@mail.com', '123456Aa&', 'ROLE_USER'],
-            'LEBRANCHU' => ['PierreLB', 'Pierre', '0299756633', 'pierre@mail.com', '123456Aa&', 'ROLE_ADMIN'],
-            'ARESU' => ['AntoineAR', 'Antoine', '0623451289', 'antoine@mail.com', '123456Aa&', 'ROLE_ADMIN'],
-            'GINGUENE' => ['JBG', 'Jean-Baptiste', '0279895645', 'jb@mail.com', '123456Aa&', 'ROLE_ADMIN'],
+            'Duhamel' => ['Pierrot35', 'Pierre', '0299754085', 'pierre.duhamel@gmail.com', '123456Aa&', 'ROLE_USER', 'GerardDepardieu.jpg'],
+            'Misthrow' => ['Kat212', 'Kathy', '0166559896', 'kat212@mail.com', '123456Aa&', 'ROLE_USER', 'nicoleKidman.jpg'],
+            'Guillou' => ['Gégé_Guigui', 'Gérard', '0612345678', 'gg@ggmail.com', '123456Aa&', 'ROLE_USER', 'jeandujardin.jpg'],
+            'Morvan' => ['Morv666', 'Constance', '0299788956', 'constance.morvan@hotmail.com', '123456Aa&', 'ROLE_USER', 'elisabethmoss.jpg'],
+            'Costa' => ['MauroCosta', 'Mauro', '0212457889', 'mauro.costa@hotmail.it', '123456Aa&', 'ROLE_USER', 'patrick.jpg'],
+            'Teault' => ['Toinou123', 'Antoine', '0611223344', 'toinou@mail.com', '123456Aa&', 'ROLE_USER', 'philippepoutou.jpg'],
+            'Galaxy' => ['Guillaume56', 'Guillaume', '0299887744', 'guillaume@mail.com', '123456Aa&', 'ROLE_USER', 'Steven-Wilson.jpg'],
+            'LEBRANCHU' => ['PierreLB', 'Pierre', '0299756633', 'pierre@mail.com', '123456Aa&', 'ROLE_ADMIN', 'rami_malek_v3.png'],
+            'ARESU' => ['AntoineAR', 'Antoine', '0623451289', 'antoine@mail.com', '123456Aa&', 'ROLE_ADMIN', 'Walter.png'],
+            'GINGUENE' => ['JBG', 'Jean-Baptiste', '0279895645', 'jb@mail.com', '123456Aa&', 'ROLE_ADMIN', 'davymourier.jpg']
         ];
         $sites = $manager->getRepository(Site::class)->findAll();
         foreach ($participantTab as $nom => $data) {
@@ -106,7 +106,8 @@ class AppFixtures extends Fixture
                 ->setPassword($data[4])
                 ->setRoles([$data[5]])
                 ->setSite($generator->randomElement($sites))
-                ->setActif(true);
+                ->setActif(true)
+            ->setAvatar($data[6]);
             $manager->persist($participant);
 
         }
