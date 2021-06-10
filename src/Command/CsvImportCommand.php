@@ -42,8 +42,8 @@ class CsvImportCommand extends Command
         $this->participantRepository = $participantRepository;
         $this->entityManager = $entityManager;
         $this->dataDirectory = $dataDirectory;
-        $this->updateEntity =$updateEntity;
-        $this->passwordEncoder=$passwordEncoder;
+        $this->updateEntity = $updateEntity;
+        $this->passwordEncoder = $passwordEncoder;
 
     }
 
@@ -66,7 +66,7 @@ class CsvImportCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $compteur=0;
+        $compteur = 0;
         $io = new SymfonyStyle($input, $output);
         $io->title("Tentative d'importation du fichier csv...");
 
@@ -78,19 +78,20 @@ class CsvImportCommand extends Command
 
         $io->progressStart(count($data));
 
-        foreach ($data as $row){
+        foreach ($data as $row) {
             $participant = new Participant();
-            $string = implode(";",$row);
+            $string = implode(";", $row);
             //on récupère un tableau d'attributs
-            $attributs = explode(";",$string);
+            $attributs = explode(";", $string);
             $participant->setEmail($attributs[0])
-                        ->setPassword($attributs[1])
-                        ->setNom($attributs[2])
-                        ->setPrenom($attributs[3])
-                        ->setTelephone($attributs[4])
-                        ->setPseudo($attributs[5])
-                        ->setSite($this->entityManager->getRepository(Site::class)->findOneBy(['nom'=>$attributs[6]]))
-                        ->setRoles(["ROLE_USER"]);
+                ->setPassword($attributs[1])
+                ->setNom($attributs[2])
+                ->setPrenom($attributs[3])
+                ->setTelephone($attributs[4])
+                ->setPseudo($attributs[5])
+                ->setSite($this->entityManager->getRepository(Site::class)->findOneBy(['nom' => $attributs[6]]))
+                ->setRoles(["ROLE_USER"])
+                ->setActif(true);
 
             $this->hashPassword($participant);
 
@@ -102,7 +103,7 @@ class CsvImportCommand extends Command
 
         $io->text("");
 
-        $io->success("Super ! ".$compteur." participants ont été ajoutés");
+        $io->success("Super ! " . $compteur . " participants ont été ajoutés");
 
         return Command::SUCCESS;
     }
@@ -136,7 +137,8 @@ class CsvImportCommand extends Command
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param Participant $participant
      */
-    private function hashPassword(Participant $participant){
+    private function hashPassword(Participant $participant)
+    {
 
         $participant->setPassword($this->passwordEncoder->encodePassword($participant, $participant->getPassword()));
     }
