@@ -32,6 +32,10 @@
                                 <div class="col-5 mb-2"><a class="bg-info btn btn-lg">Sortie passée</a></div>
                             {% elseif sortie.etat.libelle == "Créée" %}
                                 <div class="col-5 mb-2"><a class="bg-info btn btn-lg">Inscriptions bientôt ouvertes</a></div>
+                            {% elseif sortie.etat.libelle == "Activité en cours" %}
+                                <div class="col-5 mb-2"><a class="bg-info btn btn-lg">Activité en cours</a></div>
+                            {% elseif sortie.etat.libelle == "Annulée" %}
+                                <div class="col-5 mb-2"><a class="bg-info btn btn-lg">Annulée</a></div>
                             {% elseif sortie.participants|length >= sortie.nbInscriptionsMax %}
                                 <div class="col-5 mb-2"><a class="bg-danger btn btn-lg" id="btn-complet">Complet!</a>
                                 </div>
@@ -53,7 +57,7 @@
                                        class="bg-warning btn btn-light btn-lg" role="button">S'incrire</a>
                                 </div>
                             {% endif %}
-                            {% if app.user.id == sortie.organisateur.id and (sortie.etat == 'Ouverte' or sortie.etat == 'Créée')  %}
+                            {% if app.user.id == sortie.organisateur.id and (sortie.etat.libelle == 'Ouverte' or sortie.etat.libelle == 'Créée')  %}
                                 <div class="col-5 mb-2">
                                     <a href="{{ path('sortie_edit', {'id' : sortie.id}) }}" class="btn btn-secondary btn-lg"
                                        role="button">Modifier</a>

@@ -20,8 +20,10 @@
         </div>
     </div>
     <div align="center">
+        {% if app.user.id == profile.id %}
         <a href="{{ path('profile_edit', {'id' : app.user.id}) }}" class="white-link btn btn-secondary"> Modifier mon
             profil </a>
+        {% endif %}
         <a href="{{ path('sortie_home') }}" class="white-link btn btn-secondary"> Retour </a>
     </div>
     {% if sortiesOrganisees %}

@@ -175,7 +175,7 @@ class UpdateSorties
      */
     private function hideArchives($listeSorties, $etatArchivee){
 
-        for ($i=0;$i <= count($listeSorties);$i++){
+        for ($i=0;$i < count($listeSorties);$i++){
             if ($listeSorties[$i]->getEtat() == $etatArchivee){
                 unset($listeSorties[$i]);
             }
