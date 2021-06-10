@@ -6,6 +6,7 @@ use App\Repository\VilleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=VilleRepository::class)
@@ -21,11 +22,26 @@ class Ville
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Assert\NotBlank(message="Ce champs ne peut être vide")
+     * @Assert\Length(min=3,
+     *                max=30,
+     *                minMessage="Le nom doit contenir au minimum 3 caractères",
+     *                maxMessage="Le nom doit contenir au maximum 30 caractères")
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=10)
+     * @Assert\LessThan (value="99999",
+     *                   message="Un département ne peut pas excéder 99 999")
+     * @Assert\NotEqualTo(value="0",
+     *                    message="Le code postal ne peut pas être 0")
+     * @Assert\Regex(
+     *     pattern="/^[0-9]/",
+     *     match=true,
+     *     message="Entrez un code postal valide"
+     * )
+     * @Assert\NotBlank(message="Ce champs ne peut être vide")
      */
     private $code_postal;
 
