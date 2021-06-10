@@ -46,7 +46,6 @@ class SortieController extends AbstractController
                 'sorties' => $sortiesSansArchives
             ]);
         } else {
-
             $sorties = $sortieRepository->findAllForHomePage($entityManager);
 
             //Actualisation des états de sorties
