@@ -13,6 +13,7 @@ function inscriptionDesinscription($path) {
         // PAGE ACCUEIL INSCRIPTION
         inscriptionButtons.forEach(function (elem) {
             elem.addEventListener('click', function () {
+
                 let data = {'sortieid': elem.dataset.sortieid, 'userid': elem.dataset.userid};
 
                 fetch("ajax-sortie-inscription", {method: 'POST', body: JSON.stringify(data)})
@@ -258,6 +259,10 @@ function profileManagement() {
     let deleteProfileButtons = Array.from(document.getElementsByClassName('profile_delete'));
     deleteProfileButtons.forEach(function (elem) {
         elem.addEventListener('click', function () {
+            let confirmAction = confirm("Voulez-vous vraiment supprimer ce participant et toutes ses sorties organisées?");
+            if (confirmAction) {
+                alert("Participant supprimé avec succès");
+
             let data = {'participantId': elem.dataset.participantid};
             fetch("ajax-profile-delete", {method: 'POST', body: JSON.stringify(data)})
                 .then(function (response) {
@@ -266,7 +271,9 @@ function profileManagement() {
                 let row = elem.parentNode.parentNode;
                 row.parentNode.removeChild(row);
                 profileManagement();
-            });
+            });} else {
+                alert("Participant non supprimé");
+            }
         });
     })
 

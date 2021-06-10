@@ -56,15 +56,29 @@ main{
 .login-button{
     width: 100%;
 }
+.profil-title{
+    margin-top: 20vh;
+}
 
-.avatar{
+.profil-pseudo{
+    text-align: center;
+    margin: 10vh auto;
+}
+
+.img-responsive{
+    align-items: center;
     display: flex;
     margin-top: 30%;
     margin-left: 20%;
     margin-block: auto;
-    height: 200px;
+    height: 300px;
     width: 200px;
 }
+profil-infos{
+    align-content: center;
+    margin: 10vh auto;
+}
+
 #global{
     margin: 0 auto;
     width: 40%;
@@ -126,8 +140,27 @@ height: 0;
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     background: linear-gradient(to left, rgba(222, 222, 222, 0.5), rgba(235, 242, 255, 0.5))
 }
+
+.forgotten-password{
+    text-align: center;
+    margin-top: 2em;
+}
+
+.request-form-button{
+    margin-top: 20px;
+}
+
+.check-email{
+    margin-top: 15vh;
+    text-align: center;
+}
+
 .table-wrapper {
     max-height: 60vh;
     overflow: auto;
     display:inline-block;
+}
+
+.logoNavBar{
+    max-height: 5vh;
 }
