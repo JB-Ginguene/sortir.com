@@ -109,8 +109,8 @@ class ProfileController extends AbstractController
         $data = json_decode($request->getContent());
         $participantId = $data->participantId;
         $participant = $entityManager->getRepository(Participant::class)->find($participantId);
-//        $entityManager->remove($participant);
-//        $entityManager->flush();
+        $entityManager->remove($participant);
+        $entityManager->flush();
         return new JsonResponse([
             'participantid' => $participantId,
             'nom' => $participant->getNom(),
