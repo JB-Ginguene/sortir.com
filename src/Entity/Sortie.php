@@ -24,7 +24,7 @@ class Sortie
      * @ORM\Column(type="string", length=30)
      * @Assert\NotBlank(message="Ce champs ne peut être vide")
      * @Assert\Length(min=6,
-     *                max=15,
+     *                max=30,
      *                minMessage="Le nom doit contenir au minimum 6 caractères",
      *                maxMessage="Le nom doit contenir au maximum 30 caractères")
      */
