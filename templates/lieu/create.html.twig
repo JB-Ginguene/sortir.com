@@ -4,16 +4,35 @@
 
 {% endblock %}
 {% block body %}
-<div class="col-12 col-lg-4 offset-lg-4">
-    {{ form_start(lieuForm) }}
-    <h1>Ajouter un lieu</h1>
-    {{ form_widget(lieuForm) }}
-    <div class="text-center">
-        <button class="btn btn-secondary">Ajouter</button>
-    </div>
+    <div class="col-12 col-lg-4 offset-lg-4">
 
-    {{ form_end(lieuForm) }}
-</div>
+        {{ form_start(lieuForm) }}
+        <h1>Ajouter un lieu</h1>
+        {{ form_row(lieuForm.nom) }}
+        {{ form_row(lieuForm.rue) }}
+        {{ form_row(lieuForm.latitude) }}
+        {{ form_row(lieuForm.longitude) }}
+        <div class="row">
+            <div class="col-10">
+                {{ form_row(lieuForm.ville) }}
+            </div>
+            <div class="col-2">
+                <a href="{{ path('ville_create') }}" class="form-group">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                         class="bi bi-plus-circle svg" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+        {{ form_row(lieuForm.urlMap) }}
+        <div class="text-center">
+            <button class="btn btn-secondary">Ajouter</button>
+        </div>
+
+        {{ form_end(lieuForm) }}
+    </div>
 {% endblock %}
 
 

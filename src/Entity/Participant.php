@@ -92,7 +92,8 @@ class Participant implements UserInterface
     private $telephone;
 
     /**
-     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="organisateur")
+     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="organisateur",cascade={"remove"})
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $sortiesOrganisee;
 
@@ -119,6 +120,11 @@ class Participant implements UserInterface
      * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $avatar;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $actif;
 
 
     public function __construct()
@@ -335,6 +341,18 @@ class Participant implements UserInterface
     public function setAvatar(?string $avatar): self
     {
         $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    public function isActif(): ?bool
+    {
+        return $this->actif;
+    }
+
+    public function setActif(bool $actif): self
+    {
+        $this->actif = $actif;
 
         return $this;
     }

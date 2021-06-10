@@ -13,6 +13,7 @@ function inscriptionDesinscription($path) {
         // PAGE ACCUEIL INSCRIPTION
         inscriptionButtons.forEach(function (elem) {
             elem.addEventListener('click', function () {
+
                 let data = {'sortieid': elem.dataset.sortieid, 'userid': elem.dataset.userid};
 
                 fetch("ajax-sortie-inscription", {method: 'POST', body: JSON.stringify(data)})
@@ -127,7 +128,7 @@ function inscriptionDesinscription($path) {
                     .then(function (response) {
                         return response.json();
                     }).then(function (data) {
-                        // Si non-complet :
+                    // Si non-complet :
                     if (data.participant !== data.participantMax) {
                         let a = document.createElement('a');
                         a.classList.add("bg-success");
@@ -215,9 +216,9 @@ function inscriptionDesinscription($path) {
                         .then(function (response) {
                             return response.json();
                         }).then(function (data) {
-                            // suppression du bouton complet si déja présent sur la page :
-                        if (document.getElementById('btn-complet')){
-                            btnComplet =document.getElementById('btn-complet');
+                        // suppression du bouton complet si déja présent sur la page :
+                        if (document.getElementById('btn-complet')) {
+                            btnComplet = document.getElementById('btn-complet');
                             divBtnComplet = btnComplet.parentNode;
                             divBtnComplet.parentNode.removeChild(divBtnComplet);
                         }
@@ -253,6 +254,114 @@ function inscriptionDesinscription($path) {
     }
 }
 
+function profileManagement() {
+
+    let deleteProfileButtons = Array.from(document.getElementsByClassName('profile_delete'));
+    deleteProfileButtons.forEach(function (elem) {
+        elem.addEventListener('click', function () {
+            let confirmAction = confirm("Voulez-vous vraiment supprimer ce participant et toutes ses sorties organisées?");
+            if (confirmAction) {
+                alert("Participant supprimé avec succès");
+
+            let data = {'participantId': elem.dataset.participantid};
+            fetch("ajax-profile-delete", {method: 'POST', body: JSON.stringify(data)})
+                .then(function (response) {
+                    return response.json();
+                }).then(function () {
+                let row = elem.parentNode.parentNode;
+                row.parentNode.removeChild(row);
+                profileManagement();
+            });} else {
+                alert("Participant non supprimé");
+            }
+        });
+    })
+
+    // ACTIVATION / DESACTIVATION :
+    // liste des boutons permettant d'activer un participant :
+    let activerButtons = Array.from(document.getElementsByClassName('profile_change_activer'));
+    // liste des boutons permettant de désactiver un participant :
+    let desactiverButtons = Array.from(document.getElementsByClassName('profile_change_desactiver'));
+
+    // on affiche les tableaux en console !
+    console.log(activerButtons)
+    console.log(desactiverButtons)
+
+
+    // ON ACTIVE UN PARTICIPANT :
+    activerButtons.forEach(function (elem) {
+        elem.addEventListener('click', function () {
+            let data = {'participantId': elem.dataset.participantid};
+            fetch("ajax-profile-actif-change", {method: 'POST', body: JSON.stringify(data)})
+                .then(function (response) {
+                    return response.json();
+                }).then(function (data) {
+                // si l'utilisateur est désormais ACTIF, on affiche le boutton "DESACTIVER"
+                // Bouton Désactiver
+                let a = document.createElement('a');
+                a.classList.add("bg-warning");
+                a.classList.add("btn");
+                a.classList.add("btn-sm");
+                a.classList.add("mb-1");
+                a.classList.add("text-white");
+                a.classList.add("profile_change_desactiver");
+                a.innerHTML = "Désactiver";
+                a.setAttribute("data-participantid", data.participantId);
+                console.log('actif : ');
+                console.log(data.participantactif);
+                console.log('UTILISATEUR ACTIF // elem :')
+                console.log(elem)
+                console.log("elem.parentNode : ")
+                console.log(elem.parentNode)
+
+                let td = document.getElementById('td'+data.participantId)
+                
+                if (elem.parentNode) {
+                    td.removeChild(elem);
+                    td.append(a)
+                }
+                profileManagement();
+            });
+        });
+    })
+    // ON DESACTIVE UN PARTICIPANT :
+    desactiverButtons.forEach(function (tata) {
+        tata.addEventListener('click', function () {
+            let data = {'participantId': tata.dataset.participantid};
+            fetch("ajax-profile-actif-change", {method: 'POST', body: JSON.stringify(data)})
+                .then(function (response) {
+                    return response.json();
+                }).then(function (data) {
+                // si l'utilisateur est désormais INNACTIF, on affiche le boutton "ACTIVER"
+                // BOUTON ACTIVER
+                let a = document.createElement('a');
+                a.classList.add("bg-success");
+                a.classList.add("btn");
+                a.classList.add("btn-sm");
+                a.classList.add("mb-1");
+                a.classList.add("text-white");
+                a.classList.add("profile_change_activer");
+                a.innerHTML = "Activer";
+                a.setAttribute("data-participantid", data.participantId);
+                console.log('actif : ');
+                console.log(data.participantactif);
+                console.log('UTILISATEUR INNACTIF // elem :')
+                console.log(tata)
+                console.log("elem.parentNode : ")
+                console.log(tata.parentNode)
+                let td = document.getElementById('td'+data.participantId)
+
+                if (tata.parentNode) {
+                    td.removeChild(tata);
+                    td.append(a)
+                    profileManagement();
+                }
+            });
+        });
+
+    })
+}
+
 function init() {
 
     let url = window.location.href.split('sortir.com/public/')[1];
@@ -283,34 +392,33 @@ function init() {
         })
     }
 
-        // EDITION SORTIE
-        if (url.includes('edit')) {
-            let select = document.getElementById('sortie_lieu');
-            let genererButton = document.getElementById('generer_adresse')
-            let lieu_field = select.options[select.selectedIndex].text;
+    // EDITION SORTIE
+    if (url.includes('edit')) {
+        let select = document.getElementById('sortie_lieu');
+        let genererButton = document.getElementById('generer_adresse')
+        let lieu_field = select.options[select.selectedIndex].text;
 
-            genererButton.addEventListener('click', function () {
-                //pour actualiser l'élement du select
-                lieu_field = select.options[select.selectedIndex].text;
-                //On prepare un objet qui porte les infos
-                let data = {'lieu': lieu_field};
+        genererButton.addEventListener('click', function () {
+            //pour actualiser l'élement du select
+            lieu_field = select.options[select.selectedIndex].text;
+            //On prepare un objet qui porte les infos
+            let data = {'lieu': lieu_field};
 
-                fetch("ajax-site", {method: 'POST', body: JSON.stringify(data)})
-                    //promesse : le contenu du data dans le dernier then
-                    .then(function (response) {
-                        return response.json();
-                    }).then(function (data) {
-                    document.getElementById('rue').innerHTML = "Adresse : " + data.rue;
-                    document.getElementById('latitude').innerHTML = "Latitude : " + data.latitude;
-                    document.getElementById('longitude').innerHTML = "Longitude : " + data.longitude;
-                    document.getElementById('code_postal').innerHTML = "Code postal : " + data.code_postal;
-                    document.getElementById('ville').innerHTML = "Ville : " + data.ville;
-                });
-            })
-        }
+            fetch("ajax-site", {method: 'POST', body: JSON.stringify(data)})
+                //promesse : le contenu du data dans le dernier then
+                .then(function (response) {
+                    return response.json();
+                }).then(function (data) {
+                document.getElementById('rue').innerHTML = "Adresse : " + data.rue;
+                document.getElementById('latitude').innerHTML = "Latitude : " + data.latitude;
+                document.getElementById('longitude').innerHTML = "Longitude : " + data.longitude;
+                document.getElementById('code_postal').innerHTML = "Code postal : " + data.code_postal;
+                document.getElementById('ville').innerHTML = "Ville : " + data.ville;
+            });
+        })
+    }
 
-
-// DES/INSCRIPTION SORTIE (page d'accueil)
+    // DES/INSCRIPTION SORTIE (page d'accueil)
     if (url === '') {
         $path = '';
         inscriptionDesinscription($path);
@@ -320,6 +428,11 @@ function init() {
     if (url.includes('sortie/detail')) {
         $path = 'sortie/detail';
         inscriptionDesinscription($path);
+    }
+
+    //MANAGEMENT DES PARTICIPANTS :
+    if (url.includes('profile/management')) {
+        profileManagement();
     }
 }
 

@@ -16,6 +16,14 @@
                 <p>Email : {{ profile.email }}</p>
             </div>
         </div>
+    </div>
+    <div align="center">
+        {% if app.user.id == profile.id %}
+            <a href="{{ path('profile_edit', {'id' : app.user.id}) }}" class="white-link btn btn-secondary"> Modifier
+                mon
+                profil </a>
+        {% endif %}
+        <a href="{{ path('sortie_home') }}" class="white-link btn btn-secondary"> Retour </a>
         <div align="center">
             <a href="{{ path('profile_edit', {'id' : app.user.id}) }}" class="white-link btn btn-secondary">
                 Modifier mon
@@ -23,50 +31,53 @@
             <a href="{{ path('sortie_home') }}" class="white-link btn btn-secondary"> Retour </a>
         </div>
     </div>
+
+
+    {# TAB SORTIES ORGANISEES #}
     </div>
 
     {% if sortiesOrganisees %}
+        <h1>Sorties organisées :</h1>
 
             <h1>Sorties organisées :</h1>
 
-            <div class="container col-lg-10 col-md-20 col-sm-10 col-xs-12 d-flex justify-content-center container">
-                <table class="table">
-                    <thead>
+        <div class="container col-lg-10 col-md-20 col-sm-10 col-xs-12 d-flex justify-content-center container">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Nom sortie</th>
+                    <th scope="col">Remplissage</th>
+                    <th scope="col">Options</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for sortiesOrganisee in sortiesOrganisees %}
                     <tr>
-                        <th scope="col">Nom sortie</th>
-                        <th scope="col">Remplissage</th>
-                        <th scope="col">Options</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for sortiesOrganisee in sortiesOrganisees %}
-                        <tr>
-                            <th scope="row">{{ sortiesOrganisee.nom }}</th>
-                            <td>{{ sortiesOrganisee.participants|length }}
-                                /{{ sortiesOrganisee.nbInscriptionsMax }}</td>
-                            <td><a href="{{ path('sortie_detail', {'id' : sortiesOrganisee.id}) }}"
-                                   title="Détails de la sortie">Détails </a>
-                                {% if app.user %}
-                                    {% if app.user.id == sortiesOrganisee.organisateur.id and (sortiesOrganisee.etat == 'Ouverte' or sortiesOrganisee.etat == 'Créée') %}
-                                        <a href="{{ path('sortie_edit', {'id' : sortiesOrganisee.id}) }}"
-                                           title="Modifier la sortie">
-                                            Modifier
-                                        </a>
-                                    {% endif %}
+                        <th scope="row">{{ sortiesOrganisee.nom }}</th>
+                        <td>{{ sortiesOrganisee.participants|length }}
+                            /{{ sortiesOrganisee.nbInscriptionsMax }}</td>
+                        <td><a href="{{ path('sortie_detail', {'id' : sortiesOrganisee.id}) }}"
+                               title="Détails de la sortie">Détails </a>
+                            {% if app.user %}
+                                {% if app.user.id == sortiesOrganisee.organisateur.id and (sortiesOrganisee.etat == 'Ouverte' or sortiesOrganisee.etat == 'Créée') %}
+                                    <a href="{{ path('sortie_edit', {'id' : sortiesOrganisee.id}) }}"
+                                       title="Modifier la sortie">
+                                        Modifier
+                                    </a>
                                 {% endif %}
-                            </td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <th colspan="3" class="alert alert-warning text-center"> Pas de sorties pour le moment
-                            </th>
-                        </tr>
-                    {% endfor %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <th colspan="3" class="alert alert-warning text-center"> Pas de sorties pour le moment
+                        </th>
+                    </tr>
+                {% endfor %}
 
-                    </tbody>
-                </table>
-            </div>
-        {% endfor %}
+                </tbody>
+            </table>
+        </div>
     {% endif %}
 {% endblock %}
 

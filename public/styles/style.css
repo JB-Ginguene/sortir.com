@@ -27,6 +27,13 @@ main{
     background-color: #2abb9b ;
     font-size: larger;
 }
+.flash-error{
+    margin: 0 auto;
+    width: 30vw;
+    text-align: center;
+    background-color: #e08283;
+    font-size: larger;
+}
 
 .svg{
     position: absolute;
@@ -61,6 +68,8 @@ main{
 .img-responsive{
     align-items: center;
     display: flex;
+    margin-top: 30%;
+    margin-left: 20%;
     margin-block: auto;
     height: 300px;
     width: 200px;
@@ -144,4 +153,14 @@ height: 0;
 .check-email{
     margin-top: 15vh;
     text-align: center;
+}
+
+.table-wrapper {
+    max-height: 60vh;
+    overflow: auto;
+    display:inline-block;
+}
+
+.logoNavBar{
+    max-height: 5vh;
 }

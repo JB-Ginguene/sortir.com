@@ -48,7 +48,7 @@
 
     {# LISTE DES SORTIES #}
     <div class="d-flex justify-content-center container">
-        <table class="table">
+        <table class="table table-wrapper">
             <thead>
             <tr>
                 <th scope="col">Nom de la sortie</th>
@@ -124,7 +124,7 @@
                     <td><a href="{{ path('sortie_detail', {'id' : sortie.id}) }}"
                            title="Détails de la sortie">Détails </a>
                         {% if app.user %}
-                            {% if app.user.id == sortie.organisateur.id and (sortie.etat == 'Ouverte' or sortie.etat == 'Créée')%}
+                            {% if app.user.id == sortie.organisateur.id and (sortie.etat.libelle == 'Ouverte' or sortie.etat.libelle == 'Créée')%}
                                 <a href="{{ path('sortie_edit', {'id' : sortie.id}) }}" title="Modifier la sortie">
                                     Modifier
                                 </a>
