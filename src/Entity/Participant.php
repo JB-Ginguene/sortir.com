@@ -120,6 +120,11 @@ class Participant implements UserInterface
      */
     private $avatar;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $actif;
+
 
     public function __construct()
     {
@@ -335,6 +340,18 @@ class Participant implements UserInterface
     public function setAvatar(?string $avatar): self
     {
         $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    public function isActif(): ?bool
+    {
+        return $this->actif;
+    }
+
+    public function setActif(bool $actif): self
+    {
+        $this->actif = $actif;
 
         return $this;
     }

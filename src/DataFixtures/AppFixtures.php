@@ -105,7 +105,8 @@ class AppFixtures extends Fixture
                 ->setEmail($data[3])
                 ->setPassword($data[4])
                 ->setRoles([$data[5]])
-                ->setSite($generator->randomElement($sites));
+                ->setSite($generator->randomElement($sites))
+                ->setActif(true);
             $manager->persist($participant);
 
         }

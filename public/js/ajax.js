@@ -324,28 +324,73 @@ function init() {
     //MANAGEMENT DES PARTICIPANTS :
     if (url.includes('profile/management')) {
         let deleteProfileButtons = Array.from(document.getElementsByClassName('profile_delete'));
-        console.log("deleteProfileButtons début : ");
-        console.log(deleteProfileButtons);
-
         deleteProfileButtons.forEach(function (elem) {
             elem.addEventListener('click', function () {
                 let data = {'participantId': elem.dataset.participantid};
-                console.log(data)
                 fetch("ajax-profile-delete", {method: 'POST', body: JSON.stringify(data)})
                     .then(function (response) {
                         return response.json();
                     }).then(function (data) {
-                    console.log('Ce participant a été supprimé : ')
-                    console.log(data.nom)
-                    console.log(data.prenom)
-                    console.log('Elem.parentNode.parentNode :')
-                    console.log(elem.parentNode.parentNode)
                     let row = elem.parentNode.parentNode;
                     row.parentNode.removeChild(row);
                 });
             });
         })
 
+        // ACTIF/INNACTIF
+        let changeActifButtons = Array.from(document.getElementsByClassName('profile_change_actif'));
+        console.log("changeActifButtons")
+        console.log(changeActifButtons)
+        changeActifButtons.forEach(function (elem) {
+            elem.addEventListener('click', function () {
+                let data = {'participantId': elem.dataset.participantid};
+                console.log("id participant : ")
+                console.log(data.participantId)
+                fetch("ajax-profile-actif-change", {method: 'POST', body: JSON.stringify(data)})
+                    .then(function (response) {
+                        return response.json();
+                    }).then(function (data) {
+                    if (data.participantactif) {
+                        // si l'utilisateur est désormais ACTIF, on affiche le boutton "DESACTIVER"
+                        // data-participantid="{{ participant.id }}" title="Détails du participant">Désactiver</a>
+                        console.log('utilisateur actif')
+                        let a = document.createElement('a');
+                        a.classList.add("bg-warning");
+                        a.classList.add("btn");
+                        a.classList.add("btn-sm");
+                        a.classList.add("mb-1");
+                        a.classList.add("text-white");
+                        a.classList.add("profile_change_actif");
+                        a.innerHTML = "Désactiver";
+                        a.setAttribute("data-participantid", data.participantId);
+                        console.log('elem :')
+                        console.log(elem)
+                        console.log("elem.parentNode : ")
+                        console.log(elem.parentNode)
+                        if (elem.parentNode) {
+                            elem.parentNode.replaceChild(a, elem);
+                        }
+
+                    } else {
+                        // si l'utilisateur est désormais INNACTIF, on affiche le boutton "ACTIVER"
+                        let a = document.createElement('a');
+                        a.classList.add("bg-success");
+                        a.classList.add("btn");
+                        a.classList.add("btn-sm");
+                        a.classList.add("mb-1");
+                        a.classList.add("text-white");
+                        a.classList.add("profile_change_actif");
+                        a.innerHTML = "Activer";
+                        a.setAttribute("data-participantid", data.participantId);
+
+                        if (elem.parentNode) {
+                            elem.parentNode.replaceChild(a, elem);
+                        }
+                    }
+                    changeActifButtons = Array.from(document.getElementsByClassName('profile_change_actif'));
+                });
+            });
+        })
     }
 }
 

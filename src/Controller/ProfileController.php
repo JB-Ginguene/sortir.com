@@ -118,4 +118,27 @@ class ProfileController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/admin/profile/ajax-profile-actif-change", name="profile_management_ajax_profile_actif_change")
+     */
+    public function changeActif(Request $request, EntityManagerInterface $entityManager, UpdateEntity $updateEntity): Response
+    {
+        $data = json_decode($request->getContent());
+        $participantId = $data->participantId;
+        $participant = $entityManager->getRepository(Participant::class)->find($participantId);
+
+        if ($participant->isActif()){
+            // le participant est actif, on souhaite donc le désactiver :
+            $participant->setActif(false);
+        } else{
+            // le participant est innactif, on souhaite donc l'activer :
+            $participant->setActif(true);
+        }
+
+       $updateEntity->save($participant);
+        return new JsonResponse([
+            'participantactif' => $participant->isActif(),
+            'participantId' => $participant->getId()
+        ]);
+    }
 }
