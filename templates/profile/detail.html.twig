@@ -1,17 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
-    <div align="center">
-        <h2>{{ profile.pseudo }}</h2>
-    </div>
-
-    <div class="container" col-lg-10 col-md-20 col-sm-10 col-xs-12 bg-light mt-4 mb-2 pt-2 pb-2 align-self-center>
-        <div class="d-flex justify-content-between">
-            <div class="avatar">
-                <img class="img-responsive" src="{{ asset('images/avatar/'~ profile.avatar) }}" alt="avatar">
+    <div class="container">
+        <div class="row">
+            <div class=" col-12 col-lg-4 offset-lg-4">
+                <h2 class="profil-pseudo">{{ profile.pseudo }}</h2>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" >
+                    <img class="img-responsive" src="{{ asset('images/avatar/'~ profile.avatar) }}" alt="avatar">
+            </div>
+            <div class="profil-infos col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <p>Prenom : {{ profile.prenom }}</p>
                 <p>Nom : {{ profile.nom }}</p>
                 <p>Téléphone : {{ profile.telephone }}</p>
@@ -26,12 +24,22 @@
                 profil </a>
         {% endif %}
         <a href="{{ path('sortie_home') }}" class="white-link btn btn-secondary"> Retour </a>
+        <div align="center">
+            <a href="{{ path('profile_edit', {'id' : app.user.id}) }}" class="white-link btn btn-secondary">
+                Modifier mon
+                profil </a>
+            <a href="{{ path('sortie_home') }}" class="white-link btn btn-secondary"> Retour </a>
+        </div>
     </div>
 
 
     {# TAB SORTIES ORGANISEES #}
+    </div>
+
     {% if sortiesOrganisees %}
         <h1>Sorties organisées :</h1>
+
+            <h1>Sorties organisées :</h1>
 
         <div class="container col-lg-10 col-md-20 col-sm-10 col-xs-12 d-flex justify-content-center container">
             <table class="table">

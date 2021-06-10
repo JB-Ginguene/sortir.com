@@ -1,22 +1,28 @@
 {% extends 'base.html.twig' %}
-
+{% form_theme requestForm 'bootstrap_4_layout.html.twig' %}
 {% block title %}Reset your password{% endblock %}
 
 {% block body %}
-    {% for flashError in app.flashes('reset_password_error') %}
-        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
-    {% endfor %}
-    <h1>Reset your password</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-4 offset-lg-4">
+                {% for flashError in app.flashes('reset_password_error') %}
+                    <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+                {% endfor %}
+                <h1>Reset your password</h1>
 
-    {{ form_start(requestForm) }}
-        {{ form_row(requestForm.email) }}
-        <div>
-            <small>
-                Enter your email address and we we will send you a
-                link to reset your password.
-            </small>
+                {{ form_start(requestForm) }}
+                {{ form_row(requestForm.email) }}
+
+                <small>
+                    Enter your email address and we we will send you a
+                    link to reset your password.
+                </small>
+                <div class="request-form-button">
+                    <button class="btn btn-primary">Send password reset email</button>
+                </div>
+                {{ form_end(requestForm) }}
+            </div>
         </div>
-
-        <button class="btn btn-primary">Send password reset email</button>
-    {{ form_end(requestForm) }}
+    </div>
 {% endblock %}
