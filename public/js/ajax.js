@@ -253,7 +253,7 @@ function inscriptionDesinscription($path) {
     }
 }
 
-function profileManagement(){
+function profileManagement() {
 
     let deleteProfileButtons = Array.from(document.getElementsByClassName('profile_delete'));
     deleteProfileButtons.forEach(function (elem) {
@@ -262,18 +262,25 @@ function profileManagement(){
             fetch("ajax-profile-delete", {method: 'POST', body: JSON.stringify(data)})
                 .then(function (response) {
                     return response.json();
-                }).then(function (data) {
+                }).then(function () {
                 let row = elem.parentNode.parentNode;
                 row.parentNode.removeChild(row);
                 profileManagement();
             });
         });
-
     })
 
-   //ACTIVATION / DESACTIVATION :
+    // ACTIVATION / DESACTIVATION :
+    // liste des boutons permettant d'activer un participant :
     let activerButtons = Array.from(document.getElementsByClassName('profile_change_activer'));
+    // liste des boutons permettant de désactiver un participant :
     let desactiverButtons = Array.from(document.getElementsByClassName('profile_change_desactiver'));
+
+    // on affiche les tableaux en console !
+    console.log(activerButtons)
+    console.log(desactiverButtons)
+
+
     // ON ACTIVE UN PARTICIPANT :
     activerButtons.forEach(function (elem) {
         elem.addEventListener('click', function () {
@@ -282,108 +289,69 @@ function profileManagement(){
                 .then(function (response) {
                     return response.json();
                 }).then(function (data) {
-                let input = document.getElementById('inputIdParticipant'+data.participantId)
-                if (data.participantactif) {
-                    // si l'utilisateur est désormais ACTIF, on affiche le boutton "DESACTIVER"
-                    // data-participantid="{{ participant.id }}" title="Détails du participant">Désactiver</a>
-                    let a = document.createElement('a');
-                    a.classList.add("bg-warning");
-                    a.classList.add("btn");
-                    a.classList.add("btn-sm");
-                    a.classList.add("mb-1");
-                    a.classList.add("text-white");
-                    a.classList.add("profile_change_actif");
-                    a.innerHTML = "Désactiver";
-                    a.setAttribute("data-participantid", data.participantId);
-                    console.log('UTILISATEUR ACTIF // elem :')
-                    console.log(elem)
-                    console.log("elem.parentNode : ")
-                    console.log(elem.parentNode)
-                    if (elem.parentNode) {
-                        elem.parentNode.replaceChild(a, elem);
-                    }
-                    profileManagement();
+                // si l'utilisateur est désormais ACTIF, on affiche le boutton "DESACTIVER"
+                // Bouton Désactiver
+                let a = document.createElement('a');
+                a.classList.add("bg-warning");
+                a.classList.add("btn");
+                a.classList.add("btn-sm");
+                a.classList.add("mb-1");
+                a.classList.add("text-white");
+                a.classList.add("profile_change_desactiver");
+                a.innerHTML = "Désactiver";
+                a.setAttribute("data-participantid", data.participantId);
+                console.log('actif : ');
+                console.log(data.participantactif);
+                console.log('UTILISATEUR ACTIF // elem :')
+                console.log(elem)
+                console.log("elem.parentNode : ")
+                console.log(elem.parentNode)
 
-
-                } else {
-                    // si l'utilisateur est désormais INNACTIF, on affiche le boutton "ACTIVER"
-                    let a = document.createElement('a');
-                    a.classList.add("bg-success");
-                    a.classList.add("btn");
-                    a.classList.add("btn-sm");
-                    a.classList.add("mb-1");
-                    a.classList.add("text-white");
-                    a.classList.add("profile_change_actif");
-                    a.innerHTML = "Activer";
-                    a.setAttribute("data-participantid", data.participantId);
-                    console.log('UTILISATEUR INNACTIF // elem :')
-                    console.log(elem)
-                    console.log("elem.parentNode : ")
-                    console.log(elem.parentNode)
-
-                    if (elem.parentNode) {
-                        elem.parentNode.replaceChild(a, elem);
-                    }
-                    profileManagement();
+                let td = document.getElementById('td'+data.participantId)
+                
+                if (elem.parentNode) {
+                    td.removeChild(elem);
+                    td.append(a)
                 }
+                profileManagement();
             });
         });
     })
-
     // ON DESACTIVE UN PARTICIPANT :
-    desactiverButtons.forEach(function (elem) {
-        elem.addEventListener('click', function () {
-            let data = {'participantId': elem.dataset.participantid};
+    desactiverButtons.forEach(function (tata) {
+        tata.addEventListener('click', function () {
+            let data = {'participantId': tata.dataset.participantid};
             fetch("ajax-profile-actif-change", {method: 'POST', body: JSON.stringify(data)})
                 .then(function (response) {
                     return response.json();
                 }).then(function (data) {
-                let input = document.getElementById('inputIdParticipant'+data.participantId)
-                if (data.participantactif) {
-                    // si l'utilisateur est désormais ACTIF, on affiche le boutton "DESACTIVER"
-                    // data-participantid="{{ participant.id }}" title="Détails du participant">Désactiver</a>
-                    let a = document.createElement('a');
-                    a.classList.add("bg-warning");
-                    a.classList.add("btn");
-                    a.classList.add("btn-sm");
-                    a.classList.add("mb-1");
-                    a.classList.add("text-white");
-                    a.classList.add("profile_change_actif");
-                    a.innerHTML = "Désactiver";
-                    a.setAttribute("data-participantid", data.participantId);
-                    console.log('UTILISATEUR ACTIF // elem :')
-                    console.log(elem)
-                    console.log("elem.parentNode : ")
-                    console.log(elem.parentNode)
-                    if (elem.parentNode) {
-                        elem.parentNode.replaceChild(a, elem);
-                    }
-                    profileManagement();
+                // si l'utilisateur est désormais INNACTIF, on affiche le boutton "ACTIVER"
+                // BOUTON ACTIVER
+                let a = document.createElement('a');
+                a.classList.add("bg-success");
+                a.classList.add("btn");
+                a.classList.add("btn-sm");
+                a.classList.add("mb-1");
+                a.classList.add("text-white");
+                a.classList.add("profile_change_activer");
+                a.innerHTML = "Activer";
+                a.setAttribute("data-participantid", data.participantId);
+                console.log('actif : ');
+                console.log(data.participantactif);
+                console.log('UTILISATEUR INNACTIF // elem :')
+                console.log(tata)
+                console.log("elem.parentNode : ")
+                console.log(tata.parentNode)
+                let td = document.getElementById('td'+data.participantId)
 
-
-                } else {
-                    // si l'utilisateur est désormais INNACTIF, on affiche le boutton "ACTIVER"
-                    let a = document.createElement('a');
-                    a.classList.add("bg-success");
-                    a.classList.add("btn");
-                    a.classList.add("btn-sm");
-                    a.classList.add("mb-1");
-                    a.classList.add("text-white");
-                    a.classList.add("profile_change_actif");
-                    a.innerHTML = "Activer";
-                    a.setAttribute("data-participantid", data.participantId);
-                    console.log('UTILISATEUR INNACTIF // elem :')
-                    console.log(elem)
-                    console.log("elem.parentNode : ")
-                    console.log(elem.parentNode)
-
-                    if (elem.parentNode) {
-                        elem.parentNode.replaceChild(a, elem);
-                    }
+                if (tata.parentNode) {
+                    td.removeChild(tata);
+                    td.append(a)
                     profileManagement();
                 }
             });
         });
+
     })
 }
 
