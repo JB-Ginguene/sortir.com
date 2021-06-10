@@ -131,3 +131,7 @@ height: 0;
     overflow: auto;
     display:inline-block;
 }
+
+.logoNavBar{
+    max-height: 5vh;
+}

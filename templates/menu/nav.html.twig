@@ -1,5 +1,11 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Sortir.com</a>
+
+    <a class="navbar-brand" href="{% if app.user %}
+                                               {{ path('sortie_home') }}
+                                           {% else %}
+                                                {{ path('app_login') }}
+                                           {% endif%}
+                "><img class="logoNavBar" src="{{ asset('images/logo/enilogo.png') }}" alt=""> Sortir.com</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
