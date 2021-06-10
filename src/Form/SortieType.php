@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Lieu;
 use App\Entity\Site;
 use App\Entity\Sortie;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -19,6 +20,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SortieType extends AbstractType
 {
+    private $entityManager;
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager=$entityManager;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -50,8 +57,10 @@ class SortieType extends AbstractType
             //->add('urlPhoto')
             ->add('site', EntityType::class,[
                 'class'=>Site::class,
-                'choice_label'=>'nom'
-            ])
+                'choice_label'=>'nom',
+                'disabled'=>true
+
+            ])//$builder->add('dueDate', 'text', array('read_only' => true));
             ->add('lieu',EntityType::class,[
                 'class'        => Lieu::class,
                 'choice_label' => 'nom'

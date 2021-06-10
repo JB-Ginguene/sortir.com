@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Etat;
 use App\Entity\Lieu;
 use App\Entity\Participant;
+use App\Entity\Site;
 use App\Entity\Sortie;
 use App\Form\ResearchFilterType;
 use App\Form\SortieType;
@@ -82,6 +83,17 @@ class SortieController extends AbstractController
     public function create(Request $request, EntityManagerInterface $entityManager, UpdateEntity $updateEntity): Response
     {
         $sortie = new Sortie();
+
+        /**
+         * @var Participant $organisateur
+         */
+        //On récupère l'utilisateur en session
+        $organisateur = $this->getUser();
+        //puis le site de référence
+        $siteReference = $organisateur->getSite();
+        //Pour le setter sur le site organisateur
+        $sortie->setSite($siteReference);
+
         $sortieForm = $this->createForm(SortieType::class, $sortie);
 
         $sortieForm->handleRequest($request);
@@ -95,12 +107,6 @@ class SortieController extends AbstractController
                 //l'état de sortie est juste publiée
                 $etatSortie = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'Ouverte']);
             }
-
-            //On récupère l'utilisateur en session
-            /**
-             * @var Participant $organisateur
-             */
-            $organisateur = $this->getUser();
 
             //on set sur la sortie l'organisateur ainsi que l'état
             $sortie->setOrganisateur($organisateur)->setEtat($etatSortie);
