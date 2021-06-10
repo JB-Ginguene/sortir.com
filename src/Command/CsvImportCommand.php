@@ -90,6 +90,7 @@ class CsvImportCommand extends Command
                 ->setTelephone($attributs[4])
                 ->setPseudo($attributs[5])
                 ->setSite($this->entityManager->getRepository(Site::class)->findOneBy(['nom' => $attributs[6]]))
+                ->setAvatar($attributs[7])
                 ->setRoles(["ROLE_USER"])
                 ->setActif(true);
 
