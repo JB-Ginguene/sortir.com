@@ -46,4 +46,5 @@ security:
         - { path: ^/team, roles: ROLE_USER }
 
     role_hierarchy:
+        ROLE_USER: ROLE_RATDECAMPAGNE
         ROLE_ADMIN: ROLE_USER

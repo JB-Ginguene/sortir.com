@@ -130,11 +130,12 @@ class ProfileController extends AbstractController
         if ($participant->isActif()){
             // le participant est actif, on souhaite donc le désactiver :
             $participant->setActif(false);
+            $participant->setRoles(['ROLE_RATDECAMPAGNE']);
         } else{
             // le participant est innactif, on souhaite donc l'activer :
             $participant->setActif(true);
+            $participant->setRoles(['ROLE_USER']);
         }
-
        $updateEntity->save($participant);
         return new JsonResponse([
             'participantactif' => $participant->isActif(),
