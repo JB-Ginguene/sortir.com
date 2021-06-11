@@ -65,18 +65,27 @@ main{
     margin: 10vh auto;
 }
 
+.profil-infos{
+    padding:5em;
+}
+
+.profil-edit-button{
+    margin-top: 10vh;
+}
+
 .img-responsive{
     align-items: center;
     display: flex;
     margin-top: 30%;
-    margin-left: 20%;
+    margin-left: 0;
     margin-block: auto;
     height: 300px;
-    width: 200px;
+    width: 300px;
 }
 profil-infos{
-    align-content: center;
-    margin: 10vh auto;
+    min-height: 10em;
+    display: table-cell;
+    vertical-align: middle
 }
 
 #global{
