@@ -2,29 +2,35 @@
   {% form_theme profileForm 'bootstrap_4_layout.html.twig' %}
 
 {% block title %}Profile{% endblock %}
-
-
 {% block body %}
-    <div class="container">
+    <div class="container col-lg-10 col-md-10 col-sm-12 col-xs-12 justify-content-center">
+
+        {# MESSAGE D'ERREUR #}
         {% for flashError in app.flashes('verify_email_error') %}
             <div class="alert alert-danger" role="alert">{{ flashError }}</div>
         {% endfor %}
-        <div class="row">
-            <div class="col-12 col-lg-4 offset-4">
-                <div class="profil-title">
-                    <h4>Mon profil</h4>
-                </div>
-                <div class="avatar">
-                    <img class="img-responsive" src="{{ asset('images/avatar/'~ profile.avatar) }}" alt="avatar">
-                </div>
-                <div>
-                    {{ form_start(profileForm) }}
-                    {{ form_widget(profileForm) }}
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-secondary">Enregistrer</button>
-                        <a href="{{ path('sortie_home') }}" class="white-link btn btn-secondary"> Annuler </a>
-                    </div>
-                    {{ form_end(profileForm) }}
+
+        {# TITRE #}
+        <div class="col-12 my-5">
+            <h4 class="text-center">Mon profil</h4>
+        </div>
+
+        <div class="row justify-content-around">
+
+            {# IMAGE #}
+
+            <div class="col-lg-4 col-md-4 col-sm-10 col-xs-10 p-5 ">
+                <img class="img-fluid align-baseline" src="{{ asset('images/avatar/'~ profile.avatar) }}" alt="avatar">
+            </div>
+
+            {# FORMULAIRE #}
+            <div class=" col-lg-5 col-md-5 col-sm-12 col-xs-12 my-auto">
+                {{ form_start(profileForm) }}
+                {{ form_widget(profileForm) }}
+                {{ form_end(profileForm) }}
+                <div class="text-center my-5">
+                    <button type="submit" class="btn btn-secondary">Enregistrer</button>
+                    <a href="{{ path('sortie_home') }}" class="white-link btn btn-secondary"> Annuler </a>
                 </div>
             </div>
         </div>
