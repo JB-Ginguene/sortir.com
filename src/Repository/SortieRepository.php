@@ -40,7 +40,7 @@ class SortieRepository extends ServiceEntityRepository
      */
     public function findByPersonnalResearch(ResearchFilter $research, EntityManagerInterface $entityManager)
     {
-        $etatsPassee = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => "Passée"]);
+        $etatsArchivee = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => "Archivée"]);
         // on récupère l'id de l'utilisateur connecté :
         $userId = $this->security->getUser()->getId();
         // s = sortie
@@ -57,7 +57,7 @@ class SortieRepository extends ServiceEntityRepository
             ->addSelect('ville')
 
             // on recupere uniquement les sorties NON archivées :
-            ->where("s.etat != " . $etatsPassee->getId());
+            ->where("s.etat != " . $etatsArchivee->getId());
 
         if ($research->getSite()) {
             $queryBuilder->andWhere('s.site >= :id')
@@ -88,12 +88,15 @@ class SortieRepository extends ServiceEntityRepository
                 ->setParameter('userid', $userId);
         }
         if (in_array('sortiespassees', $research->getSpecificitees())) {
+            $queryBuilder->andWhere("s.dateHeureDebut <= :dateNow");
             $now = new \DateTime();
+            $queryBuilder->setParameter('dateNow', $now->format('Y-m-d H:i:s'));
+
+            $queryBuilder->andWhere("s.dateHeureDebut >= :dateNowMinusOneMonth");
             $nowMinusOneMonth = $now->modify('-1month');
-            $queryBuilder->andWhere("s.dateHeureDebut <= :dateNow AND s.dateHeureDebut >= :dateNowMinusOneMonth")
-            ->setParameter('dateNow', $now->format('Y-m-d H:i:s'))
-            ->setParameter('dateNowMinusOneMonth', $nowMinusOneMonth->format('Y-m-d H:i:s'));
+            $queryBuilder->setParameter('dateNowMinusOneMonth', $nowMinusOneMonth->format('Y-m-d H:i:s'));
         }
+        $queryBuilder->orderBy('s.dateHeureDebut', 'ASC');
         $query = $queryBuilder->getQuery();
         return $query->getResult();
     }
@@ -175,7 +178,8 @@ class SortieRepository extends ServiceEntityRepository
             ->leftJoin('s.lieu', 'lieu')
             ->leftJoin('s.etat', 'etat')
             ->addSelect('participant')
-            ->addSelect('etat');
+            ->addSelect('etat')
+            ->orderBy('s.dateHeureDebut', 'ASC');
         $query = $queryBuilder->getQuery();
         return $query->getResult();
     }

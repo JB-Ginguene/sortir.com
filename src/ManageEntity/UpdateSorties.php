@@ -75,11 +75,12 @@ class UpdateSorties
     public function retirerArchives($listeSorties){
         $etatArchivee = $this->entityManager->getRepository(Etat::class)->findOneBy(['libelle'=>'Archivée']);
 
+        if($listeSorties){
         for ($i=0;$i <= count($listeSorties);$i++){
-            if ($listeSorties[$i]->getEtat() == $etatArchivee){
+            if ($listeSorties[$i]->getEtat()->getId() == $etatArchivee->getId()){
                 unset($listeSorties[$i]);
             }
-        }
+        }}
 
         return $listeSorties;
     }

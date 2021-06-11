@@ -165,7 +165,7 @@ height: 0;
 }
 
 .table-wrapper {
-    max-height: 60vh;
+    max-height: 50vh;
     overflow: auto;
     display:inline-block;
 }

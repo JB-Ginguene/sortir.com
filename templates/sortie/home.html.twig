@@ -73,7 +73,7 @@
                     </td>
                     <td class="d-none d-lg-table-cell">{{ sortie.etat.libelle }}</td>
                     {% if sortie.etat.libelle == "Passée" %}
-                        <td class="d-none d-lg-table-cell"><a class="bg-info btn btn-sm">Sortie passée</a></td>
+                        <td class="d-none d-lg-table-cell"><a class="bg-dark btn btn-sm text-white">Sortie passée</a></td>
                     {% elseif sortie.etat.libelle == "Créée" %}
                         <td class="d-none d-lg-table-cell"><a class="bg-info btn btn-sm">Inscriptions bientôt ouvertes</a></td>
                     {% elseif sortie.etat.libelle == "Annulée" %}
