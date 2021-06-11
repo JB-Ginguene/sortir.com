@@ -1,24 +1,29 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="container">
-        <div class="row">
-            <div class=" col-12 col-lg-4 offset-lg-4">
-                <h2 class="profil-pseudo">{{ profile.pseudo }}</h2>
+    <div class="container col-lg-10 col-md-10 col-sm-12 col-xs-12 bg-light justify-content-center">
+
+        {# TITRE : #}
+        <div class="col-12">
+            <h2 class="text-center my-3">{{ profile.pseudo }}</h2>
+        </div>
+        <div class="row justify-content-around">
+            {# IMAGE #}
+            <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 p-3">
+                <img class="img-fluid" src="{{ asset('images/avatar/'~ profile.avatar) }}" alt="avatar">
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
-                <img class="img-responsive" src="{{ asset('images/avatar/'~ profile.avatar) }}" alt="avatar">
-            </div>
-            <div class="profil-infos col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <p>Prenom : {{ profile.prenom }}</p>
-                <p>Nom : {{ profile.nom }}</p>
-                <p>Téléphone : {{ profile.telephone }}</p>
-                <p>Email : {{ profile.email }}</p>
+
+            {# INFOS PROFIL #}
+            <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 my-auto">
+                    <p>Prenom : {{ profile.prenom }}</p>
+                    <p>Nom : {{ profile.nom }}</p>
+                    <p>Téléphone : {{ profile.telephone }}</p>
+                    <p>Email : {{ profile.email }}</p>
             </div>
         </div>
     </div>
-    <div class="profil-edit-button">
-        <div align="center">
+
+        <div class="text-center my-3">
             {% if app.user.id == profile.id %}
                 <a href="{{ path('profile_edit', {'id' : app.user.id}) }}" class="white-link btn btn-secondary">
                     Modifier
@@ -27,7 +32,6 @@
             {% endif %}
             <a href="{{ path('sortie_home') }}" class="white-link btn btn-secondary"> Retour </a>
         </div>
-    </div>
 
     {# TAB SORTIES ORGANISEES #}
     </div>
@@ -75,8 +79,8 @@
     {% endif %}
 {% endblock %}
 
-{% block title %}
-    {{ parent() }} | Mon profil
-{% endblock %}
+        {% block title %}
+            {{ parent() }} | Mon profil
+        {% endblock %}
 
 
