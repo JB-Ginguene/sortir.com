@@ -41,7 +41,7 @@ class SortieController extends AbstractController
         $researchForm->handleRequest($request);
         if ($researchForm->isSubmitted() && $researchForm->isValid()) {
             $sorties = $sortieRepository->findByPersonnalResearch($research, $entityManager);
-            //$sortiesSansArchives = $updateSorties->retirerArchives($sorties);
+            $sortiesSansArchives = $updateSorties->retirerArchives($sorties);
             return $this->render('sortie/home.html.twig', [
                 'researchForm' => $researchForm->createView(),
                 'sorties' => $sorties
